@@ -1,0 +1,26 @@
+{
+  "name": "simplesim",
+  "version": "1.0.0",
+  "description": "Simple alternative to Simulationcraft intended for easy customization",
+  "main": "SimpleSim.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Mattilego/SimpleSim.git"
+  },
+  "keywords": [
+    "worldofwarcraft",
+    "simulationcraft"
+  ],
+  "author": "Mattias Strandberg",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Mattilego/SimpleSim/issues"
+  },
+  "homepage": "https://github.com/Mattilego/SimpleSim#readme",
+  "dependencies": {
+    "electron": "^28.1.0"
+  }
+}
