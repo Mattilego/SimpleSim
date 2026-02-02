@@ -1,5 +1,5 @@
 [
-	{//DS to heal or prevent overcap of rp
+	{
 		"ability": "Death Strike",
 		"conditions": [{
 			"type": "or",
@@ -21,7 +21,7 @@
 			]
 		}]
 	},
-	{//RM ouside DRW
+	{
 		"ability": "Reaper's Mark",
 		"conditions": [{
 			"type": "not",
@@ -32,7 +32,7 @@
 			}]
 		}]
 	},
-	{//DRW without overcapping exterminate
+	{
 		"ability": "Dancing Rune Weapon",
 		"conditions":[{
 			"type": "not",
@@ -54,7 +54,7 @@
 			}]
 		}]
 	},
-	{//Marrowrend to maintain boneshield or spend exterminate before expiration or before DRW/RM
+	{
 		"ability": "Marrowrend",
 		"conditions": [{
 			"type": "or",
@@ -143,7 +143,7 @@
 			]
 		}]
 	},
-	{//DnD to maintain it's buff
+	{
 		"ability": "Death and Decay",
 		"conditions": [{
 			"type": "not",
@@ -154,7 +154,7 @@
 			}]
 		}]
 	},
-	{//Blood Boil if an enemy does not have Blood Plague or if about to overcap charges or hve a Boiling Point Proc
+	{
 		"ability": "Blood Boil",
 		"conditions": [{
 			"type": "or",
@@ -183,7 +183,7 @@
 			]
 	    }]
 	},
-	{//Consumption if blood plague has a high duration (or boiling point will refresh it before cast finishes) and not in DRW
+	{
 		"ability": "Consumption",
 		"conditions": [{
 			"type": "and",

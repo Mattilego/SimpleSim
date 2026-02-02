@@ -36,7 +36,6 @@
 	"BaseDSHeal": {
 		"type": "max",
 		"value1": {
-			//Min heal
 			"type": "*",
 			"value1": 0.07,
 			"value2": {
@@ -48,7 +47,7 @@
 			"type": "*",
 			"value1": {
 				"type": "buff",
-				"id": "Coagulating Blood", //Holds damage taken in last 5 seconds or since last death strike, whichever is lower, just like real WoW
+				"id": "Coagulating Blood",
 				"check": "value"
 			},
 			"value2": 0.2

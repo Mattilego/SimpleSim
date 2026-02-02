@@ -1,7 +1,7 @@
 {
 	"Death Strike": {
 		"charges": 1,
-		"range": 5, //melee
+		"range": 5,
 		"cooldown": 0,
 		"castTime": 0,
 		"GCD": 1,
@@ -170,7 +170,7 @@
 				}
 			}
 		],
-		"hitEffects": [//Ran on each enemy hit
+		"hitEffects": [
 			{
 				"type": "physicalDamage",
 				"value": {
@@ -186,7 +186,7 @@
 								"check": "value"
 							}
 						},
-						"value2": 0.75,//75% damage on secondary targets (if Deadly Reach is talented)
+						"value2": 0.75,
 						"conditions": [{
 							"type": ">=",
 							"value1": {
