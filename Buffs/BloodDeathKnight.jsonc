@@ -1,0 +1,19 @@
+{
+	"Bone Shield": {
+		"maxDuration": 30,
+		"maxStacks": {
+			"type": "+",
+			"value1": {
+				"type": "+",
+				"value1": 5,
+				"value2": 2
+			},
+			"value2": 5,
+			"conditions": [{
+				"type": "talent",
+				"id": "Ossuary",
+				"check": "exists"
+			}]
+		}
+	}
+}

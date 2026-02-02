@@ -1,0 +1,57 @@
+{
+	"DeathStrikeCost": {
+		"type": "-",
+		"value1": {
+			"type": "-",
+			"value1": {
+				"type": "-",
+				"value1": 45,
+				"value2": 5,
+				"conditions": [
+					{
+						"type": "talent",
+						"id": "Improved Death Strike",
+						"check": "exists"
+					}
+				]
+			},
+			"value2": 5,
+			"conditions": [
+				{
+					"type": "buff",
+					"id": "Ossuary",
+					"check": "exists"
+				}
+			]
+		},
+		"value2": 10,
+		"conditions": [
+			{
+				"type": "buff",
+				"id": "Blood Draw Cost Reduction",
+				"check": "exists"
+			}
+		]
+	},
+	"BaseDSHeal": {
+		"type": "max",
+		"value1": {
+			//Min heal
+			"type": "*",
+			"value1": 0.07,
+			"value2": {
+				"type": "stat",
+				"id": "maxHp"
+			}
+		},
+		"value2": {
+			"type": "*",
+			"value1": {
+				"type": "buff",
+				"id": "Coagulating Blood", //Holds damage taken in last 5 seconds or since last death strike, whichever is lower, just like real WoW
+				"check": "value"
+			},
+			"value2": 0.2
+		}
+	}
+}

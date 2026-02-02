@@ -1,0 +1,232 @@
+{
+	"Death Strike": {
+		"charges": 1,
+		"range": 5, //melee
+		"cooldown": 0,
+		"castTime": 0,
+		"GCD": 1,
+		"targets": {
+			"type": "+",
+			"value1": 1,
+			"value2": 2,
+			"conditions": [{
+				"type": "talent",
+				"id": "Deadly Reach",
+				"check": "exists"
+			}]
+		},
+		"conditions": [
+			{
+				"type": "or",
+				"conditions": [
+					{
+						"type": "resource",
+						"id": "runicPower",
+						"check": "value",
+						"comparison": ">=",
+						"value": {
+							"type": "shortcut",
+							"id": "DeathStrikeCost"
+						}
+					}
+				]
+			}
+		],
+		"castEffects": [
+			{
+				"type": "resource",
+				"id": "runicPower",
+				"change": {
+					"type": "shortcut",
+					"id": "DeathStrikeCost"
+				},
+				"conditions": []
+			},
+			{
+				"type": "removeBuff",
+				"id": "_HemostasisModifier"
+			},
+			{
+				"type": "buff",
+				"id": "_HemostasisModifier",
+				"duration": -1,
+				"stacks": 1,
+				"value": {
+					"type": "^",
+					"value1": 1.08,
+					"value2": {
+						"type": "buff",
+						"id": "Hemostasis",
+						"check": "stacks"
+					}
+				}
+			},
+			{
+				"type": "removeBuff",
+				"id": "Hemostasis"
+			},
+			{
+				"type": "heal",
+				"target": "self",
+				"value": {
+					"type": "*",
+					"value1": {
+						"type": "shortcut",
+						"id": "BaseDSHeal"
+					},
+					"value2": {
+						"type": "*",
+						"value1": {
+							"type": "*",
+							"value1": {
+								"type": "*",
+								"value1": 1,
+								"value2": 1.05,
+								"conditions": [
+									{
+										"type": "talent",
+										"id": "Improved Death Strike",
+										"check": "exists"
+									}
+								]
+							},
+							"value2": 1.05,
+							"conditions": [{
+								"type": "talent",
+								"id": "Voracious",
+								"check": "exists"
+							}]
+						},
+						"value2": {
+							"type": "buff",
+							"id": "_HemostasisModifier",
+							"check": "value"
+						}
+					}
+					
+				},
+				"conditions": []
+			},
+			{
+				"type": "buff",
+				"target": "self",
+				"id": "Blood Shield",
+				"duration": 10,
+				"scale": "none",
+				"stacks": 1,
+				"value": {
+					"type": "*",
+					"value1": {
+						"type": "*",
+						"value1": {
+							"type": "shortcut",
+							"id": "BaseDSHeal"
+						},
+						"value2": {
+							"type": "stat",
+							"id": "mastery"
+						}
+					},
+					"value2": 1.2,
+					"conditions": [
+						{
+							"type": "talent",
+							"id": "Iron Heart",
+							"check": "exists"
+						}
+					]
+				}
+			},
+			{
+				"type": "removeBuff",
+				"id": "Coagulating Blood"
+			},
+			{
+				"type": "buff",
+				"id": "Voracious",
+				"duration": 10,
+				"scale": "none",
+				"stacks": 1,
+				"value": null
+			},
+			{
+				"type": "buff",
+				"id": "Lifeblood",
+				"duration": 4,
+				"scale": "none",
+				"stacks": 1,
+				"value": {
+					"type": "*",
+					"value1": {
+						"type": "shortcut",
+						"id": "BaseDSHeal"
+					},
+					"value2": 0.2,
+					"conditions": [{
+						"type": "talent",
+						"id": "Lifeblood",
+						"check": "exists"
+					}]
+				}
+			}
+		],
+		"hitEffects": [//Ran on each enemy hit
+			{
+				"type": "physicalDamage",
+				"value": {
+					"type": "*",
+					"value1": {
+						"type": "*",
+						"value1": {
+							"type": "*",
+							"value1": 1.5312,
+							"value2": {
+								"type": "buff",
+								"id": "_HemostasisModifier",
+								"check": "value"
+							}
+						},
+						"value2": 0.75,//75% damage on secondary targets (if Deadly Reach is talented)
+						"conditions": [{
+							"type": ">=",
+							"value1": {
+								"type": "parameter",
+								"id": "targetId"
+							},
+							"value2": 1
+						}]
+					},
+					"value2": {
+						"type": "stat",
+						"id": "Strength"
+					}
+				},
+				"conditions": []
+			},{
+				"type": "buff",
+				"id": "Coagulopathy",
+				"duration": 14,
+				"scale": "none",
+				"stacks": 1,
+				"value": null,
+				"conditions": [{
+					"type": "talent",
+					"id": "Coagulopathy",
+					"check": "exists"
+				}]
+			},{
+				"type": "buff",
+				"id": "Icy talons",
+				"duration": 12,
+				"scale": "none",
+				"stacks": 1,
+				"value": null,
+				"conditions": [{
+					"type": "talent",
+					"id": "Icy Talons",
+					"check": "exists"
+				}]
+			}
+		]
+	}
+}
