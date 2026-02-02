@@ -10,5 +10,5 @@ app.on('ready', () => {
     }
   });
 
-  win.loadFile('GUI/GUI.html');
+  win.loadFile('localGUI/GUI.html');
 });
