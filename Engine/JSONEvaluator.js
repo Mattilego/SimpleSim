@@ -1,0 +1,5 @@
+class JSONEvaluator {
+	constructor(shortcuts) {
+		
+	}
+}
