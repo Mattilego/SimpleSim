@@ -9,3 +9,1080 @@ nav {
 	justify-content: space-between;
 	align-items: center;
 }
+
+section {
+	background-color: #afafaf;
+	border-radius: 5px;
+	padding: 10px;
+	margin: 10px;
+	overflow: hidden;
+}
+
+#specConfigurationContainer {
+	display: grid;
+	max-height: 900px;
+	transition: max-height 0.2s ease-in-out;
+	grid-template-columns:  0.5fr repeat(6, 1fr) 0.5fr;
+	grid-template-areas:
+	". bdk bdk fdk fdk udk udk ."
+	". vdh vdh hdh hdh ddh ddh ."
+	". de de ae ae pe pe ."
+	". bmh bmh mmh mmh sh sh ."
+	". am am fim fim frm frm ."
+	". bmm bmm mwm mwm wwm wwm ."
+	". hp hp pp pp rp rp ."
+	". dp dp hpr hpr sp sp ."
+	". ar ar or or sr sr ."
+	". els els ens ens rs rs ."
+	". al al deml deml desl desl ."
+	". aw aw fw fw pw pw ."
+	". bd bd bd fd fd fd ."
+	". rd rd rd bod bod bod .";
+	gap: 10px;
+	input {
+		appearance: none;
+		width: 50px;
+		height: 50px;
+		background-size: cover;
+		border: 3px solid transparent;
+		border-color: #222;
+		border-radius: 5px;
+		transition: all 0.2s ease-in-out;
+		margin: auto;
+	}
+
+	input:checked {
+		border-color: #d0d000;
+		border-radius: 10px;
+	}
+
+	#bloodDK {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_bloodpresence.jpg");
+		grid-area: bdk;
+	}
+
+	#frostDK {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_frostpresence.jpg");
+		grid-area: fdk;
+	}
+
+	#unholyDK {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_unholypresence.jpg");
+		grid-area: udk;
+	}
+
+	#vengDH {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_spectank.jpg");
+		grid-area: vdh;
+	}
+
+	#havocDH {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_specdps.jpg");
+		grid-area: hdh;
+	}
+
+	#devourerDH {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/classicon_demonhunter_void.jpg");
+		grid-area: ddh;
+	}
+
+	#devEvoker {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/classicon_evoker_devastation.jpg");
+		grid-area: de;
+	}
+
+	#augEvoker {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/classicon_evoker_augmentation.jpg");
+		grid-area: ae;
+	}
+
+	#presEvoker {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/classicon_evoker_preservation.jpg");
+		grid-area: pe;
+	}
+
+	#BMhunter {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_hunter_bestialdiscipline.jpg");
+		grid-area: bmh;
+	}
+
+	#MMhunter {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_hunter_focusedaim.jpg");
+		grid-area: mmh;
+	}
+
+	#survivalHunter {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_hunter_camouflage.jpg");
+		grid-area: sh;
+	}
+
+	#arcaneMage {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_holy_magicalsentry.jpg");
+		grid-area: am;
+	}
+
+	#fireMage {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_fire_firebolt02.jpg");
+		grid-area: fim;
+	}
+
+	#frostMage {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_frost_frostbolt02.jpg");
+		grid-area: frm;
+	}
+
+	#brewMonk {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_monk_brewmaster_spec.jpg");
+		grid-area: bmm;
+	}
+
+	#mistMonk {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_monk_mistweaver_spec.jpg");
+		grid-area: mwm;
+	}
+
+	#WWMonk {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_monk_windwalker_spec.jpg");
+		grid-area: wwm;
+	}
+
+	#HPaladin {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_holy_holybolt.jpg");
+		grid-area: hp;
+	}
+
+	#protPaladin {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_paladin_shieldofthetemplar.jpg");
+		grid-area: pp;
+	}
+
+	#retPaladin {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_holy_auraoflight.jpg");
+		grid-area: rp;
+	}
+
+	#discPriest {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_holy_powerwordshield.jpg");
+		grid-area: dp;
+	}
+
+	#holyPriest {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_holy_guardianspirit.jpg");
+		grid-area: hpr;
+	}
+
+	#shadowPriest {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_shadowwordpain.jpg");
+		grid-area: sp;
+	}
+
+	#assRogue {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_rogue_deadlybrew.jpg");
+		grid-area: ar;
+	}
+
+	#outlawRogue {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_rogue_waylay.jpg");
+		grid-area: or;
+	}
+
+	#subRogue {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_stealth.jpg");
+		grid-area: sr;
+	}
+
+	#eleShaman {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_lightning.jpg");
+		grid-area: els;
+	}
+
+	#enhShaman {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shaman_improvedstormstrike.jpg");
+		grid-area: ens;
+	}
+
+	#restoShaman {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_magicimmunity.jpg");
+		grid-area: rs;
+	}
+
+	#affLock {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathcoil.jpg");
+		grid-area: al;
+	}
+
+	#demoLock {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_metamorphosis.jpg");
+		grid-area: deml;
+	}
+
+	#destroLock {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_rainoffire.jpg");
+		grid-area: desl;
+	}
+
+	#armsWarr {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_savageblow.jpg");
+		grid-area: aw;
+	}
+
+	#furyWarr {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_innerrage.jpg");
+		grid-area: fw;
+	}
+
+	#protWarr {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_defensivestance.jpg");
+		grid-area: pw;
+	}
+
+	#bearDruid {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_racial_bearform.jpg");
+		grid-area: bd;
+	}
+
+	#catDruid {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_druid_catform.jpg");
+		grid-area: fd;
+	}
+
+	#restoDruid {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_healingtouch.jpg");
+		grid-area: rd;
+	}
+
+	#boomyDruid {
+		background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_starfall.jpg");
+		grid-area: bod;
+	}
+}
+#characterStatsContainer {
+	max-height: 1800px;
+	transition: max-height 0.2s ease-in-out;
+
+	#statInputs {
+		background-color: #555
+	}
+
+	#talents {
+		margin-top: 10px;
+		
+		.classTalentGroups {
+			display: grid;
+			grid-template-areas:
+				"class"
+				"hero"
+				"spec";
+			grid-template-columns: 1fr;
+			grid-template-rows: repeat(4, auto);
+			gap: 10px;
+			.talents {
+				max-width: 700px;
+				width: 100%;
+				margin: auto;
+				display: grid;
+				gap: 5px;
+				background-color: #888;
+				padding: 5px;
+				border-radius: 4px;
+				input {
+					appearance: none;
+					width: 30px;
+					height: 30px;
+					border-radius: 4px;
+					border: 3px solid #222;
+					transition: all 0.2s ease-in-out;
+					margin: auto;
+					background-size: cover;
+				}
+
+				input:checked {
+					border-color: #d0d000;
+					border-radius: 8px;
+				}
+
+				div {
+					display: flex;
+					flex-direction: column;
+					justify-content: center;
+					align-items: center;
+					input {
+						margin: 0px;
+					}
+				}
+			}
+
+			.heroTalentContainers{
+				display: flex;
+				flex-direction: column;
+				grid-area: hero;
+				gap: 10px;
+				.heroTalents {
+					grid-template-columns: repeat(4, 1fr);
+					grid-template-rows: repeat(5, auto);
+					max-width: 400px;
+				}
+			}
+		}
+
+		#dkTalents {
+			#dkClassTree {
+				grid-area: class;
+				grid-template-columns: repeat(7, 1fr);
+				grid-template-rows: repeat(10, auto);
+				grid-template-areas:
+					". ibf . ds . rd ."
+					". ra . ids . cs ."
+					"mf bs gw modww um cu enf"
+					"ct pc pf vtw dp bri bb"
+					". it dn amz dd ub ."
+					"ip . asdr ass amb . gotd"
+					". sup . bsc . ue ."
+					"osm . ic . rp . bd"
+					". rm . sg . wotn ."
+					"nm . uw . de . vs";
+
+				#talentIBF {
+					grid-area: ibf;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_iceboundfortitude.jpg");
+				}
+
+				#talentDeathStrike {
+					grid-area: ds;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_butcher2.jpg");
+				}
+
+				#talentRaiseDead {
+					grid-area: rd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_pet_ghoul.jpg");
+				}
+
+				#talentRunicAttenuation {
+					grid-area: ra;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/boss_odunrunes_blue.jpg");
+				}
+
+				#talentImprovedDeathStrike {
+					grid-area: ids;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_butcher2.jpg");
+				}
+
+				#talentCleavingStrikes {
+					grid-area: cs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_1115_warrior_fastermeleeattacks.jpg");
+				}
+
+				#talentMindFreeze {
+					grid-area: mf;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_mindfreeze.jpg");
+				}
+
+				#talentBlindingSleet {
+					grid-area: bs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_frost_chillingblast.jpg");
+				}
+
+				#talentNodesGloomWard {
+					grid-area: gw;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_rogue_envelopingshadows.jpg");
+				}
+
+				#talentChoiceMoDWW {
+					grid-area: modww;
+					#talentMarchOfDarkness {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_argus_deathfog.jpg");
+					}
+					#talentWraithWalk {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_helm_plate_raiddeathknight_p_01.jpg");
+					}
+				}
+
+				#talentNodesUnholyMomentum {
+					grid-area: um;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_necro_deathrift.jpg");
+				}
+
+				#talentControlUndead {
+					grid-area: cu;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_misc_bone_skull_01.jpg");
+				}
+
+				#talentEnfeeble {
+					grid-area: enf;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_creature_poison_01.jpg");
+				}
+
+				#talentColdtirst {
+					grid-area: ct;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_mindfreeze.jpg");
+				}
+
+				#talentProliferatingChill {
+					grid-area: pc;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_frost_chainsofice.jpg");
+				}
+
+				#talentPermafrost {
+					grid-area: pf;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_zone_frostfire.jpg");
+				}
+
+				#talentVeteranOfTheThirdWar {
+					grid-area: vtw;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_misc_warsongfocus.jpg");
+				}
+
+				#talentDeathPact {
+					grid-area: dp;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_deathpact.jpg");
+				}
+
+				#talentBrittle {
+					grid-area: bri;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_bosskilrogg_deaththroes.jpg");
+				}
+
+				#talentBloodBond {
+					grid-area: bb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_roilingblood.jpg");
+				}
+
+				#talentIcyTalons {
+					grid-area: it;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_icytalons.jpg");
+				}
+
+				#talentDeathNotes {
+					grid-area: dn;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_misc_book_01.jpg");
+				}
+
+				#talentAnti-MagicZone {
+					grid-area: amz;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_antimagiczone.jpg");
+				}
+
+				#talentDeathDefiance {
+					grid-area: dd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_shamanrage.jpg");
+				}
+
+				#talentUnholyBond {
+					grid-area: ub;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_sword_1h_felfireraid_d_01.jpg");
+				}
+
+				#talentIcePrison {
+					grid-area: ip;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_mage_deepfreeze.jpg");
+				}
+
+				#talentChoiceAsphyxiateDeathsReach {
+					grid-area: asdr;
+					#talentAsphyxiate {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_asphixiate.jpg");
+					}
+					#talentDeathsReach {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_strangulate.jpg");
+					}
+				}
+
+				#talentAssimilation {
+					grid-area: ass;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_antimagiczone.jpg");
+				}
+
+				#talentAnti-MagicBarrier {
+					grid-area: amb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_antimagicshell.jpg");
+				}
+
+				#talentGripOfTheDead {
+					grid-area: gotd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_creature_disease_05.jpg");
+				}
+
+				#talentSuppression {
+					grid-area: sup;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_racial_forceshield.jpg");
+				}
+
+				#talentBloodScent {
+					grid-area: bsc;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_ironmaidens_bloodritual.jpg");
+				}
+
+				#talentUnholyEndurance {
+					grid-area: ue;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_subversion.jpg");
+				}
+
+				#talentOsmosis {
+					grid-area: osm;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_rune.jpg");
+				}
+
+				#talentInsidiousChill {
+					grid-area: ic;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_racial_wardoftheloafrost.jpg");
+				}
+
+				#talentRunicProtection {
+					grid-area: rp;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_mage_shattershield.jpg");
+				}
+
+				#talentBloodDraw {
+					grid-area: bd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_artifact_bloodoftheassassinated.jpg");
+				}
+
+				#talentNodesRuneMastery {
+					grid-area: rm;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_hungeringruneblade.jpg");
+				}
+
+				#talentSubduingGrasp {
+					grid-area: sg;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nature_elementalshields.jpg");
+				}
+
+				#talentNodesWillOfTheNecropolis {
+					grid-area: wotn;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_boss_kelthuzad_01.jpg");
+				}
+
+				#talentNullMagic {
+					grid-area: nm;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_detectinvisibility.jpg");
+				}
+
+				#talentUnyieldingWill {
+					grid-area: uw;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_nethercloak.jpg");
+				}
+
+				#talentDeathsEcho {
+					grid-area: de;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_fabric_ebonweave.jpg");
+				}
+
+				#talentVestigialShell {
+					grid-area: vs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_domination_rune12.jpg");
+				}
+			}
+
+			#deathbringerHeroTalents {
+				grid-area: hero1;
+				grid-template-areas:
+					". rm rm ."
+					"ws wa bd fr"
+					"sr gr pdrcp db"
+					"sp dtro dmes ef"
+					". ex ex .";
+				#talentReapersMark {
+					grid-area: rm;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_ability_deathbringerdeathknight_reapersmark.jpg");
+				}
+
+				#talentWaveOfSouls {
+					grid-area: ws;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_animamaw_wave.jpg");
+				}
+
+				#talentWitherAway {
+					grid-area: wa;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/sha_spell_warlock_demonsoul.jpg");
+				}
+
+				#talentBindInDarkness {
+					grid-area: bd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_argus_soulbombdebuffsmall.jpg");
+				}
+
+				#talentFrigidResolve {
+					grid-area: fr;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_icetouch.jpg");
+				}
+
+				#talentSoulRupture {
+					grid-area: sr;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/warlock_siphonlife.jpg");
+				}
+
+				#talentGrimReaper {
+					grid-area: gr;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_misc_zandalari_council_soulswap.jpg");
+				}
+
+				#talentChoiceRuneCarvedPlatesPactOfTheDeathbringer {
+					grid-area: pdrcp;
+					#talentPactOfTheDeathbringer {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_revendreth_deathknight.jpg");
+					}
+					#talentRuneCarvedPlates {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_runetap.jpg");
+					}
+				}
+
+				#talentDeathlyBlows {
+					grid-area: db;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_sword_1h_mawraid_d_02.jpg");
+				}
+
+				#talentSwiftAndPainful {
+					grid-area: sp;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_domination_rune02.jpg");
+				}
+
+				#talentChoiceDarkTalonsReapersOnslaught {
+					grid-area: dtro;
+					#talentDarkTalons {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_shoulder_93.jpg");
+					}
+					#talentReapersOnslaught {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_demonhunter_soulcleave2.jpg");
+					}
+				}
+
+				#talentChoiceDeathsMessengerExpellingShield {
+					grid-area: dmes;
+					#talentDeathsMessenger {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_argus_deathfog.jpg");
+					}
+					#talentExpellingShield {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_antimagicshell.jpg");
+					}
+				}
+
+				#talentEchoingFury {
+					grid-area: ef;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_fire_blueflamebreath.jpg");
+				}
+
+				#talentExterminate {
+					grid-area: ex;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_polearm_2h_titanargus_d_01.jpg");
+				}
+			}
+
+			#sanLaynHeroTalents {
+				grid-area: hero2;
+				grid-template-areas:
+				". vs vs ."
+				"ntvs bsgd vabf tb"
+				"is fb bl vis"
+				"i it pslss t"
+				". gsl gsl .";
+
+				#talentVampiricStrike {
+					grid-area: vs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_ability_sanlayndeathknight_vampiricstrike.jpg");
+				}
+
+				#talentChoiceNewlyTunedVampiricSpeed {
+					grid-area: ntvs;
+					#talentNewlyTuned {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_hemorrhagicfever.jpg");
+					}
+					#talentVampiricSpeed {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_boots_cloth_34v2.jpg");
+					}
+				}
+
+				#talentChoiceBlood-SoakedGroundDesecrate {
+					grid-area: bsgd;
+					#talentBlood-SoakedGround {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_ironmaidens_corruptedblood.jpg");
+					}
+					#talentDesecrate {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/sha_ability_rogue_bloodyeye_nightmare.jpg");
+					}
+				}
+
+				#talentChoiceVampiricAuraBloodyFotitude {
+					grid-area: vabf;
+					#talentVampiricAura {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_rogue_vendetta.jpg");
+					}
+					#talentBloodyFotitude {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_intensifyrage.jpg");
+					}
+				}
+
+				#talentThrillOfBlood {
+					grid-area: tb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_nzinsanity_bloodthirst.jpg");
+				}
+
+				#talentInflictionOfSorrow {
+					grid-area: is;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_bloodbath.jpg");
+				}
+
+				#talentFrenziedBloodthirst {
+					grid-area: fb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_sulfurelemental_blood.jpg");
+				}
+
+				#talentTheBloodIsLife {
+					grid-area: bl;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_nazmir_boss_bloodofghuun.jpg");
+				}
+
+				#talentVisceralStrength {
+					grid-area: vis;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_ragnaros_heart.jpg");
+				}
+
+				#talentInevitable {
+					grid-area: i;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_warlock_demonsoul.jpg");/*Not to be confused with sha_spell_warlock_demonsoul used by deathbringer, that one is lightblue, this one is purple*/
+				}
+
+				#talentInciteTerror {
+					grid-area: it;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warlock_improveddemonictactics.jpg");
+				}
+
+				#talentChoicePactOfTheSanLaynSanguineScent {
+					grid-area: pslss;
+					#talentPactOfTheSanLayn {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_bloodnova.jpg");
+					}
+					#talentSanguineScent {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_roilingblood.jpg");
+					}
+				}
+
+				#talentTransfusion {
+					grid-area: t;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_artifact_bloodoftheassassinated.jpg");
+				}
+
+				#talentGiftOfTheSanLayn {
+					grid-area: gsl;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_bloodtap.jpg");
+				}
+			}
+
+			#riderOfTheApocalypseHeroTalents {
+				grid-area: hero3;
+				grid-template-areas:
+					". rc rc ."
+					"phdc mm hapa rd"
+					"wf nc tif ltr"
+					"ht fhfs mam ua"
+					". an an .";
+				
+				#talentRidersChampion {
+					grid-area: rc;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_zone_icecrown_01.jpg");
+				}
+
+				#talentChoiceOnAPalerHorseDeathCharge {
+					grid-area: phdc;
+					#talentOnAPalerHorse {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_skeletalwarhorse_01_purple.jpg");
+					}
+					#talentDeathCharge {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_mount_steelwarhorse.jpg");
+					}
+				}
+
+				#talentMograinesMight {
+					grid-area: mm;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warlock_improvedsoulleech.jpg");
+				}
+
+				#talentChoiceHorsemensAidPactOfTheApocalypse {
+					grid-area: hapa;
+					#talentHorsemensAid {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_dungeon_nexusraid_10man.jpg");
+					}
+					#talentPactOfTheApocalypse {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_dungeon_nexus80_25man.jpg");
+					}
+				}
+
+				#talentRideOrDie {
+					grid-area: rd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_boss_fourhorsemen.jpg");
+				}
+
+				#talentWhitemanesFamine {
+					grid-area: wf;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_necroticplague.jpg");
+				}
+
+				#talentNazgrimsConquest {
+					grid-area: nc;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_maldraxxus_warriorplantbanner.jpg");
+				}
+
+				#talentTrollbanesIceFury {
+					grid-area: tif;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_shatteringthrow.jpg");
+				}
+
+				#talentLetTerrorReign {
+					grid-area: ltr;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_plaguestrike.jpg");
+				}
+
+				#talentHungeringThirst {
+					grid-area: ht;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_fumble.jpg");
+				}
+
+				#talentChoiceFuryOfTheHorsemenAFeastOfSouls {
+					grid-area: fhfs;
+					#talentFuryOfTheHorsemen {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_plate_raiddeathknightmythic_o_01helm.jpg");
+					}
+					#talentAFeastOfSouls {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_misc_supersoulash.jpg");
+					}
+				}
+
+				#talentMawswornMenace {
+					grid-area: mam;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_mawguardpet_black.jpg");
+				}
+
+				#talentUnholyArmaments {
+					grid-area: ua;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_necroticstrike.jpg");
+				}
+
+				#talentApocalypseNow {
+					grid-area: an;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_ability_rideroftheapocalypsedeathknight_apocalypsenow.jpg");
+				}
+			}
+
+			#bdkTalents {
+				grid-area: spec;
+				grid-template-columns: repeat(7, 1fr);
+				grid-template-rows: repeat(10, auto);
+				grid-template-areas:
+					". . . hs . . ."
+					". . mr . bb . ."
+					". . vb . bc . ."
+					". os ivb . ihs rib ."
+					"ls hb fb drw he peb bw"
+					". ggal ibs ib dr rd ."
+					"bp . lb eb vo . bf"
+					". pi br ih blb co ."
+					". bm sg bs cs rt ."
+					". sb pt . cn ue .";
+
+				#talentHeartStrike {
+					grid-area: hs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_40.jpg");
+				}
+
+				#talentMarrowrend {
+					grid-area: mr;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_marrowrend.jpg");
+				}
+
+				#talentBloodBoil {
+					grid-area: bb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_bloodboil.jpg");
+				}
+
+				#talentVampiricBlood {
+					grid-area: vb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg");
+				}
+
+				#talentBoneCollector {
+					grid-area: bc;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_boneshield.jpg");
+				}
+
+				#talentOssuary {
+					grid-area: os;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_brittlebones.jpg");
+				}
+
+				#talentNodesImprovedVampiricBlood {
+					grid-area: ivb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg");
+				}
+
+				#talentNodesImprovedHeartStrike {
+					grid-area: ihs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_40.jpg");
+				}
+
+				#talentRelishInBlood {
+					grid-area: rib;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_roilingblood.jpg");
+				}
+
+				#talentLeechingStrike {
+					grid-area: ls;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathwing_bloodcorruption_death.jpg");
+				}
+
+				#talentHeartbreaker {
+					grid-area: hb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_deathstrike.jpg");/*Not at all the death strike icon*/
+				}
+
+				#talentFoulBulwark {
+					grid-area: fb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_armor_shield_naxxramas_d_02.jpg");
+				}
+
+				#talentDancingRuneWeapon {
+					grid-area: drw;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_sword_07.jpg");
+				}
+
+				#talentHemostasis {
+					grid-area: he;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathwing_bloodcorruption_earth.jpg");
+				}
+
+				#talentPerseveranceOfTheEbonBlade {
+					grid-area: peb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_sanguinfortitude.jpg");/*spelling error, missing e*/
+				}
+
+				#talentBloodworms {
+					grid-area: bw;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_soulleech.jpg");
+				}
+
+				#talentChoiceGorefiendsGraspAbominationLimb {
+					grid-area: ggal;
+					#talentGorfiendsGrasp {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_aoedeathgrip.jpg");/*Quite accurate*/
+					}
+					#talentAbominationLimb {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_maldraxxus_deathknight.jpg");
+					}
+				}
+
+				#talentImprovedBoneShield {
+					grid-area: ibs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_marrowrend.jpg");
+				}
+
+				#talentInsatiableBlade {
+					grid-area: ib;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/70_inscription_vantus_rune_nightmare.jpg");
+				}
+
+				#talentDeadlyReach {
+					grid-area: dr;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv12_ability_deathknight_cleavingdeathstrikes.jpg");/*Very new talent, apparently new icon too, very descriptive*/
+				}
+
+				#talentRapidDecomposition {
+					grid-area: rd;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_deathsiphon2.jpg");
+				}
+
+				#talentBoilingPoint {
+					grid-area: bp;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/warlock_pvp_endlessaffliction.jpg");
+				}
+
+				#talentLifeblood {
+					grid-area: lb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_10_elementalcombinedfoozles_blood.jpg");
+				}
+
+				#talentEverlastingBond {
+					grid-area: eb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_sword_07.jpg");
+				}
+
+				#talentVoracious {
+					grid-area: vo;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_ironmaidens_whirlofblood.jpg");/*Iron maidens third icon so far across al dk talents*/
+				}
+
+				#talentBloodFeast {
+					grid-area: bf;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_vendetta.jpg");
+				}
+
+				#talentPlagueInfusion {
+					grid-area: pi;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_yorsahj_bloodboil_blue.jpg");
+				}
+
+				#talentBloodyReflection {
+					grid-area: br;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warrior_bloodbath.jpg");
+				}
+
+				#talentIronHeart {
+					grid-area: ih;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_ragnaros_heart.jpg");
+				}
+
+				#talentBloodiedBlade {
+					grid-area: blb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_sword_2h_ebonblade_b_01_red.jpg");
+				}
+
+				#talentCoagulopathy {
+					grid-area: co;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_skeer_bloodletting.jpg");
+				}
+
+				#talentBloodMist {
+					grid-area: bm;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_revendreth_deathknight.jpg");
+				}
+
+				#talentSanguineGround {
+					grid-area: sg;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_artifact_corruptedbloodofzakajz.jpg");
+				}
+
+				#talentBloodShot {
+					grid-area: bs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_warlock_baneofhavoc.jpg");
+				}
+
+				#talentConsumption {
+					grid-area: cs;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_axe_2h_artifactmaw_d_01.jpg");
+				}
+
+				#talentRedThirst {
+					grid-area: rt;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_deathknight_bloodpresence.jpg");
+				}
+
+				#talentSanguinaryBurst {
+					grid-area: sb;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_animarevendreth_groundstate.jpg");
+				}
+
+				#talentPurgatory {
+					grid-area: pt;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_misc_shadowegg.jpg");
+				}
+
+				#talentCarnage {
+					grid-area: cn;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/sha_ability_warrior_bloodnova_nightmare.jpg");
+				}
+
+				#talentUmbilicusEternus {
+					grid-area: ue;
+					background-image: url("https://wow.zamimg.com/images/wow/icons/large/artifactability_blooddeathknight_umbilicuseternus.jpg");/*Wow, properly named*/
+				}
+			}
+		}
+	}
+}

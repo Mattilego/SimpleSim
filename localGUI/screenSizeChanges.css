@@ -1,0 +1,56 @@
+@media screen and (min-width: 450px) {
+	#characterStatsContainer {
+		#talents {
+			.classTalentGroups {
+				.heroTalentContainers {
+					flex-direction: row;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 600px) {
+	#specConfigurationContainer {
+		grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
+		grid-template-areas:
+		". bdk fdk udk vdh hdh ddh ."
+		". de ae pe bmh mmh sh ."
+		". am fim frm bmm mwm wwm ."
+		". hp pp rp dp hpr sp ."
+		". ar or sr els ens rs ."
+		". al deml desl aw fw pw ."
+		". . bd fd rd bod . ."
+	}
+	
+	#characterStatsContainer {
+		#talents {
+			.classTalentGroups {
+				grid-template-columns: repeat(2, auto);
+				grid-template-rows: repeat(2, auto);
+				grid-template-areas:
+					"class spec"
+					"hero hero";
+				.heroTalentContainers {
+					flex-direction: row;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 800px) {
+	#characterStatsContainer {
+		#talents {
+			.classTalentGroups {
+				grid-template-columns: repeat(3, auto);
+				grid-template-rows: repeat(1, auto);
+				grid-template-areas:
+					"class hero spec";
+				.heroTalentContainers {
+					flex-direction: column;
+				}
+			}
+		}
+	}
+}

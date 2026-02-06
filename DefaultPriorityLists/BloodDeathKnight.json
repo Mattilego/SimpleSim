@@ -68,19 +68,25 @@
 					"scale": "GCD"
 				},
 				{
-					"type": "buff",
-					"id": "Bone Shield",
-					"check": "stacks",
-					"comparison": "<",
-					"value": 5
+					"type": "<",
+					"value1":{
+						"type": "buff",
+						"id": "Bone Shield",
+						"check": "stacks"
+					},
+					"value2": 5,
+					"conditions": []
 				},
 				{
-					"type": "buff",
-					"id": "Exterminate",
-					"check": "duration",
-					"comparison": "<",
-					"value": 4,
-					"scale": "GCD"
+					"type": "<",
+					"value1":{
+						"type": "buff",
+						"id": "Exterminate",
+						"check": "duration",
+						"scale": "GCD"
+					},
+					"value2": 4,
+					"conditions": []
 				},
 				{
 					"type": "and",

@@ -2,13 +2,16 @@ const express = require("express");
 const path = require("path");
 const app = express();
 
-// Specific route for index.html to serve GUI.html
-app.get('/index.html', (req, res) => {
-	res.sendFile(path.join(__dirname, 'localGUI', 'GUI.html'));
+app.get('/GUImain.js', (req, res) => {
+	res.sendFile(path.join(__dirname, 'webpage', 'webPageMain.js'));
 });
 
-app.get('/style.css', (req, res) => {
-	res.sendFile(path.join(__dirname, 'localGUI', 'style.css'));
+app.get('/blockly/*', (req, res) => {
+  res.sendFile(path.join(__dirname, 'node_modules', 'blockly', req.params[0]));
+});
+
+app.get('/*', (req, res) => {
+	res.sendFile(path.join(__dirname, 'localGUI', req.params[0]));
 });
 
 // Root route to serve GUI.html
