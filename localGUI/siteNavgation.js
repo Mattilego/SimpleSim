@@ -63,4 +63,15 @@ function updateTalentVisibility() {
 	}
 }
 
+document.querySelectorAll(".positiveIntegerInput").forEach(input => {
+	input.addEventListener("change", function(e) {
+		console.log(e.target.value);
+		e.target.value = Math.floor(e.target.value);
+		console.log(e.target.value);
+		if (typeof(e.target.value) !== "number" || e.target.value < 1) {
+			e.target.value = 1;
+		}
+	});
+});
+
 updateTalentVisibility();

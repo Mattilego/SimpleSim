@@ -1,5 +1,6 @@
 @media screen and (min-width: 450px) {
 	#characterStatsContainer {
+		max-height: 1350px;
 		#talents {
 			.classTalentGroups {
 				.heroTalentContainers {
@@ -24,6 +25,10 @@
 	}
 	
 	#characterStatsContainer {
+		max-height: 890px;
+		#statInputs {
+			grid-template-columns: repeat(4, auto);
+		}
 		#talents {
 			.classTalentGroups {
 				grid-template-columns: repeat(2, auto);
@@ -41,6 +46,7 @@
 
 @media screen and (min-width: 800px) {
 	#characterStatsContainer {
+		max-height: 620px;
 		#talents {
 			.classTalentGroups {
 				grid-template-columns: repeat(3, auto);
