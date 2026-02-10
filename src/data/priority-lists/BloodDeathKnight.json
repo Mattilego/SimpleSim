@@ -1,0 +1,230 @@
+[
+	{
+		"ability": "Death Strike",
+		"conditions": [{
+			"type": "or",
+			"conditions": [
+				{
+					"type": "resource",
+					"id": "runicPower",
+					"check": "value",
+					"comparison": ">",
+					"value": 70
+				},
+				{
+					"type": "resource",
+					"id": "playerHealth",
+					"check": "percentage",
+					"comparison": "<",
+					"value": 70
+				}
+			]
+		}]
+	},
+	{
+		"ability": "Reaper's Mark",
+		"conditions": [{
+			"type": "not",
+			"conditions": [{
+				"type": "buff",
+				"id": "Dancing Rune Weapon",
+				"check": "exists"
+			}]
+		}]
+	},
+	{
+		"ability": "Dancing Rune Weapon",
+		"conditions":[{
+			"type": "not",
+			"conditions": [{
+				"type": "or",
+				"conditions": [
+					{
+						"type": "debuff",
+						"target": "any",
+						"id": "Reaper's Mark",
+						"check": "exists"
+					},
+					{
+						"type": "buff",
+						"id": "Exterminate",
+						"check": "exists"
+					}
+				]
+			}]
+		}]
+	},
+	{
+		"ability": "Marrowrend",
+		"conditions": [{
+			"type": "or",
+			"conditions": [
+				{
+					"type": "buff",
+					"id": "Bone Shield",
+					"check": "duration",
+					"comparison": "<",
+					"value": 4,
+					"scale": "GCD"
+				},
+				{
+					"type": "<",
+					"value1":{
+						"type": "buff",
+						"id": "Bone Shield",
+						"check": "stacks"
+					},
+					"value2": 5,
+					"conditions": []
+				},
+				{
+					"type": "<",
+					"value1":{
+						"type": "buff",
+						"id": "Exterminate",
+						"check": "duration",
+						"scale": "GCD"
+					},
+					"value2": 4,
+					"conditions": []
+				},
+				{
+					"type": "and",
+					"conditions": [
+						{
+							"type": "buff",
+							"id": "Exterminate",
+							"check": "exists"
+						},
+						{
+							"type": "ability",
+							"id": "Dancing Rune Weapon",
+							"check": "cooldown",
+							"comparison": "<",
+							"value": 4,
+							"scale": "GCD"
+						}
+					]
+				},
+				{
+					"type": "and",
+					"conditions": [
+						{
+							"type": "buff",
+							"id": "Exterminate",
+							"check": "stacks",
+							"comparison": "=",
+							"value": 2
+						},
+						{
+							"type": "ability",
+							"id": "Dancing Rune Weapon",
+							"check": "cooldown",
+							"comparison": "<",
+							"value": 6,
+							"scale": "GCD"
+						}
+					]
+				},
+				{
+					"type": "and",
+					"conditions": [
+						{
+							"type": "buff",
+							"id": "Exterminate",
+							"check": "stacks",
+							"comparison": "=",
+							"value": 2
+						},
+						{
+							"type": "buff",
+							"id": "Exterminate",
+							"check": "duration",
+							"comparison": "<",
+							"value": 6,
+							"scale": "GCD"
+						}
+					]
+				}
+			]
+		}]
+	},
+	{
+		"ability": "Death and Decay",
+		"conditions": [{
+			"type": "not",
+			"conditions": [{
+				"type": "buff",
+				"id": "Death and Decay",
+				"check": "exists"
+			}]
+		}]
+	},
+	{
+		"ability": "Blood Boil",
+		"conditions": [{
+			"type": "or",
+			"conditions": [
+				{
+					"type": "debuff",
+					"target": "any",
+					"id": "Blood Plague",
+					"check": "duration",
+					"comparison": "<",
+					"value": 3,
+					"scale": "GCD"
+				},
+				{
+					"type": "ability",
+					"id": "Blood Boil",
+					"check": "charges",
+					"comparison": ">=",
+					"value": 1.6
+				},
+				{
+					"type": "buff",
+					"id": "Boiling Point Proc",
+					"check": "exists"
+				}
+			]
+	    }]
+	},
+	{
+		"ability": "Consumption",
+		"conditions": [{
+			"type": "and",
+			"conditions": [
+				{
+					"type": "not",
+					"conditions": [{
+						"type": "buff",
+						"id": "Dancing Rune Weapon",
+						"check": "exists"
+					}]
+				},
+				{
+					"type": "or",
+					"conditions": [
+						{
+							"type": "debuff",
+							"target": "any",
+							"id": "Blood Plague",
+							"check": "duration",
+							"comparison": ">",
+							"value": 11,
+							"scale": "none"
+						},
+						{
+							"type": "buff",
+							"id": "Boiling Point Echo",
+							"check": "duration",
+							"comparison": "<",
+							"value": 2,
+							"scale": "GCD"
+						}
+					]
+				}
+			]
+		}]
+	}
+]

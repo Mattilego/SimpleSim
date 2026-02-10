@@ -4,33 +4,6 @@
 	// For more information, visit: https://go.microsoft.com/fwlink/?linkid=830387
 	"version": "0.2.0",
 	"configurations": [
-		{
-			"name": "Build and start Electron",
-			"type": "node",
-			"request": "launch",
-			"cwd": "${workspaceFolder}",
-			"runtimeArgs": [ "--nolazy" ],
-			"program": "${workspaceFolder}/node_modules/npm/bin/npm-cli.js",
-			"args": [ "run", "build" ],
-			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen",
-			"preLaunchTask": "build",
-			"postDebugTask": "start"
-		},
-		{
-			"name": "Start Electron",
-			"type": "node",
-			"request": "launch",
-			"cwd": "${workspaceFolder}",
-			"runtimeExecutable": "npm",
-			"runtimeArgs": [ "run", "start" ],
-			"protocol": "inspector",
-			"console": "integratedTerminal",
-			"internalConsoleOptions": "neverOpen",
-			"skipFiles": [
-				"<node_internals>/**"
-			]
-		}
 
 	]
 }

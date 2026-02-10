@@ -1,3 +1,6 @@
+/*!******************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/style.css ***!
+  \******************************************************************************/
 * {
 	box-sizing: border-box;
 }
@@ -1111,5 +1114,138 @@ section {
 				}
 			}
 		}
+	}
+}
+/*!******************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/screenSizeChanges.css ***!
+  \******************************************************************************************/
+@media screen and (min-width: 450px) {
+	#characterStatsContainer {
+		max-height: 1350px;
+		#talents {
+			.classTalentGroups {
+				.heroTalentContainers {
+					flex-direction: row;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 600px) {
+	#specConfigurationContainer {
+		grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
+		grid-template-areas:
+		". bdk fdk udk vdh hdh ddh ."
+		". de ae pe bmh mmh sh ."
+		". am fim frm bmm mwm wwm ."
+		". hp pp rp dp hpr sp ."
+		". ar or sr els ens rs ."
+		". al deml desl aw fw pw ."
+		". . bd fd rd bod . ."
+	}
+	
+	#characterStatsContainer {
+		max-height: 890px;
+		#statInputs {
+			grid-template-columns: repeat(4, auto);
+		}
+		#talents {
+			.classTalentGroups {
+				grid-template-columns: repeat(2, auto);
+				grid-template-rows: repeat(2, auto);
+				grid-template-areas:
+					"class spec"
+					"hero hero";
+				.heroTalentContainers {
+					flex-direction: row;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 800px) {
+	#characterStatsContainer {
+		max-height: 620px;
+		#talents {
+			.classTalentGroups {
+				grid-template-columns: repeat(3, auto);
+				grid-template-rows: repeat(1, auto);
+				grid-template-areas:
+					"class hero spec";
+				.heroTalentContainers {
+					flex-direction: column;
+				}
+			}
+		}
+	}
+}
+/*!*********************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/tooltips.css ***!
+  \*********************************************************************************/
+/* Tooltip styles */
+* {
+	[data-tooltip] {
+		position: relative;
+		cursor: help;
+	}
+
+	[data-tooltip]:hover::before,
+	[data-tooltip]:hover::after {
+		opacity: 1;
+		visibility: visible;
+		transition: opacity 0.3s ease, visibility 0.3s ease;
+	}
+
+	[data-tooltip]::before {
+		content: attr(data-tooltip);
+		position: absolute;
+		bottom: 125%;
+		left: 50%;
+		transform: translateX(-50%);
+		background-color: #333;
+		color: #fff;
+		padding: 6px 12px;
+		border-radius: 4px;
+		font-size: 14px;
+		white-space: nowrap;
+		opacity: 0;
+		visibility: hidden;
+		z-index: 1000;
+		pointer-events: none;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+	}
+
+	[data-tooltip]::after {
+		content: '';
+		position: absolute;
+		bottom: 115%;
+		left: 50%;
+		transform: translateX(-50%);
+		border: 5px solid transparent;
+		border-top-color: #333;
+		opacity: 0;
+		visibility: hidden;
+		z-index: 1000;
+		pointer-events: none;
+	}
+
+	/* Alternative positioning for tooltips near edges */
+	[data-tooltip][data-tooltip-position="top"]::before {
+		bottom: 125%;
+		top: auto;
+	}
+
+	[data-tooltip][data-tooltip-position="bottom"]::before {
+		bottom: auto;
+		top: 125%;
+	}
+
+	[data-tooltip][data-tooltip-position="bottom"]::after {
+		bottom: auto;
+		top: 115%;
+		border-top-color: transparent;
+		border-bottom-color: #333;
 	}
 }

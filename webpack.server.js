@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   target: 'node',
   entry: './src/server/server.js',
   output: {
@@ -24,6 +25,13 @@ module.exports = {
           options: {
             presets: ['@babel/preset-env']
           }
+        }
+      },
+      {
+        test: /\.json$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'data/[name][ext]'
         }
       }
     ]

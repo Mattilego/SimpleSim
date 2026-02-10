@@ -1,4 +1,5 @@
 const { app, ipcMain, BrowserWindow } = require("electron");
+const path = require("path");
 
 console.log("Are these imported properly?", app, ipcMain, BrowserWindow);
 
@@ -10,5 +11,5 @@ app.on('ready', () => {
     }
   });
 
-  win.loadFile('localGUI/GUI.html');
+  win.loadFile(path.join(__dirname, '../renderer/index.html'));
 });

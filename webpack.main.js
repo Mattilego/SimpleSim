@@ -1,6 +1,7 @@
 const path = require('path');
 
 module.exports = {
+  mode: 'development',
   target: 'electron-main',
   entry: './src/main/electron.js',
   output: {
@@ -27,6 +28,13 @@ module.exports = {
           options: {
             presets: ['@babel/preset-env']
           }
+        }
+      },
+      {
+        test: /\.json$/,
+        type: 'asset/resource',
+        generator: {
+          filename: 'data/[name][ext]'
         }
       }
     ]
