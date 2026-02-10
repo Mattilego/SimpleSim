@@ -353,8 +353,28 @@
 		</div>
 
 		<div id="fightSettingsContainer">
-			<label for="fightDurationInput">Fight Duration: </label>
-			<input type="number" id="fightDurationInput" value="10" min="1" step="1">
+			<label for="endFightOnEnemyDeathInput">End fight on enemy death: </label>
+			<input type="checkbox" id="endFightOnEnemyDeathInput">
+			<label for="endFightOnPlayerDeathInput">End fight on player death: </label>
+			<input type="checkbox" id="endFightOnPlayerDeathInput">
+			<label for="fightDurationInput">Fight Duration (minutes): </label>
+			<input type="number" id="fightDurationInput" value="5" min="1" step="1" class="positiveIntegerInput">
+			<label for="useBLInput">Use Bloodlust: </label>
+			<input type="checkbox" id="useBLInput">
+			<label for="BLTimingInput">Bloodlust Timing: </label>
+			<input type="number" id="BLTimingInput" value="0" min="1" step="1">
+			<label for="usePotionInput">Use Potion: </label>
+			<input type="checkbox" id="usePotionInput">
+			<label for="potionStatInput">Potion Stat: </label>
+			<select name="potionStat" id="potionStatInput">
+				<option value="crit"></option>
+				<option value="haste"></option>
+				<option value="mastery"></option>
+				<option value="versatility"></option>
+				<option value="all"></option>
+			</select>
+			<label for="potionDurationInput">Potion Duration: </label>
+			<input type="number" id="potionDurationInput" value="15" min="1" step="1">
 		</div>
 
 	</section>

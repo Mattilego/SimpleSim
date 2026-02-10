@@ -7,11 +7,11 @@ app.get('/blockly/*', (req, res) => {
 });
 
 app.get('/', (req, res) => {
-	res.sendFile(path.join(__dirname, 'localGUI', 'GUI.html'));
+	res.sendFile(path.join(__dirname, 'GUI', 'GUI.html'));
 });
 
 app.get('/*', (req, res) => {
-	res.sendFile(path.join(__dirname, 'localGUI', req.params[0]));
+	res.sendFile(path.join(__dirname, 'GUI', req.params[0]));
 });
 
 // Serve static files from localGUI directory
@@ -20,4 +20,3 @@ app.use(express.static(path.join(__dirname, 'webPage')));
 app.listen(3000, () => {
 	console.log("Server started on port 3000");
 });
-

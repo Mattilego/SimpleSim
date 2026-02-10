@@ -5,26 +5,31 @@
 	"version": "0.2.0",
 	"configurations": [
 		{
-			"type": "firefox",
+			"name": "Build and start Electron",
+			"type": "node",
 			"request": "launch",
-			"reAttach": true,
-			"name": "Test index.html",
-			"file": "${workspaceFolder}/webPage/index.html"
+			"cwd": "${workspaceFolder}",
+			"runtimeArgs": [ "--nolazy" ],
+			"program": "${workspaceFolder}/node_modules/npm/bin/npm-cli.js",
+			"args": [ "run", "build" ],
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
+			"preLaunchTask": "build",
+			"postDebugTask": "start"
 		},
 		{
-			"name": "Start server",
-			"program": "${workspaceFolder}/Server.js",
+			"name": "Start Electron",
+			"type": "node",
 			"request": "launch",
+			"cwd": "${workspaceFolder}",
+			"runtimeExecutable": "npm",
+			"runtimeArgs": [ "run", "start" ],
+			"protocol": "inspector",
+			"console": "integratedTerminal",
+			"internalConsoleOptions": "neverOpen",
 			"skipFiles": [
 				"<node_internals>/**"
-			],
-			"type": "node"
-		},
-		{
-			"command": "npm start",
-			"name": "Run npm start",
-			"request": "launch",
-			"type": "node-terminal"
+			]
 		}
 
 	]
