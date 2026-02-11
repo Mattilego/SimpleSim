@@ -1,5 +1,7 @@
 This is a lightweight tool to simualte world of warcraft characters, similar to Simulationcraft / Raidbots.
 
+You can check out the web version here: [Github pages for SimpleSim](https://mattilego.github.io/SimpleSim/dist/renderer/)
+
 It will prioritize support for blood death knight because it's my main spec, feel free to add others though :).
 
 This aims to be a simple and lightweight tool, so it will not have as many features as Simulationcraft / Raidbots, but will try to support the most common features.
