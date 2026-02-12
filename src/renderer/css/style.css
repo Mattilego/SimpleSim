@@ -59,7 +59,9 @@ section {
 	gap: 10px;
 
 	label {
-		display: none;
+		width:0px;
+		height:0px;
+		overflow:hidden;
 	}
 
 	input {
@@ -317,7 +319,9 @@ section {
 				padding: 5px;
 				border-radius: 4px;
 				label {
-					display: none;
+					width:0px;
+					height:0px;
+					overflow:hidden;
 				}
 				input {
 					appearance: none;
