@@ -11,7 +11,7 @@
 	}
 }
 
-@media screen and (min-width: 600px) {
+@media screen and (min-width: 650px) {
 	#specConfigurationContainer {
 		grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
 		grid-template-areas:
@@ -44,7 +44,7 @@
 	}
 }
 
-@media screen and (min-width: 800px) {
+@media screen and (min-width: 850px) {
 	#characterStatsContainer {
 		max-height: 620px;
 		#talents {
