@@ -23,6 +23,13 @@
 						}
 					}
 				}
+				.heroTalents {
+					.heroTalentHeader {
+						input {
+							width: 30px;
+						}
+					}
+				}
 			}
 		}
 
