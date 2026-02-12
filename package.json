@@ -6,8 +6,8 @@
   "scripts": {
     "electron": "electron dist/main/electron.js",
     "server": "node dist/server/server.js",
-    "build": "webpack --config webpack.main.js && webpack --config webpack.renderer.js && webpack --config webpack.server.js && webpack --config webpack.preload.js",
-    "dev:electron": "concurrently \"webpack --config webpack.main.js --watch\" \"webpack --config webpack.renderer.js --watch\" \"webpack --config webpack.preload.js --watch\" \"wait-on dist/main/electron.js && electron dist/main/electron.js\"",
+    "build": "webpack --config webpack.main.js && webpack --config webpack.renderer.js && webpack --config webpack.server.js",
+    "dev:electron": "concurrently \"webpack --config webpack.main.js --watch\" \"webpack --config webpack.renderer.js --watch\" \"wait-on dist/main/electron.js && electron dist/main/electron.js\"",
     "dev:server": "concurrently \"webpack --config webpack.server.js --watch\" \"webpack --config webpack.renderer.js --watch\" \"nodemon dist/server/server.js\""
   },
   "repository": {
