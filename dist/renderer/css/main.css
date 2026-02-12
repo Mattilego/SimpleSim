@@ -319,6 +319,9 @@ section {
 				background-color: #888;
 				padding: 5px;
 				border-radius: 4px;
+				label {
+					display: none;
+				}
 				input {
 					appearance: none;
 					width: 30px;
