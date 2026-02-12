@@ -332,11 +332,24 @@ section {
 
 				div {
 					display: flex;
-					flex-direction: column;
+					flex-direction: row;
 					justify-content: center;
 					align-items: center;
 					input {
 						margin: 0px;
+						width: 20px;
+					}
+				
+					.sharedTalentNodeLeft {
+						border-top-right-radius: 0px;
+						border-bottom-right-radius: 0px;
+						border-right-width: 2px;
+					}
+					.sharedTalentNodeRight {
+						border-top-left-radius: 0px;
+						border-bottom-left-radius: 0px;
+						border-left-width: 2px;
+						background-position: right;
 					}
 				}
 			}
@@ -349,8 +362,20 @@ section {
 				margin: 0px;
 				.heroTalents {
 					grid-template-columns: repeat(4, 1fr);
-					grid-template-rows: repeat(5, auto);
+					grid-template-rows: repeat(6, auto);
 					max-width: 400px;
+					.heroTalentHeader {
+						grid-area: head;
+						display: flex;
+						flex-direction: row;
+						gap: 10px;
+						input {
+							background-color: #000;
+						}
+						input:checked {
+							background-color: #0a0
+						}
+					}
 				}
 			}
 		}
@@ -414,7 +439,9 @@ section {
 
 				#talentNodesGloomWard {
 					grid-area: gw;
-					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_rogue_envelopingshadows.jpg");
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_rogue_envelopingshadows.jpg");
+					}
 				}
 
 				#talentChoiceMoDWW {
@@ -429,7 +456,9 @@ section {
 
 				#talentNodesUnholyMomentum {
 					grid-area: um;
-					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_necro_deathrift.jpg");
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_necro_deathrift.jpg");
+					}
 				}
 
 				#talentControlUndead {
@@ -569,7 +598,9 @@ section {
 
 				#talentNodesRuneMastery {
 					grid-area: rm;
-					background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_hungeringruneblade.jpg");
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/ability_deathknight_hungeringruneblade.jpg");
+					}
 				}
 
 				#talentSubduingGrasp {
@@ -579,7 +610,9 @@ section {
 
 				#talentNodesWillOfTheNecropolis {
 					grid-area: wotn;
-					background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_boss_kelthuzad_01.jpg");
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/achievement_boss_kelthuzad_01.jpg");
+					}
 				}
 
 				#talentNullMagic {
@@ -606,6 +639,7 @@ section {
 			#deathbringerHeroTalents {
 				grid-area: hero1;
 				grid-template-areas:
+					"head head head head"
 					". rm rm ."
 					"ws wa bd fr"
 					"sr gr pdrcp db"
@@ -940,12 +974,16 @@ section {
 
 				#talentNodesImprovedVampiricBlood {
 					grid-area: ivb;
-					background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg");
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/spell_shadow_lifedrain.jpg");
+					}
 				}
 
 				#talentNodesImprovedHeartStrike {
 					grid-area: ihs;
-					background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_40.jpg");
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv_weapon_shortblade_40.jpg");
+					}
 				}
 
 				#talentRelishInBlood {

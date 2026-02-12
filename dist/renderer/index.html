@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
 	<meta charset="UTF-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
-	<title>Document</title>
+	<title>Sinple Sim</title>
 <script defer src="bundle.js"></script><link href="css/main.css" rel="stylesheet"></head>
+
 <body>
 	<nav>
 		<h1>SimpleSim</h1>
@@ -16,85 +18,125 @@
 		</div>
 		<div id="specConfigurationContainer">
 
-			<input type="radio" name="spec" id="bloodDK" value="bloodDK" checked class="specRadio dkspec" data-tooltip="Blood Death Knight">
+			<input type="radio" name="spec" id="bloodDK" value="bloodDK" class="specRadio dkspec"
+				data-tooltip="Blood Death Knight" checked>
 
-			<input type="radio" name="spec" id="frostDK" value="frostDK" class="specRadio dkspec" data-tooltip="Frost Death Knight">
+			<input type="radio" name="spec" id="frostDK" value="frostDK" class="specRadio dkspec"
+				data-tooltip="Frost Death Knight">
 
-			<input type="radio" name="spec" id="unholyDK" value="unholyDK" class="specRadio dkspec" data-tooltip="Unholy Death Knight">
+			<input type="radio" name="spec" id="unholyDK" value="unholyDK" class="specRadio dkspec"
+				data-tooltip="Unholy Death Knight">
 
-			<input type="radio" name="spec" id="vengDH" value="vengDH" checked class="specRadio dhspec" data-tooltip="Vengeance Demon Hunter">
+			<input type="radio" name="spec" id="vengDH" value="vengDH" class="specRadio dhspec"
+				data-tooltip="Vengeance Demon Hunter">
 
-			<input type="radio" name="spec" id="havocDH" value="havocDH" checked class="specRadio dhspec" data-tooltip="Havoc Demon Hunter">
+			<input type="radio" name="spec" id="havocDH" value="havocDH" class="specRadio dhspec"
+				data-tooltip="Havoc Demon Hunter">
 
-			<input type="radio" name="spec" id="devourerDH" value="devourerDH" class="specRadio dhspec" data-tooltip="Devourer Demon Hunter">
+			<input type="radio" name="spec" id="devourerDH" value="devourerDH" class="specRadio dhspec"
+				data-tooltip="Devourer Demon Hunter">
 
-			<input type="radio" name="spec" id="devEvoker" value="devEvoker" checked class="specRadio evokerSpec" data-tooltip="Devastation Evoker">
+			<input type="radio" name="spec" id="devEvoker" value="devEvoker" class="specRadio evokerSpec"
+				data-tooltip="Devastation Evoker">
 
-			<input type="radio" name="spec" id="augEvoker" value="augEvoker" checked class="specRadio evokerSpec" data-tooltip="Augmenation Evoker">
+			<input type="radio" name="spec" id="augEvoker" value="augEvoker" class="specRadio evokerSpec"
+				data-tooltip="Augmenation Evoker">
 
-			<input type="radio" name="spec" id="presEvoker" value="presEvoker" checked class="specRadio evokerSpec" data-tooltip="Preservation Evoker">
+			<input type="radio" name="spec" id="presEvoker" value="presEvoker" class="specRadio evokerSpec"
+				data-tooltip="Preservation Evoker">
 
-			<input type="radio" name="spec" id="BMhunter" value="BMhunter" checked class="specRadio hunterSpec" data-tooltip="Beast Mastery Hunter">
+			<input type="radio" name="spec" id="BMhunter" value="BMhunter" class="specRadio hunterSpec"
+				data-tooltip="Beast Mastery Hunter">
 
-			<input type="radio" name="spec" id="MMhunter" value="MMhunter" checked class="specRadio hunterSpec" data-tooltip="Marksmanship Hunter">
+			<input type="radio" name="spec" id="MMhunter" value="MMhunter" class="specRadio hunterSpec"
+				data-tooltip="Marksmanship Hunter">
 
-			<input type="radio" name="spec" id="survivalHunter" value="survivalHunter" checked class="specRadio hunterSpec" data-tooltip="Survival Hunter">
+			<input type="radio" name="spec" id="survivalHunter" value="survivalHunter" class="specRadio hunterSpec"
+				data-tooltip="Survival Hunter">
 
-			<input type="radio" name="spec" id="arcaneMage" value="arcaneMage" checked class="specRadio mageSpec" data-tooltip="Arcane Mage">
+			<input type="radio" name="spec" id="arcaneMage" value="arcaneMage" class="specRadio mageSpec"
+				data-tooltip="Arcane Mage">
 
-			<input type="radio" name="spec" id="fireMage" value="fireMage" checked class="specRadio mageSpec" data-tooltip="Fire Mage">
+			<input type="radio" name="spec" id="fireMage" value="fireMage" class="specRadio mageSpec"
+				data-tooltip="Fire Mage">
 
-			<input type="radio" name="spec" id="frostMage" value="frostMage" checked class="specRadio mageSpec" data-tooltip="Frost Mage">
+			<input type="radio" name="spec" id="frostMage" value="frostMage" class="specRadio mageSpec"
+				data-tooltip="Frost Mage">
 
-			<input type="radio" name="spec" id="brewMonk" value="brewMonk" checked class="specRadio monkSpec" data-tooltip="Brewmaster Monk">
+			<input type="radio" name="spec" id="brewMonk" value="brewMonk" class="specRadio monkSpec"
+				data-tooltip="Brewmaster Monk">
 
-			<input type="radio" name="spec" id="mistMonk" value="mistMonk" checked class="specRadio monkSpec" data-tooltip="Mistweaver Monk">
+			<input type="radio" name="spec" id="mistMonk" value="mistMonk" class="specRadio monkSpec"
+				data-tooltip="Mistweaver Monk">
 
-			<input type="radio" name="spec" id="WWMonk" value="WWMonk" checked class="specRadio monkSpec" data-tooltip="Windwalker Monk">
+			<input type="radio" name="spec" id="WWMonk" value="WWMonk" class="specRadio monkSpec"
+				data-tooltip="Windwalker Monk">
 
-			<input type="radio" name="spec" id="HPaladin" value="HPaladin" checked class="specRadio paladinSpec" data-tooltip="Holy Paladin">
+			<input type="radio" name="spec" id="HPaladin" value="HPaladin" class="specRadio paladinSpec"
+				data-tooltip="Holy Paladin">
 
-			<input type="radio" name="spec" id="protPaladin" value="protPaladin" checked class="specRadio paladinSpec" data-tooltip="Protection Paladin">
+			<input type="radio" name="spec" id="protPaladin" value="protPaladin" class="specRadio paladinSpec"
+				data-tooltip="Protection Paladin">
 
-			<input type="radio" name="spec" id="retPaladin" value="retPaladin" checked class="specRadio paladinSpec" data-tooltip="Retribution Paladin">
+			<input type="radio" name="spec" id="retPaladin" value="retPaladin" class="specRadio paladinSpec"
+				data-tooltip="Retribution Paladin">
 
-			<input type="radio" name="spec" id="discPriest" value="discPriest" checked class="specRadio priestSpec" data-tooltip="Dicipline Priest">
+			<input type="radio" name="spec" id="discPriest" value="discPriest" class="specRadio priestSpec"
+				data-tooltip="Dicipline Priest">
 
-			<input type="radio" name="spec" id="holyPriest" value="holyPriest" checked class="specRadio priestSpec" data-tooltip="Holy Priest">
+			<input type="radio" name="spec" id="holyPriest" value="holyPriest" class="specRadio priestSpec"
+				data-tooltip="Holy Priest">
 
-			<input type="radio" name="spec" id="shadowPriest" value="shadowPriest" checked class="specRadio priestSpec" data-tooltip="Shadow Priest">
+			<input type="radio" name="spec" id="shadowPriest" value="shadowPriest" class="specRadio priestSpec"
+				data-tooltip="Shadow Priest">
 
-			<input type="radio" name="spec" id="assRogue" value="assRogue" checked class="specRadio rogueSpec" data-tooltip="Assassination Rogue">
+			<input type="radio" name="spec" id="assRogue" value="assRogue" class="specRadio rogueSpec"
+				data-tooltip="Assassination Rogue">
 
-			<input type="radio" name="spec" id="outlawRogue" value="outlawRogue" checked class="specRadio rogueSpec" data-tooltip="Outlaw Rogue">
+			<input type="radio" name="spec" id="outlawRogue" value="outlawRogue" class="specRadio rogueSpec"
+				data-tooltip="Outlaw Rogue">
 
-			<input type="radio" name="spec" id="subRogue" value="subRogue" checked class="specRadio rogueSpec" data-tooltip="Subtelty Rogue">
+			<input type="radio" name="spec" id="subRogue" value="subRogue" class="specRadio rogueSpec"
+				data-tooltip="Subtelty Rogue">
 
-			<input type="radio" name="spec" id="eleShaman" value="eleShaman" checked class="specRadio shamanSpec" data-tooltip="Elemental Shaman">
+			<input type="radio" name="spec" id="eleShaman" value="eleShaman" class="specRadio shamanSpec"
+				data-tooltip="Elemental Shaman">
 
-			<input type="radio" name="spec" id="enhShaman" value="enhShaman" checked class="specRadio shamanSpec" data-tooltip="Enhancement Shaman">
+			<input type="radio" name="spec" id="enhShaman" value="enhShaman" class="specRadio shamanSpec"
+				data-tooltip="Enhancement Shaman">
 
-			<input type="radio" name="spec" id="restoShaman" value="restoShaman" checked class="specRadio shamanSpec" data-tooltip="Restoration Shaman">
+			<input type="radio" name="spec" id="restoShaman" value="restoShaman" class="specRadio shamanSpec"
+				data-tooltip="Restoration Shaman">
 
-			<input type="radio" name="spec" id="affLock" value="affLock" checked class="specRadio lockSpec" data-tooltip="Affliction Warlock">
+			<input type="radio" name="spec" id="affLock" value="affLock" class="specRadio lockSpec"
+				data-tooltip="Affliction Warlock">
 
-			<input type="radio" name="spec" id="demoLock" value="demoLock" checked class="specRadio lockSpec" data-tooltip="Demonology Warlock">
+			<input type="radio" name="spec" id="demoLock" value="demoLock" class="specRadio lockSpec"
+				data-tooltip="Demonology Warlock">
 
-			<input type="radio" name="spec" id="destroLock" value="destroLock" checked class="specRadio lockSpec" data-tooltip="Destruction Warlock">
+			<input type="radio" name="spec" id="destroLock" value="destroLock" class="specRadio lockSpec"
+				data-tooltip="Destruction Warlock">
 
-			<input type="radio" name="spec" id="armsWarr" value="armsWarr" checked class="specRadio warrSpec" data-tooltip="Arms Warrior">
+			<input type="radio" name="spec" id="armsWarr" value="armsWarr" class="specRadio warrSpec"
+				data-tooltip="Arms Warrior">
 
-			<input type="radio" name="spec" id="furyWarr" value="furyWarr" checked class="specRadio warrSpec" data-tooltip="Fury Warrior">
+			<input type="radio" name="spec" id="furyWarr" value="furyWarr" class="specRadio warrSpec"
+				data-tooltip="Fury Warrior">
 
-			<input type="radio" name="spec" id="protWarr" value="protWarr" checked class="specRadio warrSpec" data-tooltip="Protection Warrior">
+			<input type="radio" name="spec" id="protWarr" value="protWarr" class="specRadio warrSpec"
+				data-tooltip="Protection Warrior">
 
-			<input type="radio" name="spec" id="bearDruid" value="bearDruid" checked class="specRadio druidSpec" data-tooltip="Bear Druid">
+			<input type="radio" name="spec" id="bearDruid" value="bearDruid" class="specRadio druidSpec"
+				data-tooltip="Guardian Druid">
 
-			<input type="radio" name="spec" id="catDruid" value="catDruid" checked class="specRadio druidSpec" data-tooltip="Feral Druid">
+			<input type="radio" name="spec" id="catDruid" value="catDruid" class="specRadio druidSpec"
+				data-tooltip="Feral Druid">
 
-			<input type="radio" name="spec" id="restoDruid" value="restoDruid" checked class="specRadio druidSpec" data-tooltip="Restoration Druid">
+			<input type="radio" name="spec" id="restoDruid" value="restoDruid" class="specRadio druidSpec"
+				data-tooltip="Restoration Druid">
 
-			<input type="radio" name="spec" id="boomyDruid" value="boomyDruid" checked class="specRadio druidSpec" data-tooltip="Balance Druid">
+			<input type="radio" name="spec" id="boomyDruid" value="boomyDruid" class="specRadio druidSpec"
+				data-tooltip="Balance Druid">
 
 		</div>
 	</section>
@@ -130,16 +172,16 @@
 						<input type="checkbox" id="talentMindFreeze" checked>
 						<input type="checkbox" id="talentBlindingSleet" checked>
 						<div id="talentNodesGloomWard">
-							<input type="checkbox" id="talentGloomWard" checked>
-							<input type="checkbox" id="talentGloomWard2" checked>
+							<input type="checkbox" id="talentGloomWard" class="sharedTalentNodeLeft" checked>
+							<input type="checkbox" id="talentGloomWard2" class="sharedTalentNodeRight" checked>
 						</div>
 						<div id="talentChoiceMoDWW">
-							<input type="radio" name="talentChoiceMoDWW" id="talentMarchOfDarkness" checked>
-							<input type="radio" name="talentChoiceMoDWW" id="talentWraithWalk">
+							<input type="radio" name="talentChoiceMoDWW" id="talentMarchOfDarkness" class="sharedTalentNodeLeft" checked>
+							<input type="radio" name="talentChoiceMoDWW" id="talentWraithWalk" class="sharedTalentNodeRight">
 						</div>
 						<div id="talentNodesUnholyMomentum">
-							<input type="checkbox" id="talentUnholyMomentum" checked>
-							<input type="checkbox" id="talentUnholyMomentum2" checked>
+							<input type="checkbox" id="talentUnholyMomentum" class="sharedTalentNodeLeft" checked>
+							<input type="checkbox" id="talentUnholyMomentum2" class="sharedTalentNodeRight" checked>
 						</div>
 						<input type="checkbox" id="talentControlUndead">
 						<input type="checkbox" id="talentEnfeeble">
@@ -157,8 +199,8 @@
 						<input type="checkbox" id="talentUnholyBond" checked>
 						<input type="checkbox" id="talentIcePrison">
 						<div id="talentChoiceAsphyxiateDeathsReach">
-							<input type="radio" name="talentChoiceAsphyxiateDeathsReach" id="talentAsphyxiate" ckecked>
-							<input type="radio" name="talentChoiceAsphyxiateDeathsReach" id="talentDeathsReach">
+							<input type="radio" name="talentChoiceAsphyxiateDeathsReach" id="talentAsphyxiate" class="sharedTalentNodeLeft" ckecked>
+							<input type="radio" name="talentChoiceAsphyxiateDeathsReach" id="talentDeathsReach" class="sharedTalentNodeRight">
 						</div>
 						<input type="checkbox" id="talentAssimilation">
 						<input type="checkbox" id="talentAnti-MagicBarrier" checked>
@@ -171,13 +213,13 @@
 						<input type="checkbox" id="talentRunicProtection" checked>
 						<input type="checkbox" id="talentBloodDraw">
 						<div id="talentNodesRuneMastery">
-							<input type="checkbox" id="talentRuneMastery" checked>
-							<input type="checkbox" id="talentRuneMastery2" checked>
+							<input type="checkbox" id="talentRuneMastery" class="sharedTalentNodeLeft" checked>
+							<input type="checkbox" id="talentRuneMastery2" class="sharedTalentNodeRight" checked>
 						</div>
 						<input type="checkbox" id="talentSubduingGrasp">
 						<div id="talentNodesWillOfTheNecropolis">
-							<input type="checkbox" id="talentWillOfTheNecropolis" checked>
-							<input type="checkbox" id="talentWillOfTheNecropolis2" checked>
+							<input type="checkbox" id="talentWillOfTheNecropolis" class="sharedTalentNodeLeft" checked>
+							<input type="checkbox" id="talentWillOfTheNecropolis2" class="sharedTalentNodeRight" checked>
 						</div>
 						<input type="checkbox" id="talentNullMagic" checked>
 						<input type="checkbox" id="talentUnyieldingWill">
@@ -186,6 +228,10 @@
 					</div>
 					<div id="dkHeroTalents" class="heroTalentContainers">
 						<div id="deathbringerHeroTalents" class="talents heroTalents">
+							<div class="heroTalentHeader">
+								<label for="enableHeroTalentDeathbringerInput">Enable Deathbringer</label>
+								<input type="checkbox" id="enableHeroTalentDeathbringerInput" checked>
+							</div>
 							<input type="checkbox" id="talentReapersMark" checked>
 							<input type="checkbox" id="talentWaveOfSouls" checked>
 							<input type="checkbox" id="talentWitherAway" checked>
@@ -194,18 +240,24 @@
 							<input type="checkbox" id="talentSoulRupture" checked>
 							<input type="checkbox" id="talentGrimReaper" checked>
 							<div id="talentChoiceRuneCarvedPlatesPactOfTheDeathbringer">
-								<input type="radio" name="talentChoiceRuneCarvedPlatesPactOfTheDeathbringer" id="talentRuneCarvedPlates" checked>
-								<input type="radio" name="talentChoiceRuneCarvedPlatesPactOfTheDeathbringer" id="talentPactOfTheDeathbringer">
+								<input type="radio" name="talentChoiceRuneCarvedPlatesPactOfTheDeathbringer"
+									id="talentRuneCarvedPlates" class="sharedTalentNodeLeft" checked>
+								<input type="radio" name="talentChoiceRuneCarvedPlatesPactOfTheDeathbringer"
+									id="talentPactOfTheDeathbringer" class="sharedTalentNodeRight">
 							</div>
 							<input type="checkbox" id="talentDeathlyBlows" checked>
 							<input type="checkbox" id="talentSwiftAndPainful">
 							<div id="talentChoiceDarkTalonsReapersOnslaught">
-								<input type="radio" name="talentChoiceDarkTalonsReapersOnslaught" id="talentDarkTalons" checked>
-								<input type="radio" name="talentChoiceDarkTalonsReapersOnslaught" id="talentReapersOnslaught">
+								<input type="radio" name="talentChoiceDarkTalonsReapersOnslaught" id="talentDarkTalons"
+									class="sharedTalentNodeLeft" checked>
+								<input type="radio" name="talentChoiceDarkTalonsReapersOnslaught"
+									id="talentReapersOnslaught" class="sharedTalentNodeRight">
 							</div>
 							<div id="talentChoiceDeathsMessengerExpellingShield">
-								<input type="radio" name="talentChoiceDeathsMessengerExpellingShield" id="talentDeathsMessenger">
-								<input type="radio" name="talentChoiceDeathsMessengerExpellingShield" id="talentExpellingShield">
+								<input type="radio" name="talentChoiceDeathsMessengerExpellingShield"
+									id="talentDeathsMessenger" class="sharedTalentNodeLeft">
+								<input type="radio" name="talentChoiceDeathsMessengerExpellingShield"
+									id="talentExpellingShield" class="sharedTalentNodeRight">
 							</div>
 							<input type="checkbox" id="talentEchoingFury" checked>
 							<input type="checkbox" id="talentExterminate" checked>
@@ -213,16 +265,20 @@
 						<div id="sanLaynHeroTalents" class="talents heroTalents">
 							<input type="checkbox" id="talentVampiricStrike" checked>
 							<div id="talentChoiceNewlyTunedVampiricSpeed">
-								<input type="radio" name="talentChoiceNewlyTunedVampiricSpeed" id="talentNewlyTuned" checked>
-								<input type="radio" name="talentChoiceNewlyTunedVampiricSpeed" id="talentVampiricSpeed">
+								<input type="radio" name="talentChoiceNewlyTunedVampiricSpeed" id="talentNewlyTuned" class="sharedTalentNodeLeft"
+									checked>
+								<input type="radio" name="talentChoiceNewlyTunedVampiricSpeed" id="talentVampiricSpeed" class="sharedTalentNodeRight">
 							</div>
 							<div id="talentChoiceBlood-SoakedGroundDesecrate">
-								<input type="radio" name="talentChoiceBlood-SoakedGroundDesecrate" id="talentBlood-SoakedGround" checked>
-								<input type="radio" name="talentChoiceBlood-SoakedGroundDesecrate" id="talentDesecrate">
+								<input type="radio" name="talentChoiceBlood-SoakedGroundDesecrate"
+									id="talentBlood-SoakedGround" class="sharedTalentNodeLeft" checked>
+								<input type="radio" name="talentChoiceBlood-SoakedGroundDesecrate" id="talentDesecrate" class="sharedTalentNodeRight">
 							</div>
 							<div id="talentChoiceVampiricAuraBloodyFotitude">
-								<input type="radio" name="talentChoiceVampiricAuraBloodyFotitude" id="talentVampiricAura" checked>
-								<input type="radio" name="talentChoiceVampiricAuraBloodyFotitude" id="talentBloodyFotitude">
+								<input type="radio" name="talentChoiceVampiricAuraBloodyFotitude"
+									id="talentVampiricAura" class="sharedTalentNodeLeft" checked>
+								<input type="radio" name="talentChoiceVampiricAuraBloodyFotitude"
+									id="talentBloodyFotitude" class="sharedTalentNodeRight">
 							</div>
 							<input type="checkbox" id="talentThrillOfBlood">
 							<input type="checkbox" id="talentInflictionOfSorrow" checked>
@@ -232,8 +288,10 @@
 							<input type="checkbox" id="talentInevitable" checked>
 							<input type="checkbox" id="talentInciteTerror" checked>
 							<div id="talentChoicePactOfTheSanLaynSanguineScent">
-								<input type="radio" name="talentChoicePactOfTheSanLaynSanguineScent" id="talentPactOfTheSanLayn" checked>
-								<input type="radio" name="talentChoicePactOfTheSanLaynSanguineScent" id="talentSanguineScent">
+								<input type="radio" name="talentChoicePactOfTheSanLaynSanguineScent"
+									id="talentPactOfTheSanLayn" class="sharedTalentNodeLeft" checked>
+								<input type="radio" name="talentChoicePactOfTheSanLaynSanguineScent"
+									id="talentSanguineScent" class="sharedTalentNodeRight">
 							</div>
 							<input type="checkbox" id="talentTransfusion">
 							<input type="checkbox" id="talentGiftOfTheSanLayn" checked>
@@ -241,13 +299,17 @@
 						<div id="riderOfTheApocalypseHeroTalents" class="talents heroTalents">
 							<input type="checkbox" id="talentRidersChampion">
 							<div id="talentChoiceOnAPalerHorseDeathCharge">
-								<input type="radio" name="talentChoiceOnAPalerHorseDeathCharge" id="talentOnAPalerHorse">
-								<input type="radio" name="talentChoiceOnAPalerHorseDeathCharge" id="talentDeathCharge" checked>
+								<input type="radio" name="talentChoiceOnAPalerHorseDeathCharge"
+									id="talentOnAPalerHorse" class="sharedTalentNodeLeft">
+								<input type="radio" name="talentChoiceOnAPalerHorseDeathCharge" id="talentDeathCharge"
+									class="sharedTalentNodeRight" checked>
 							</div>
 							<input type="checkbox" id="talentMograinesMight">
 							<div id="talentChoiceHorsemensAidPactOfTheApocalypse">
-								<input type="radio" name="talentChoiceHorsemensAidPactOfTheApocalypse" id="talentHorsemensAid">
-								<input type="radio" name="talentChoiceHorsemensAidPactOfTheApocalypse" id="talentPactOfTheApocalypse" checked>
+								<input type="radio" name="talentChoiceHorsemensAidPactOfTheApocalypse"
+									id="talentHorsemensAid" class="sharedTalentNodeLeft">
+								<input type="radio" name="talentChoiceHorsemensAidPactOfTheApocalypse"
+									id="talentPactOfTheApocalypse" class="sharedTalentNodeRight" checked>
 							</div>
 							<input type="checkbox" id="talentRideOrDie">
 							<input type="checkbox" id="talentWhitemanesFamine">
@@ -256,8 +318,10 @@
 							<input type="checkbox" id="talentLetTerrorReign">
 							<input type="checkbox" id="talentHungeringThirst">
 							<div id="talentChoiceFuryOfTheHorsemenAFeastOfSouls">
-								<input type="radio" name="talentChoiceFuryOfTheHorsemenAFeastOfSouls" id="talentFuryOfTheHorsemen">
-								<input type="radio" name="talentChoiceFuryOfTheHorsemenAFeastOfSouls" id="talentAFeastOfSouls">
+								<input type="radio" name="talentChoiceFuryOfTheHorsemenAFeastOfSouls"
+									id="talentFuryOfTheHorsemen" class="sharedTalentNodeLeft">
+								<input type="radio" name="talentChoiceFuryOfTheHorsemenAFeastOfSouls"
+									id="talentAFeastOfSouls" class="sharedTalentNodeRight">
 							</div>
 							<input type="checkbox" id="talentMawswornMenace">
 							<input type="checkbox" id="talentUnholyArmaments">
@@ -272,12 +336,12 @@
 						<input type="checkbox" id="talentBoneCollector">
 						<input type="checkbox" id="talentOssuary">
 						<div id="talentNodesImprovedVampiricBlood">
-							<input type="checkbox" id="talentImprovedVampiricBlood">
-							<input type="checkbox" id="talentImprovedVampiricBlood2">
+							<input type="checkbox" id="talentImprovedVampiricBlood" class="sharedTalentNodeLeft">
+							<input type="checkbox" id="talentImprovedVampiricBlood2" class="sharedTalentNodeRight">
 						</div>
 						<div id="talentNodesImprovedHeartStrike">
-							<input type="checkbox" id="talentImprovedHeartStrike">
-							<input type="checkbox" id="talentImprovedHeartStrike2">
+							<input type="checkbox" id="talentImprovedHeartStrike" class="sharedTalentNodeLeft">
+							<input type="checkbox" id="talentImprovedHeartStrike2" class="sharedTalentNodeRight">
 						</div>
 						<input type="checkbox" id="talentRelishInBlood">
 						<input type="checkbox" id="talentLeechingStrike">
@@ -288,8 +352,10 @@
 						<input type="checkbox" id="talentPerseveranceOfTheEbonBlade">
 						<input type="checkbox" id="talentBloodworms">
 						<div id="talentChoiceGorefiendsGraspAbominationLimb">
-							<input type="radio" name="talentChoiceGorfiendsGraspAbominationLimb" id="talentGorfiendsGrasp">
-							<input type="radio" name="talentChoiceGorfiendsGraspAbominationLimb" id="talentAbominationLimb">
+							<input type="radio" name="talentChoiceGorfiendsGraspAbominationLimb"
+								id="talentGorfiendsGrasp">
+							<input type="radio" name="talentChoiceGorfiendsGraspAbominationLimb"
+								id="talentAbominationLimb">
 						</div>
 						<input type="checkbox" id="talentImprovedBoneShield">
 						<input type="checkbox" id="talentInsatiableBlade">
@@ -316,10 +382,10 @@
 						<input type="checkbox" id="talentUmbilicusEternus">
 					</div>
 					<div id="fdkTalents" class="talents">
-						
+
 					</div>
 					<div id="udkTalents" class="talents">
-						
+
 					</div>
 				</div>
 			</div>
@@ -381,8 +447,9 @@
 			<button id="collapseResults">Collapse</button>
 		</div>
 		<div id="resultsContainer">
-			
+
 		</div>
 	</section>
 </body>
+
 </html>

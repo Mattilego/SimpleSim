@@ -1,12 +1,12 @@
 const { app, ipcMain, BrowserWindow } = require("electron");
 const path = require("path");
-
-console.log("Are these imported properly?", app, ipcMain, BrowserWindow);
+const fs = require("fs");
+const os = require("os");
 
 app.on('ready', () => {
   const win = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: false,
+      nodeIntegration: true,
       contextIsolation: true
     }
   });
