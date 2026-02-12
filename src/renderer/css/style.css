@@ -57,6 +57,11 @@ section {
 	". bd bd bd fd fd fd ."
 	". rd rd rd bod bod bod .";
 	gap: 10px;
+
+	label {
+		display: none;
+	}
+
 	input {
 		appearance: none;
 		width: 50px;
@@ -280,7 +285,7 @@ section {
 	transition: max-height 0.2s ease-in-out;
 
 	#statInputs {
-		background-color: #555;
+		background-color: #888;
 		display: grid;
 		grid-template-columns: repeat(2, 1fr);
 		gap: 10px;
