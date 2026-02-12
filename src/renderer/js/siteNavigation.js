@@ -19,6 +19,25 @@ document.addEventListener('mousedown', async function(e) {
     }
 });
 
+document.addEventListener('keydown', async function(e) {
+	console.log(e.key);
+    if (e.target.type === 'radio' && e.target.checked && e.key === "Enter") {
+        await new Promise(resolve => {
+            const handleKeyUp = () => {
+                document.removeEventListener('keyup', handleKeyUp);
+                resolve();
+            };
+            document.addEventListener('keyup', handleKeyUp);
+        });
+        setTimeout(() => e.target.checked = false, 0);
+    } else {
+		if (e.key === "Enter") {
+			e.target.click();
+		}
+	}
+});
+
+
 document.querySelectorAll(".specRadio").forEach(radio => {
 	radio.addEventListener("change", function() {
 		updateTalentVisibility();
