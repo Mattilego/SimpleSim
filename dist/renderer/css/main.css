@@ -1188,132 +1188,6 @@ section {
 		}
 	}
 }
-/*!******************************************************************************************!*\
-  !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/screenSizeChanges.css ***!
-  \******************************************************************************************/
-@media screen and (min-width: 370px) {
-	body {
-		margin-left: 5px;
-		margin-right: 5px;
-	}
-	section {
-		padding: 10px;
-	}
-	#characterStatsContainer {
-		#talents {
-			.classTalentGroups {
-				gap: 10px;
-				.talents {
-					gap: 5px;
-					padding: 5px;
-					input {
-						width: 30px;
-						height: 30px;
-					}
-					div {
-						input {
-							width: 25px;
-						}
-					}
-				}
-				.heroTalents {
-					.heroTalentHeader {
-						input {
-							width: 30px;
-						}
-					}
-				}
-			}
-		}
-
-	}
-}
-
-@media screen and (min-width: 490px) {
-	#characterStatsContainer {
-		#talents {
-			.classTalentGroups {
-				.talents {
-					input {
-						width: 40px;
-						height: 40px;
-						border: 3px solid #222
-					}
-				}
-			}
-		}
-	}
-}
-
-@media screen and (min-width: 490px) {
-	#characterStatsContainer {
-		max-height: 1500px;
-		#talents {
-			.classTalentGroups {
-				.heroTalentContainers {
-					flex-direction: row;
-					.heroTalents {
-						.heroTalentHeader {
-							input {
-								width: 40px;
-							}
-						}
-					}
-				}
-			}
-		}
-	}
-}
-
-@media screen and (min-width: 790px) {
-	#specConfigurationContainer {
-		grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
-		grid-template-areas:
-		". bdk fdk udk vdh hdh ddh ."
-		". de ae pe bmh mmh sh ."
-		". am fim frm bmm mwm wwm ."
-		". hp pp rp dp hpr sp ."
-		". ar or sr els ens rs ."
-		". al deml desl aw fw pw ."
-		". . bd fd rd bod . ."
-	}
-	
-	#characterStatsContainer {
-		max-height: 890px;
-		#statInputs {
-			grid-template-columns: repeat(4, auto);
-		}
-		#talents {
-			.classTalentGroups {
-				grid-template-columns: repeat(2, auto);
-				grid-template-rows: repeat(2, auto);
-				grid-template-areas:
-					"class spec"
-					"hero hero";
-				.heroTalentContainers {
-					flex-direction: row;
-				}
-			}
-		}
-	}
-}
-
-@media screen and (min-width: 1010px) {
-	#characterStatsContainer {
-		max-height: 680px;
-		#talents {
-			.classTalentGroups {
-				grid-template-columns: repeat(3, auto);
-				grid-template-rows: repeat(1, auto);
-				grid-template-areas:
-					"class hero spec";
-				.heroTalentContainers {
-					flex-direction: column;
-				}
-			}
-		}
-	}
-}
 /*!*********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/tooltips.css ***!
   \*********************************************************************************/
@@ -1380,5 +1254,123 @@ section {
 		top: 115%;
 		border-top-color: transparent;
 		border-bottom-color: #333;
+	}
+}
+/*!******************************************************************************************!*\
+  !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/screenSizeChanges.css ***!
+  \******************************************************************************************/
+@media screen and (min-width: 370px) {
+	body {
+		margin-left: 5px;
+		margin-right: 5px;
+	}
+	section {
+		padding: 10px;
+	}
+	#characterStatsContainer {
+		#talents {
+			.classTalentGroups {
+				gap: 10px;
+				.talents {
+					gap: 5px;
+					padding: 5px;
+					input {
+						width: 30px;
+						height: 30px;
+					}
+					div {
+						input {
+							width: 25px;
+						}
+					}
+				}
+				.heroTalentContainers {
+					.heroTalents {
+						.heroTalentHeader {
+							input {
+								width: 30px;
+							}
+						}
+					}
+				}
+			}
+		}
+
+	}
+}
+
+@media screen and (min-width: 490px) {
+	#characterStatsContainer {
+		#talents {
+			.classTalentGroups {
+				.talents {
+					input {
+						width: 40px;
+						height: 40px;
+						border: 3px solid #222
+					}
+				}
+				.heroTalentContainers {
+					flex-direction: row;
+					.heroTalents {
+						.heroTalentHeader {
+							input {
+								width: 40px;
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 790px) {
+	#specConfigurationContainer {
+		grid-template-columns: 0.5fr repeat(6, 1fr) 0.5fr;
+		grid-template-areas:
+		". bdk fdk udk vdh hdh ddh ."
+		". de ae pe bmh mmh sh ."
+		". am fim frm bmm mwm wwm ."
+		". hp pp rp dp hpr sp ."
+		". ar or sr els ens rs ."
+		". al deml desl aw fw pw ."
+		". . bd fd rd bod . ."
+	}
+	
+	#characterStatsContainer {
+		max-height: 890px;
+		#statInputs {
+			grid-template-columns: repeat(4, auto);
+		}
+		#talents {
+			.classTalentGroups {
+				grid-template-columns: repeat(2, auto);
+				grid-template-rows: repeat(2, auto);
+				grid-template-areas:
+					"class spec"
+					"hero hero";
+				.heroTalentContainers {
+					flex-direction: row;
+				}
+			}
+		}
+	}
+}
+
+@media screen and (min-width: 1010px) {
+	#characterStatsContainer {
+		max-height: 680px;
+		#talents {
+			.classTalentGroups {
+				grid-template-columns: repeat(3, auto);
+				grid-template-rows: repeat(1, auto);
+				grid-template-areas:
+					"class hero spec";
+				.heroTalentContainers {
+					flex-direction: column;
+				}
+			}
+		}
 	}
 }

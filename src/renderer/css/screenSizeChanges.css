@@ -23,10 +23,12 @@
 						}
 					}
 				}
-				.heroTalents {
-					.heroTalentHeader {
-						input {
-							width: 30px;
+				.heroTalentContainers {
+					.heroTalents {
+						.heroTalentHeader {
+							input {
+								width: 30px;
+							}
 						}
 					}
 				}
@@ -47,16 +49,6 @@
 						border: 3px solid #222
 					}
 				}
-			}
-		}
-	}
-}
-
-@media screen and (min-width: 490px) {
-	#characterStatsContainer {
-		max-height: 1500px;
-		#talents {
-			.classTalentGroups {
 				.heroTalentContainers {
 					flex-direction: row;
 					.heroTalents {
