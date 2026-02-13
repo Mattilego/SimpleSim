@@ -39,6 +39,33 @@ section {
 	}
 }
 
+.inputAreas {
+	background-color: #888;
+	border-radius: 10px;
+	padding: 10px;
+	display: grid;
+	grid-template-columns: repeat(2, auto);
+	margin: auto;
+	gap: 10px;
+	input[type="checkbox"] {
+		background-color: #000;
+		appearance: none;
+		width: 25px;
+		height: 25px;
+		border-radius: 4px;
+		border: 2px solid #222;
+		transition: all 0.2s ease-in-out;
+		margin: auto;
+		background-size: cover;
+	}
+
+	input:checked {
+		background-color: #0a0;
+		border-color: #d0d000;
+		border-radius: 8px;
+	}
+}
+
 #specConfigurationContainer {
 	display: grid;
 	max-height: 900px;
@@ -296,14 +323,6 @@ section {
 	transition: max-height 0.2s ease-in-out;
 
 	#statInputs {
-		background-color: #888;
-		display: grid;
-		grid-template-columns: repeat(2, 1fr);
-		gap: 10px;
-		max-width: 650px;
-		margin: auto;
-		padding: 10px;
-		border-radius: 5px;
 	}
 
 	#talents {
@@ -1191,30 +1210,12 @@ section {
 
 #enemySettings {
 	#enemySettingsContainer {
-		background-color: #888;
-		border-radius: 10px;
-		padding: 10px;
-		display: grid;
-		grid-template-columns: repeat(2, auto);
-		gap: 10px;
-		input[type="checkbox"] {
-			background-color: #000;
-			appearance: none;
-			width: 25px;
-			height: 25px;
-			border-radius: 4px;
-			border: 2px solid #222;
-			transition: all 0.2s ease-in-out;
-			margin: auto;
-			background-size: cover;
-		}
 
-		input:checked {
-			background-color: #0a0;
-			border-color: #d0d000;
-			border-radius: 8px;
-		}
 	}
+}
+
+#fightSettings {
+
 }
 /*!*********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/tooltips.css ***!
