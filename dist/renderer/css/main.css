@@ -1188,6 +1188,34 @@ section {
 		}
 	}
 }
+
+#enemySettings {
+	#enemySettingsContainer {
+		background-color: #888;
+		border-radius: 10px;
+		padding: 10px;
+		display: grid;
+		grid-template-columns: repeat(2, auto);
+		gap: 10px;
+		input[type="checkbox"] {
+			background-color: #000;
+			appearance: none;
+			width: 25px;
+			height: 25px;
+			border-radius: 4px;
+			border: 2px solid #222;
+			transition: all 0.2s ease-in-out;
+			margin: auto;
+			background-size: cover;
+		}
+
+		input:checked {
+			background-color: #0a0;
+			border-color: #d0d000;
+			border-radius: 8px;
+		}
+	}
+}
 /*!*********************************************************************************!*\
   !*** css ./node_modules/css-loader/dist/cjs.js!./src/renderer/css/tooltips.css ***!
   \*********************************************************************************/
@@ -1203,6 +1231,8 @@ section {
 		opacity: 1;
 		visibility: visible;
 		transition: opacity 0.3s ease, visibility 0.3s ease;
+		max-width: 200px;
+		text-wrap: wrap;
 	}
 
 	[data-tooltip]::before {

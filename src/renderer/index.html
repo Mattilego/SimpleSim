@@ -595,14 +595,14 @@
 			<div id="enemySettingsContainer">
 				<label for="enemyCountInput">Enemy Count: </label>
 				<input type="number" id="enemyCountInput" value="1" min="1" class="positiveIntegerInput">
-				<label for="steadyEnemyHealthInput">Steady Enemy Health: </label>
-				<input type="checkbox" id="steadyEnemyHealthInput">
+				<label for="steadyEnemyHealthInput" >Steady Enemy Health: </label>
+				<input type="checkbox" id="steadyEnemyHealthInput" data-tooltip="Keeps enemy hp linearly decreasing">
 				<label for="enemyHealthInput">Enemy Health: </label>
 				<input type="number" id="enemyHealthInput" value="200000" min="1" step="10000">
 				<label for="enemyDamageInput">Enemy DPS: </label>
 				<input type="number" id="enemyDamageInput" value="20000" min="0" step="1000">
-				<label for="enemyAttackSpeedInput">Enemy Attack Speed: </label>
-				<input type="number" id="enemyAttackSpeedInput" value="0.5" min="0" step="0.1">
+				<label for="enemyAttackSpeedInput" data-tooltip="Enemy melee attacks per second">Enemy Attack Speed: </label>
+				<input type="number" id="enemyAttackSpeedInput" value="0.5" min="0" step="0.1" data-tooltip="Enemy melee attacks per second">
 			</div>
 		</section>
 		<section id="fightSettings">
