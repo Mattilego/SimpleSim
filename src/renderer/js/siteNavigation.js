@@ -2,8 +2,20 @@ document.getElementById("collapseSpecSettings").addEventListener("click", functi
 	document.getElementById("specConfigurationContainer").style.maxHeight = (document.getElementById("specConfigurationContainer").style.maxHeight == "0px")?document.getElementById("specConfigurationContainer").style.height:"0px";
 });
 
-document.getElementById("collapseChracterSettings").addEventListener("click", function() {
+document.getElementById("collapseCharacterSettings").addEventListener("click", function() {
 	document.getElementById("characterStatsContainer").style.maxHeight = (document.getElementById("characterStatsContainer").style.maxHeight == "0px")?document.getElementById("characterStatsContainer").style.height:"0px";
+});
+
+document.getElementById("collapseEnemySettings").addEventListener("click", function() {
+	document.getElementById("enemySettingsContainer").style.maxHeight = (document.getElementById("enemySettingsContainer").style.maxHeight == "0px")?document.getElementById("enemySettingsContainer").style.height:"0px";
+});
+
+document.getElementById("collapseFightSettings").addEventListener("click", function() {
+	document.getElementById("fightSettingsContainer").style.maxHeight = (document.getElementById("fightSettingsContainer").style.maxHeight == "0px")?document.getElementById("fightSettingsContainer").style.height:"0px";
+});
+
+document.getElementById("collapseResults").addEventListener("click", function() {
+	document.getElementById("resultsContainer").style.maxHeight = (document.getElementById("resultsContainer").style.maxHeight == "0px")?document.getElementById("resultsContainer").style.height:"0px";
 });
 
 document.addEventListener('mousedown', async function(e) {

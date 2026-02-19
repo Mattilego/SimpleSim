@@ -44,6 +44,7 @@ section {
 	grid-template-columns: repeat(2, auto);
 	margin: auto;
 	gap: 10px;
+	max-width: 500px;
 	input[type="checkbox"] {
 		background-color: #000;
 		appearance: none;
@@ -1207,10 +1208,16 @@ section {
 
 #enemySettings {
 	#enemySettingsContainer {
+		max-height: 400px;
+		transition: max-height 0.5s ease-in-out;
 
 	}
 }
 
 #fightSettings {
+	#fightSettingsContainer {
+		max-height: 400px;
+		transition: max-height 0.5s ease-in-out;
+	}
 
 }
