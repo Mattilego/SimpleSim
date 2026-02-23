@@ -1,3 +1,8 @@
+import "./Log.js"
+import "./Actor.js"
+import "./JSONEvaluator.js"
+import "./APLReader.js"
+
 //Intended to be run as a web worker
 this.addEventListener("message", async (event) => {
 	this.postMessage(await this.processRequest(event.data));
