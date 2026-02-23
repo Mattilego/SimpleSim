@@ -323,9 +323,6 @@ section {
 	max-height: 1750px;
 	transition: max-height 0.2s ease-in-out;
 
-	#statInputs {
-	}
-
 	#talents {
 		margin-top: 10px;
 		
