@@ -167,7 +167,8 @@
 		],
 		"hitEffects": [
 			{
-				"type": "physicalDamage",
+				"type": "damage",
+				"damageTypes": ["physical"],
 				"value": {
 					"type": "*",
 					"value1": {

@@ -9,4 +9,4 @@ import './localAppFeatures.js';
 
 import { WorkerManager } from './WorkerManager.js';
 
-window.workerManager = new WorkerManager(new URL('../../shared/engine/engineMain.js', import.meta.url));
+window.workerManager = new WorkerManager();

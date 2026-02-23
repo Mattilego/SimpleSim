@@ -1,11 +1,11 @@
 export class Actor {
-	constructor (abilities, apl, buffs, applyableDebuffs, stats, talents, team){
+	constructor (apl, stats, talents, team, abilities, knownBuffs, knownDebuffs, shortcuts){
 		this.stats = stats;
 		this.talents = talents;
 		this.abilities = abilities;
 		this.apl = apl;
-		this.buffs = buffs;
-		this.applyableDebuffs = applyableDebuffs;
+		this.knownBuffs = knownBuffs;
+		this.knownDebuffs = knownDebuffs;
 		this.buffs = [];
 		this.debuffs = [];
 		this.resources = {
