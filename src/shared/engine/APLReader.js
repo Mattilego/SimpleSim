@@ -1,4 +1,4 @@
-class APLReader {
+export class APLReader {
 	static parseAPL(initiator, actors) {//Returns the ability definition of the ability to use and the apl entry that triggered it
 		const apl = initiator.apl;
 		let ability = null;

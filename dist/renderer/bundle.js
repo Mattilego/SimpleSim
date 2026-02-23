@@ -9,6 +9,17 @@
 /******/ (() => { // webpackBootstrap
 /******/ 	var __webpack_modules__ = ({
 
+/***/ "./src/renderer/js/WorkerManager.js"
+/*!******************************************!*\
+  !*** ./src/renderer/js/WorkerManager.js ***!
+  \******************************************/
+(__unused_webpack_module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   WorkerManager: () => (/* binding */ WorkerManager)\n/* harmony export */ });\nfunction _typeof(o) { \"@babel/helpers - typeof\"; return _typeof = \"function\" == typeof Symbol && \"symbol\" == typeof Symbol.iterator ? function (o) { return typeof o; } : function (o) { return o && \"function\" == typeof Symbol && o.constructor === Symbol && o !== Symbol.prototype ? \"symbol\" : typeof o; }, _typeof(o); }\nfunction _classCallCheck(a, n) { if (!(a instanceof n)) throw new TypeError(\"Cannot call a class as a function\"); }\nfunction _defineProperties(e, r) { for (var t = 0; t < r.length; t++) { var o = r[t]; o.enumerable = o.enumerable || !1, o.configurable = !0, \"value\" in o && (o.writable = !0), Object.defineProperty(e, _toPropertyKey(o.key), o); } }\nfunction _createClass(e, r, t) { return r && _defineProperties(e.prototype, r), t && _defineProperties(e, t), Object.defineProperty(e, \"prototype\", { writable: !1 }), e; }\nfunction _toPropertyKey(t) { var i = _toPrimitive(t, \"string\"); return \"symbol\" == _typeof(i) ? i : i + \"\"; }\nfunction _toPrimitive(t, r) { if (\"object\" != _typeof(t) || !t) return t; var e = t[Symbol.toPrimitive]; if (void 0 !== e) { var i = e.call(t, r || \"default\"); if (\"object\" != _typeof(i)) return i; throw new TypeError(\"@@toPrimitive must return a primitive value.\"); } return (\"string\" === r ? String : Number)(t); }\nvar WorkerManager = /*#__PURE__*/function () {\n  function WorkerManager() {\n    var poolSize = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : navigator.hardwareConcurrency || 4;\n    _classCallCheck(this, WorkerManager);\n    this.poolSize = poolSize;\n    this.workers = [];\n    this.queue = [];\n    this.activeTasks = 0;\n    this._initializePool();\n  }\n  return _createClass(WorkerManager, [{\n    key: \"_initializePool\",\n    value: function _initializePool() {\n      for (var i = 0; i < this.poolSize - this.workers.length; i++) {\n        var worker = new Worker(new URL(/* worker import */ __webpack_require__.p + __webpack_require__.u(\"src_shared_engine_engineMain_js\"), __webpack_require__.b), {\n          type: undefined\n        });\n        this.workers.push({\n          instance: worker,\n          busy: false,\n          id: i\n        });\n      }\n    }\n\n    /**\r\n     * Executes a task on the next available worker.\r\n     * @param {any} payload - Data to send to the worker.\r\n     * @returns {Promise} - Resolves with worker's response.\r\n     */\n  }, {\n    key: \"run\",\n    value: function run(payload) {\n      var _this = this;\n      return new Promise(function (resolve, reject) {\n        var task = {\n          payload: payload,\n          resolve: resolve,\n          reject: reject\n        };\n        var availableWorker = _this.workers.find(function (w) {\n          return !w.busy;\n        });\n        if (availableWorker) {\n          _this._execute(availableWorker, task);\n        } else {\n          _this.queue.push(task);\n        }\n      });\n    }\n  }, {\n    key: \"_execute\",\n    value: function _execute(worker, task) {\n      var _this2 = this;\n      worker.busy = true;\n      this.activeTasks++;\n      var cleanup = function cleanup() {\n        worker.instance.removeEventListener('message', onMessage);\n        worker.instance.removeEventListener('error', onError);\n        worker.busy = false;\n        _this2.activeTasks--;\n\n        // Check if there are pending tasks in the queue\n        if (_this2.queue.length > 0) {\n          _this2._execute(worker, _this2.queue.shift());\n        }\n      };\n      var onMessage = function onMessage(e) {\n        cleanup();\n        task.resolve(e.data);\n      };\n      var onError = function onError(e) {\n        cleanup();\n        task.reject(e);\n      };\n      worker.instance.addEventListener('message', onMessage);\n      worker.instance.addEventListener('error', onError);\n      worker.instance.postMessage(task.payload);\n    }\n  }, {\n    key: \"terminate\",\n    value: function terminate() {\n      this.workers.forEach(function (w) {\n        return w.instance.terminate();\n      });\n      this.workers = [];\n      this.queue = [];\n    }\n  }]);\n}();\n\n//# sourceURL=webpack://simplesim/./src/renderer/js/WorkerManager.js?\n}");
+
+/***/ },
+
 /***/ "./src/renderer/js/index.js"
 /*!**********************************!*\
   !*** ./src/renderer/js/index.js ***!
@@ -16,7 +27,7 @@
 (__unused_webpack_module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/style.css */ \"./src/renderer/css/style.css\");\n/* harmony import */ var _css_tooltips_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../css/tooltips.css */ \"./src/renderer/css/tooltips.css\");\n/* harmony import */ var _css_screenSizeChanges_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../css/screenSizeChanges.css */ \"./src/renderer/css/screenSizeChanges.css\");\n/* harmony import */ var _siteNavigation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./siteNavigation.js */ \"./src/renderer/js/siteNavigation.js\");\n/* harmony import */ var _siteNavigation_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_siteNavigation_js__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _localAppFeatures_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./localAppFeatures.js */ \"./src/renderer/js/localAppFeatures.js\");\n/* harmony import */ var _localAppFeatures_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_localAppFeatures_js__WEBPACK_IMPORTED_MODULE_4__);\n// Import CSS files\n\n\n\n\n\n\n//# sourceURL=webpack://simplesim/./src/renderer/js/index.js?\n}");
+eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _css_style_css__WEBPACK_IMPORTED_MODULE_0__ = __webpack_require__(/*! ../css/style.css */ \"./src/renderer/css/style.css\");\n/* harmony import */ var _css_tooltips_css__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ../css/tooltips.css */ \"./src/renderer/css/tooltips.css\");\n/* harmony import */ var _css_screenSizeChanges_css__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ../css/screenSizeChanges.css */ \"./src/renderer/css/screenSizeChanges.css\");\n/* harmony import */ var _siteNavigation_js__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./siteNavigation.js */ \"./src/renderer/js/siteNavigation.js\");\n/* harmony import */ var _siteNavigation_js__WEBPACK_IMPORTED_MODULE_3___default = /*#__PURE__*/__webpack_require__.n(_siteNavigation_js__WEBPACK_IMPORTED_MODULE_3__);\n/* harmony import */ var _localAppFeatures_js__WEBPACK_IMPORTED_MODULE_4__ = __webpack_require__(/*! ./localAppFeatures.js */ \"./src/renderer/js/localAppFeatures.js\");\n/* harmony import */ var _localAppFeatures_js__WEBPACK_IMPORTED_MODULE_4___default = /*#__PURE__*/__webpack_require__.n(_localAppFeatures_js__WEBPACK_IMPORTED_MODULE_4__);\n/* harmony import */ var _WorkerManager_js__WEBPACK_IMPORTED_MODULE_5__ = __webpack_require__(/*! ./WorkerManager.js */ \"./src/renderer/js/WorkerManager.js\");\n// Import CSS files\n\n\n\n\n\n\nwindow.workerManager = new _WorkerManager_js__WEBPACK_IMPORTED_MODULE_5__.WorkerManager(new URL(/* asset import */ __webpack_require__(/*! ../../shared/engine/engineMain.js */ \"./src/shared/engine/engineMain.js?dfaa\"), __webpack_require__.b));\n\n//# sourceURL=webpack://simplesim/./src/renderer/js/index.js?\n}");
 
 /***/ },
 
@@ -71,6 +82,17 @@ eval("{__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-ext
 "use strict";
 eval("{__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-extract-plugin\n\n\n//# sourceURL=webpack://simplesim/./src/renderer/css/tooltips.css?\n}");
 
+/***/ },
+
+/***/ "./src/shared/engine/engineMain.js?dfaa"
+/*!*****************************************!*\
+  !*** ./src/shared/engine/engineMain.js ***!
+  \*****************************************/
+(module, __unused_webpack_exports, __webpack_require__) {
+
+"use strict";
+eval("{module.exports = __webpack_require__.p + \"9dd8d4a313d1b48f3da5.js\";\n\n//# sourceURL=webpack://simplesim/./src/shared/engine/engineMain.js?\n}");
+
 /***/ }
 
 /******/ 	});
@@ -105,6 +127,9 @@ eval("{__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-ext
 /******/ 		return module.exports;
 /******/ 	}
 /******/ 	
+/******/ 	// expose the modules object (__webpack_modules__)
+/******/ 	__webpack_require__.m = __webpack_modules__;
+/******/ 	
 /************************************************************************/
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
@@ -130,6 +155,27 @@ eval("{__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-ext
 /******/ 		};
 /******/ 	})();
 /******/ 	
+/******/ 	/* webpack/runtime/get javascript chunk filename */
+/******/ 	(() => {
+/******/ 		// This function allow to reference async chunks
+/******/ 		__webpack_require__.u = (chunkId) => {
+/******/ 			// return url for filenames based on template
+/******/ 			return "" + chunkId + ".bundle.js";
+/******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/global */
+/******/ 	(() => {
+/******/ 		__webpack_require__.g = (function() {
+/******/ 			if (typeof globalThis === 'object') return globalThis;
+/******/ 			try {
+/******/ 				return this || new Function('return this')();
+/******/ 			} catch (e) {
+/******/ 				if (typeof window === 'object') return window;
+/******/ 			}
+/******/ 		})();
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/hasOwnProperty shorthand */
 /******/ 	(() => {
 /******/ 		__webpack_require__.o = (obj, prop) => (Object.prototype.hasOwnProperty.call(obj, prop))
@@ -144,6 +190,55 @@ eval("{__webpack_require__.r(__webpack_exports__);\n// extracted by mini-css-ext
 /******/ 			}
 /******/ 			Object.defineProperty(exports, '__esModule', { value: true });
 /******/ 		};
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/publicPath */
+/******/ 	(() => {
+/******/ 		var scriptUrl;
+/******/ 		if (__webpack_require__.g.importScripts) scriptUrl = __webpack_require__.g.location + "";
+/******/ 		var document = __webpack_require__.g.document;
+/******/ 		if (!scriptUrl && document) {
+/******/ 			if (document.currentScript && document.currentScript.tagName.toUpperCase() === 'SCRIPT')
+/******/ 				scriptUrl = document.currentScript.src;
+/******/ 			if (!scriptUrl) {
+/******/ 				var scripts = document.getElementsByTagName("script");
+/******/ 				if(scripts.length) {
+/******/ 					var i = scripts.length - 1;
+/******/ 					while (i > -1 && (!scriptUrl || !/^http(s?):/.test(scriptUrl))) scriptUrl = scripts[i--].src;
+/******/ 				}
+/******/ 			}
+/******/ 		}
+/******/ 		// When supporting browsers where an automatic publicPath is not supported you must specify an output.publicPath manually via configuration
+/******/ 		// or pass an empty string ("") and set the __webpack_public_path__ variable from your code to use your own logic.
+/******/ 		if (!scriptUrl) throw new Error("Automatic publicPath is not supported in this browser");
+/******/ 		scriptUrl = scriptUrl.replace(/^blob:/, "").replace(/#.*$/, "").replace(/\?.*$/, "").replace(/\/[^\/]+$/, "/");
+/******/ 		__webpack_require__.p = scriptUrl;
+/******/ 	})();
+/******/ 	
+/******/ 	/* webpack/runtime/jsonp chunk loading */
+/******/ 	(() => {
+/******/ 		__webpack_require__.b = (typeof document !== 'undefined' && document.baseURI) || self.location.href;
+/******/ 		
+/******/ 		// object to store loaded and loading chunks
+/******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
+/******/ 		var installedChunks = {
+/******/ 			"main": 0
+/******/ 		};
+/******/ 		
+/******/ 		// no chunk on demand loading
+/******/ 		
+/******/ 		// no prefetching
+/******/ 		
+/******/ 		// no preloaded
+/******/ 		
+/******/ 		// no HMR
+/******/ 		
+/******/ 		// no HMR manifest
+/******/ 		
+/******/ 		// no on chunks loaded
+/******/ 		
+/******/ 		// no jsonp function
 /******/ 	})();
 /******/ 	
 /************************************************************************/

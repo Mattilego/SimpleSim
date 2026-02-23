@@ -1,4 +1,4 @@
-class JSONEvaluator {
+export class JSONEvaluator {
 	static evaluateValue(actor, actors, value, shortcuts = [], parameters = []) {
 		try {
 			if (typeof value == "number" || typeof value == "string" || typeof value == "boolean") {

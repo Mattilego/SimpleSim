@@ -1,4 +1,4 @@
-class Log {
+export class Log {
 	static log = [];
 	static log(message) {
 		this.log.push(message);

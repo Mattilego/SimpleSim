@@ -1,4 +1,4 @@
-class Actor {
+export class Actor {
 	constructor (abilities, apl, buffs, applyableDebuffs, stats, talents, team){
 		this.stats = stats;
 		this.talents = talents;
