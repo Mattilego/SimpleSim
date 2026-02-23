@@ -17,19 +17,14 @@
 		},
 		"conditions": [
 			{
-				"type": "or",
-				"conditions": [
-					{
-						"type": "resource",
-						"id": "runicPower",
-						"check": "value",
-						"comparison": ">=",
-						"value": {
-							"type": "shortcut",
-							"id": "DeathStrikeCost"
-						}
-					}
-				]
+				"type": "resource",
+				"id": "runicPower",
+				"check": "value",
+				"comparison": ">=",
+				"value": {
+					"type": "shortcut",
+					"id": "DeathStrikeCost"
+				}
 			}
 		],
 		"castEffects": [
