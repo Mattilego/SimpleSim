@@ -6,8 +6,7 @@ const os = require("os");
 app.on('ready', () => {
   const win = new BrowserWindow({
     webPreferences: {
-      nodeIntegration: true,
-      contextIsolation: true
+      preload: path.join(__dirname, 'preload.js')
     }
   });
 

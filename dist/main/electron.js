@@ -15,7 +15,7 @@
   \******************************/
 (__unused_webpack_module, __unused_webpack_exports, __webpack_require__) {
 
-eval("{var _require = __webpack_require__(/*! electron */ \"electron\"),\n  app = _require.app,\n  ipcMain = _require.ipcMain,\n  BrowserWindow = _require.BrowserWindow;\nvar path = __webpack_require__(/*! path */ \"path\");\nvar fs = __webpack_require__(/*! fs */ \"fs\");\nvar os = __webpack_require__(/*! os */ \"os\");\napp.on('ready', function () {\n  var win = new BrowserWindow({\n    webPreferences: {\n      nodeIntegration: true,\n      contextIsolation: true\n    }\n  });\n  win.loadFile(path.join(__dirname, '../renderer/index.html'));\n});\n\n//# sourceURL=webpack://simplesim/./src/main/electron.js?\n}");
+eval("{var _require = __webpack_require__(/*! electron */ \"electron\"),\n  app = _require.app,\n  ipcMain = _require.ipcMain,\n  BrowserWindow = _require.BrowserWindow;\nvar path = __webpack_require__(/*! path */ \"path\");\nvar fs = __webpack_require__(/*! fs */ \"fs\");\nvar os = __webpack_require__(/*! os */ \"os\");\napp.on('ready', function () {\n  var win = new BrowserWindow({\n    webPreferences: {\n      preload: path.join(__dirname, 'preload.js')\n    }\n  });\n  win.loadFile(path.join(__dirname, '../renderer/index.html'));\n});\n\n//# sourceURL=webpack://simplesim/./src/main/electron.js?\n}");
 
 /***/ },
 

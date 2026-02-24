@@ -12,7 +12,7 @@
 			"conditions": [{
 				"type": "talent",
 				"id": "Deadly Reach",
-				"check": "exists"
+				"check": "known"
 			}]
 		},
 		"conditions": [
@@ -119,7 +119,8 @@
 						},
 						"value2": {
 							"type": "stat",
-							"id": "mastery"
+							"id": "mastery",
+							"check": "effect"
 						}
 					},
 					"value2": 1.2,

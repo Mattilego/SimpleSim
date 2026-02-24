@@ -9,13 +9,15 @@ export class WorkerManager {
   }
 
   _initializePool() {
-    for (let i = 0; i < this.poolSize-this.workers.length; i++) {
+	let i = 0;
+    while (this.workers.length < this.poolSize) {
       const worker = new Worker(new URL('../../shared/engine/webWorkerWrapper.js', import.meta.url), { type: 'module' });
       this.workers.push({
         instance: worker,
         busy: false,
         id: i
       });
+	  i++;
     }
   }
 

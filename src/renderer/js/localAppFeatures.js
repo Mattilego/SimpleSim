@@ -1,3 +1,3 @@
-if (require !== undefined){
-	console.log("Nodeintegration enabled")
+if (nodeAPI !== undefined){
+	console.log("Nodeintegration enabled");
 }

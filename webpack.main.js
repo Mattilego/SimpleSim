@@ -1,4 +1,5 @@
 const path = require('path');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
 
 module.exports = {
   mode: 'development',
@@ -8,6 +9,16 @@ module.exports = {
     path: path.resolve(__dirname, 'dist/main'),
     filename: 'electron.js'
   },
+  plugins: [
+    new CopyWebpackPlugin({
+      patterns: [
+        {
+          from: 'src/main/preload.js',
+          to: 'preload.js'
+        }
+      ]
+    })
+  ],
   node: {
     __dirname: false,
     __filename: false
@@ -32,10 +43,7 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'data/[name][ext]'
-        }
+        type: 'json'
       }
     ]
   }

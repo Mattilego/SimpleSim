@@ -51,10 +51,7 @@ module.exports = {
       },
       {
         test: /\.json$/,
-        type: 'asset/resource',
-        generator: {
-          filename: 'data/[name][ext]'
-        }
+        type: 'json'
       }
     ]
   },
