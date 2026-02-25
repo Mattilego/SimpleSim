@@ -1,10 +1,13 @@
 import { APLReader } from "./APLReader.js";
+import { AuraHandler } from "./AuraHandler.js";
+import { JSONEvaluator } from "./JSONEvaluator.js";
 import statCosts from "../../data/statCosts.json";
 
 export class Actor {
 	constructor (level, apl, stats = {}, talents, team = 0, abilities = {}, knownBuffs = {}, knownDebuffs = {}, shortcuts = []){
 		this.level = level;
 		this.stats = stats;
+		this.statPercentageAdditions = {};
 		this.talents = talents;
 		this.abilities = abilities;
 		this.apl = apl;
@@ -18,16 +21,16 @@ export class Actor {
 		this.team = team;
 	}
 
-	useAbility(actors, eventLoop){
-		let [ability, aplEntry] = APLReader.parseAPL(this, actors);
+	useAbility(){
+		let [ability, targetId] = APLReader.parseAPL(this, SharedData.actors);
 		console.log(ability);
-		this.triggerEffects(ability.castEffects, actors, eventLoop);
-		eventLoop.registerEvent(eventLoop.time+ability.GCD/this.stats.haste, {
+		this.triggerEffects(ability.castEffects, targetId, SharedData.actors, SharedData.eventLoop);
+		SharedData.eventLoop.registerEvent(SharedData.eventLoop.time+ability.GCD/this.stats.haste, {
 			type: "checkAPL"
 		});
 	}
 	
-	triggerEffects(effects, actors, eventLoop) {
+	triggerEffects(effects, targetId) {
 		effects.forEach(effect => {
 			switch (effect.type) {
 				case "damage":
@@ -40,7 +43,11 @@ export class Actor {
 					// TODO: Implement resource logic
 					break;
 				case "buff":
-					// TODO: Implement buff logic
+					let target = SharedData.actors[targetId];
+					if (!targetId) {
+						target = this;
+					}
+					AuraHandler.applyBuff(target, this, effect.buff, effect.duration, JSONEvaluator.evaluateValue(this, effect.stacks, {}));
 					break;
 				case "debuff":
 					// TODO: Implement debuff logic
@@ -51,11 +58,11 @@ export class Actor {
 						effects: effect.effects
 					});
 					break;
-				case "useAbility":
-					// TODO: Implement ability usage logic
-					break;
 				case "checkAPL":
-					this.useAbility(actors, eventLoop);
+					this.useAbility();
+					break;
+				case "setResource":
+					this.resources[effect.id] = JSONEvaluator.evaluateValue(this, effect.value, {});
 					break;
 				default:
 					console.error(`Unknown effect type: ${effect.type}`);
@@ -63,17 +70,24 @@ export class Actor {
 		})
 	}
 
-	processStats(actors, eventLoop) {
-		this.triggerEffects(this.abilities.initialize, actors, eventLoop);
+	processStats() {
+		this.triggerEffects(this.abilities._initialize);
 	}
 
-	get statEffects() {
+	getStatEffect(stat) {
 		return {
-			crit: this.applyStatDR(this.stats.crit/statCosts.crit[Math.max(this.level,12)]),
-			haste: this.applyStatDR(this.stats.haste/statCosts.haste[Math.max(this.level,12)]),
-			mastery: this.applyStatDR(this.stats.mastery/statCosts.mastery[Math.max(this.level,12)]),
-			versatility: this.applyStatDR(this.stats.versatility/statCosts.versatility[Math.max(this.level,12)]),
+			crit: this.applyStatDR(this.getStat("crit")/statCosts.crit[Math.max(this.level,12)]),
+			haste: this.applyStatDR(this.getStat("haste")/statCosts.haste[Math.max(this.level,12)]),
+			mastery: this.applyStatDR(this.getStat("mastery")/statCosts.mastery[Math.max(this.level,12)]),
+			versatility: this.applyStatDR(this.getStat("versatility")/statCosts.versatility[Math.max(this.level,12)]),
+		}[stat];
+	}
+
+	getStat(stat) {
+		if (stat === "mainWeaponSpeed") {
+			return this.stats.mainWeaposSpeed/this.getStatEffect("haste");
 		}
+		return this.applyStatChanges(this.stats[stat], stat);
 	}
 
 	applyStatDR(rating) {
@@ -92,7 +106,47 @@ export class Actor {
 		}
 	}
 
-	getModifier(category, type){
-		
+	getModifier(category, types){
+		let mod = 1;
+		const typesSet = new Set(types);
+		this.buffs.forEach(buff => {
+			if (buff.modifiers) {
+				buff.modifiers.forEach(modifier => {
+					if (modifier.category === category && modifier.types.some(type => typesSet.has(type))) {
+						mod *= modifier.value;
+					}
+				})
+			}
+		});
+		this.debuffs.forEach(debuff => {
+			if (debuff.modifiers) {
+				debuff.modifiers.forEach(modifier => {
+					if (modifier.category === category && modifier.types.some(type => typesSet.has(type))) {
+						mod *= modifier.value;
+					}
+				})
+			}
+		});
+		return mod;
+	}
+	
+	applyStatChanges(rating, stat) {
+		let current = rating;
+		const typesSet = new Set([stat]);
+		this.buffs.forEach(buff => {
+			if (buff.statModifiers) {
+				if (buff.statModifiers[stat]) {
+					current = JSONEvaluator.evaluateValue(this, buff.statModifiers[stat], {currentStat: current});
+				}
+			}
+		});
+		this.debuffs.forEach(debuff => {
+			if (debuff.statModifiers) {
+				if (debuff.statModifiers[stat]){
+					current = JSONEvaluator.evaluateValue(this, debuff.statModifiers[stat], {currentStat: current});
+				}
+			}
+		});
+		return rating * mod;
 	}
 }

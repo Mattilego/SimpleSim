@@ -1,228 +1,141 @@
 {
-	"Death Strike": {
-		"charges": 1,
-		"range": 5,
-		"cooldown": 0,
-		"castTime": 0,
-		"GCD": 1,
-		"targets": {
-			"type": "+",
-			"value1": 1,
-			"value2": 2,
-			"conditions": [{
-				"type": "talent",
-				"id": "Deadly Reach",
-				"check": "known"
-			}]
-		},
-		"conditions": [
-			{
-				"type": "resource",
-				"id": "runicPower",
-				"check": "value",
-				"comparison": ">=",
-				"value": {
-					"type": "shortcut",
-					"id": "DeathStrikeCost"
-				}
-			}
-		],
+	"_Initialize": {
 		"castEffects": [
 			{
-				"type": "resource",
-				"id": "runicPower",
-				"change": {
-					"type": "shortcut",
-					"id": "DeathStrikeCost"
-				},
-				"conditions": []
+				"type": "useAbility",
+				"id": "_Crimson Scourge Initializer"
 			},
 			{
-				"type": "removeBuff",
-				"id": "_HemostasisModifier"
-			},
+				"type": "useAbility",
+				"id": "_Riposte Initializer"
+			},{
+				"type": "useAbility",
+				"id": "_Blood Fortification Initializer"
+			},{
+				"type": "useAbility",
+				"id": "_Rune Regeneration Initializer"
+			},{
+				"type": "useAbility",
+				"id": "_Race Initializer"
+			}
+		]
+	},
+	"_Blood Fortification Initializer": {
+		"castEffects": [
 			{
-				"type": "buff",
-				"id": "_HemostasisModifier",
-				"duration": -1,
-				"stacks": 1,
-				"value": {
-					"type": "^",
-					"value1": 1.08,
-					"value2": {
-						"type": "buff",
-						"id": "Hemostasis",
-						"check": "stacks"
-					}
-				}
-			},
-			{
-				"type": "removeBuff",
-				"id": "Hemostasis"
-			},
-			{
-				"type": "heal",
-				"target": "self",
+				"type": "setStat",
+				"id": "maxHp",
 				"value": {
 					"type": "*",
 					"value1": {
-						"type": "shortcut",
-						"id": "BaseDSHeal"
+						"type": "stat",
+						"id": "maxHp"
 					},
-					"value2": {
-						"type": "*",
-						"value1": {
-							"type": "*",
-							"value1": {
-								"type": "*",
-								"value1": 1,
-								"value2": 1.05,
-								"conditions": [
-									{
-										"type": "talent",
-										"id": "Improved Death Strike",
-										"check": "exists"
-									}
-								]
-							},
-							"value2": 1.05,
-							"conditions": [{
-								"type": "talent",
-								"id": "Voracious",
-								"check": "exists"
-							}]
-						},
-						"value2": {
-							"type": "buff",
-							"id": "_HemostasisModifier",
-							"check": "value"
-						}
-					}
-					
-				},
-				"conditions": []
-			},
-			{
-				"type": "buff",
-				"target": "self",
-				"id": "Blood Shield",
-				"duration": 10,
-				"scale": "none",
-				"stacks": 1,
-				"value": {
-					"type": "*",
-					"value1": {
-						"type": "*",
-						"value1": {
-							"type": "shortcut",
-							"id": "BaseDSHeal"
-						},
-						"value2": {
-							"type": "stat",
-							"id": "mastery",
-							"check": "effect"
-						}
-					},
-					"value2": 1.2,
-					"conditions": [
-						{
-							"type": "talent",
-							"id": "Iron Heart",
-							"check": "exists"
-						}
-					]
-				}
-			},
-			{
-				"type": "removeBuff",
-				"id": "Coagulating Blood"
-			},
-			{
-				"type": "buff",
-				"id": "Voracious",
-				"duration": 10,
-				"scale": "none",
-				"stacks": 1,
-				"value": null
-			},
-			{
-				"type": "buff",
-				"id": "Lifeblood",
-				"duration": 4,
-				"scale": "none",
-				"stacks": 1,
-				"value": {
-					"type": "*",
-					"value1": {
-						"type": "shortcut",
-						"id": "BaseDSHeal"
-					},
-					"value2": 0.2,
+					"value2": 1.35,
 					"conditions": [{
-						"type": "talent",
-						"id": "Lifeblood",
-						"check": "exists"
+						"type": "level",
+						"comparison": ">=",
+						"value": 11
+					}]
+				}
+			}, {
+				"type": "setStat",
+				"id": "armor",
+				"value": {
+					"type": "*",
+					"value1": {
+						"type": "stat",
+						"id": "armor"
+					},
+					"value2": 1.35,
+					"conditions": [{
+						"type": "level",
+						"comparison": ">=",
+						"value": 11
 					}]
 				}
 			}
-		],
-		"hitEffects": [
+		]
+	},
+	"_Crimson Scourge Initializer": {
+		"castEffects": [
+			{
+				"type": "registerEventHandler",
+				"id": "abilityUse",
+				"ability": "Auto Attack Main Hand",
+				"effect": {
+					"type": "proc",
+					"chance": 25,
+					"effect": {
+						"type": "buff",
+						"id": "Crimson Scourge"
+					},
+					"conditions": [
+						{
+							"type": "debuff",
+							"id": "Blood Plague",
+							"target": {
+								"type": "parameter",
+								"id": "eventTarget"
+							},
+							"check": "exists"
+						}, {
+							"type": "not",
+							"value": {
+								"type": "buff",
+								"id": "Death and Decay",
+								"check": "exists"
+							}
+						}
+					]
+				},
+				"conditions": [{
+					"type": "level",
+					"comparison": ">=",
+					"value": 21
+				}]
+			}
+		]
+	},
+	"_Riposte Initializer": {
+		"castEffects": [{
+			"type": "buff",
+			"id": "Riposte",
+			"duration": -1,
+			"conditions": [{
+				"type": "level",
+				"comparison": ">=",
+				"value": 29
+			}]
+		}]
+	},
+	"_Rune Regeneration Initializer": {
+		"castEffects": [
+			{
+				"type": "registerEventHandler",
+				"id": "resourceChange",
+				"resource": "rune",
+				"effect": {
+					"type": "event",
+					""
+				}
+			}
+		]
+	},
+	"Auto Attack Main Hand": {
+		"GCD": 0,
+		"cooldown": {
+			"type": "stat",
+			"id": "mainWeaponSpeed"
+		},
+		"castEffects": [
 			{
 				"type": "damage",
 				"damageTypes": ["physical"],
 				"value": {
-					"type": "*",
-					"value1": {
-						"type": "*",
-						"value1": {
-							"type": "*",
-							"value1": 1.5312,
-							"value2": {
-								"type": "buff",
-								"id": "_HemostasisModifier",
-								"check": "value"
-							}
-						},
-						"value2": 0.75,
-						"conditions": [{
-							"type": ">=",
-							"value1": {
-								"type": "parameter",
-								"id": "targetId"
-							},
-							"value2": 1
-						}]
-					},
-					"value2": {
-						"type": "stat",
-						"id": "Strength"
-					}
-				},
-				"conditions": []
-			},{
-				"type": "buff",
-				"id": "Coagulopathy",
-				"duration": 14,
-				"scale": "none",
-				"stacks": 1,
-				"value": null,
-				"conditions": [{
-					"type": "talent",
-					"id": "Coagulopathy",
-					"check": "exists"
-				}]
-			},{
-				"type": "buff",
-				"id": "Icy talons",
-				"duration": 12,
-				"scale": "none",
-				"stacks": 1,
-				"value": null,
-				"conditions": [{
-					"type": "talent",
-					"id": "Icy Talons",
-					"check": "exists"
-				}]
+					"type": "stat",
+					"id": "mainWeaponDamage"
+				}
 			}
 		]
 	}

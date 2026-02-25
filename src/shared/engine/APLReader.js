@@ -9,6 +9,6 @@ export class APLReader {
 			}
 			entry++;
 		}
-		return [ability, apl[entry - 1]];
+		return [ability, apl[entry - 1].target];
 	}
 }

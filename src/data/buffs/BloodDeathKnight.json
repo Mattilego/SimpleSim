@@ -1,0 +1,20 @@
+{
+	"Riposte": {
+		"duration": -1,
+		"applicationEffects": [],
+		"statModifiers": {
+			"parry": {
+				"type": "*",
+				"value1": {
+					"type": "parameter",
+					"id": "currentStat"
+				},
+				"value2": {
+					"type": "stat",
+					"id": "crit",
+					"check": "rating"
+				}
+			}
+		}
+	}
+}

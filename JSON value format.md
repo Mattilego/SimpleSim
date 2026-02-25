@@ -15,7 +15,8 @@ Current lost hp would be:
 		"id": "maxHp"
 	},
 	"value2": {
-		"type": "playerHealth",
+		"type": "resource",
+		"id": "health",
 		"check": "value"
 	}
 }
