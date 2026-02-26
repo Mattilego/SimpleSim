@@ -145,8 +145,8 @@ export class JSONEvaluator {
 					case "buff":
 						switch (value.check) {
 							case "exists":
-								if (value.target){
-									const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+								if (value.targetId){
+									const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 									if (!SharedData.actors[targetId]) {
 										return false;
 									}
@@ -155,8 +155,8 @@ export class JSONEvaluator {
 								return actor.buffs.some((b) => b.id == value.id && b.source == actor);
 							case "duration":
 								let targetActor = actor;
-								if (value.target){
-									const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+								if (value.targetId){
+									const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 									if (!SharedData.actors[targetId]) {
 										return 0;
 									}
@@ -179,8 +179,8 @@ export class JSONEvaluator {
 								}
 							case "stacks":
 								targetActor = actor;
-								if (value.target){
-									const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+								if (value.targetId){
+									const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 									if (!SharedData.actors[targetId]) {
 										return 0;
 									}
@@ -200,8 +200,8 @@ export class JSONEvaluator {
 							
 							case "value":
 								targetActor = actor;
-								if (value.target){
-									const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+								if (value.targetId){
+									const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 									if (!SharedData.actors[targetId]) {
 										return 0;
 									}
@@ -225,8 +225,8 @@ export class JSONEvaluator {
 					case "debuff":
 						switch (value.check){
 							case "exists":
-								if (value.target) {
-									const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+								if (value.targetId) {
+									const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 									if (!SharedData.actors[targetId]) {
 										return false;
 									}
@@ -239,8 +239,8 @@ export class JSONEvaluator {
 									multiplier = actor.gcd;
 								}
 								if (value.comparison) {
-									if (value.target){
-										const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+									if (value.targetId){
+										const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 										if (!SharedData.actors[targetId]){
 											return JSONEvaluator.evaluateValue(actor, {
 												type: value.comparison,
@@ -263,19 +263,19 @@ export class JSONEvaluator {
 										conditions: []
 									}, parameters);
 								} else {
-									if (value.target){
-										const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+									if (value.targetId){
+										const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 										if (!SharedData.actors[targetId]){
 											return 0
 										}
-										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.target, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.duration).reduce((a,b) => Math.max(a,b), 0);
+										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.duration).reduce((a,b) => Math.max(a,b), 0);
 									}
 									return SharedData.actors.filter((a) => a.team != actor.team).map((a) => a.debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.duration).reduce((a,b) => Math.max(a,b), 0)).reduce((a,b) => Math.max(a,b), 0);
 								}
 							case "stacks":
 								if (value.comparison) {
-									if (value.target){
-										const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+									if (value.targetId){
+										const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 										if (!SharedData.actors[targetId]){
 											return JSONEvaluator.evaluateValue(actor, {
 												type: value.comparison,
@@ -286,7 +286,7 @@ export class JSONEvaluator {
 										}
 										return JSONEvaluator.evaluateValue(actor, {
 											type: value.comparison,
-											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.target, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.stacks).reduce((a,b) => Math.max(a,b), 0),
+											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.stacks).reduce((a,b) => Math.max(a,b), 0),
 											value2: value.value,
 											conditions: []
 										}, parameters);
@@ -298,8 +298,8 @@ export class JSONEvaluator {
 										conditions: []
 									}, parameters);
 								} else {
-									if (value.target){
-										const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+									if (value.targetId){
+										const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 										if (!SharedData.actors[targetId]){
 											return 0;
 										}
@@ -309,8 +309,8 @@ export class JSONEvaluator {
 								}
 							case "value":
 								if (value.comparison) {
-									if (value.target){
-										const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+									if (value.targetId){
+										const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 										if (!SharedData.actors[targetId]){
 											return JSONEvaluator.evaluateValue(actor, {
 												type: value.comparison,
@@ -321,7 +321,7 @@ export class JSONEvaluator {
 										}
 										return JSONEvaluator.evaluateValue(actor, {
 											type: value.comparison,
-											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.target, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.value).reduce((a,b) => Math.max(a,b), 0),
+											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.value).reduce((a,b) => Math.max(a,b), 0),
 											value2: value.value,
 											conditions: []
 										}, parameters);
@@ -333,12 +333,12 @@ export class JSONEvaluator {
 										conditions: []
 									}, parameters);
 								} else {
-									if (value.target){
-										const targetId = JSONEvaluator.evaluateValue(actor, value.target, parameters);
+									if (value.targetId){
+										const targetId = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
 										if (!SharedData.actors[targetId]){
 											return 0;
 										}
-										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.target, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.value).reduce((a,b) => Math.max(a,b), 0);
+										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.value).reduce((a,b) => Math.max(a,b), 0);
 									}
 									return SharedData.actors.filter((a) => a.team != actor.team).map((a) => a.debuffs.filter((b) => b.id == value.id && b.source == actor).map((b) => b.value).reduce((a,b) => Math.max(a,b), 0)).reduce((a,b) => Math.max(a,b), 0);
 								}

@@ -8,7 +8,9 @@ export class EventLoop {
 	registerEvent(time, data) {
 		if (time > this.maxTime) return;
 		const index = this.futureEvents.findIndex(event => event.time > time);
-		this.futureEvents.splice(index, 0, { time, data });
+		const event = { time, data }
+		this.futureEvents.splice(index, 0, event);
+		return event;
 	}
 
 	processEvent(actors) {

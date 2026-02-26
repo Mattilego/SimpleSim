@@ -2,6 +2,7 @@ import { APLReader } from "./APLReader.js";
 import { AuraHandler } from "./AuraHandler.js";
 import { JSONEvaluator } from "./JSONEvaluator.js";
 import { SharedData } from "./SharedData.js";
+import { Log } from "./Log.js";
 import statCosts from "../../data/statCosts.json";
 
 export class Actor {
@@ -25,8 +26,9 @@ export class Actor {
 		this.stats.maxHp = 8*this.stats.stamina;
 		this.resources.health = {
 			max: this.stats.maxHp,
-			current: this.stats.maxHp
-		};
+			value: this.stats.maxHp
+		}
+		this.notVerySecureButGoodEnough = new Symbol();
 	}
 
 	useAbility(){
@@ -34,7 +36,8 @@ export class Actor {
 		console.log(ability);
 		this.triggerEffects(ability.castEffects, targetId);
 		SharedData.eventLoop.registerEvent(SharedData.eventLoop.time+ability.GCD/this.getStatEffect("haste"), {
-			type: "checkAPL"
+			type: "checkAPL",
+			security: this.notVerySecureButGoodEnough
 		});
 	}
 	
@@ -52,6 +55,7 @@ export class Actor {
 							targetId = JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), {});
 						}
 					}
+					const currentTarget = SharedData.getActor(targetId);
 					let damage = JSONEvaluator.evaluateValue(this, effect.value, { targetId });
 	
 					// Apply multipliers (Versatility, Sanguine Ground, etc.)
@@ -76,12 +80,12 @@ export class Actor {
 				case "buff":
 					targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, { abilityTarget: abilityTarget || SharedData.actors.indexOf(this) });
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, { abilityTarget: abilityTarget || this.id });
 					} else {
 						if (abilityTarget !== undefined && abilityTarget !== null) {
 							targetId = abilityTarget;
 						} else {
-							targetId = SharedData.actors.indexOf(this);
+							targetId = this.id;
 						}
 					}
 					let target = SharedData.actors[targetId];
@@ -107,14 +111,50 @@ export class Actor {
 						effects: effect.effects
 					});
 					break;
-				case "checkAPL":
-					this.useAbility();
+				case "checkAPL"://Shouldn't be called from abilities, only the event sent by the previous ability ue
+					if (effect.security === this.notVerySecureButGoodEnough) {
+						this.useAbility();
+					} else{
+						Log.warn("checkAPL effect called somewhere other than it should, check ability and aura definitions");
+					}
 					break;
 				case "setResource":
 					this.resources[effect.id] = JSONEvaluator.evaluateValue(this, effect.value, {});
 					break;
 				case "useAbility":
-					this.triggerEffects(this.abilities[effect.id].effects);
+					try {
+						this.triggerEffects(this.abilities[effect.id].effects);
+					} catch (error) {
+						Log.error(`Infinite recursion with ability ${effect.id}, please check ability definition`);
+					}
+					break;
+				case "removeBuff":
+					targetId = -1;
+					if (effect.targetId !== undefined && effect.targetId !== null) {
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, { abilityTarget: abilityTarget || this.id });
+					} else {
+						if (abilityTarget !== undefined && abilityTarget !== null) {
+							targetId = abilityTarget;
+						} else {
+							targetId = this.id;
+						}
+					}
+					target = SharedData.actors[targetId];
+					AuraHandler.removeBuff(target, this, effect.id);
+					break;
+				case "removeDebuff":
+					targetId = -1;
+					if (effect.targetId !== undefined && effect.targetId !== null) {
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, { abilityTarget: abilityTarget || this.id });
+					} else {
+						if (abilityTarget !== undefined && abilityTarget !== null) {
+							targetId = abilityTarget;
+						} else {
+							targetId = this.id;
+						}
+					}
+					target = SharedData.actors[targetId];
+					AuraHandler.removeDebuff(target, this, effect.id);
 					break;
 				default:
 					console.error(`Unknown effect type: ${effect.type}`);
@@ -245,13 +285,43 @@ export class Actor {
 		};
 	}
 
-	takeDamage(damage, sourceActor, types){
-		this.resources.hp -= damage;
-		SharedData.eventLoop.triggerListeners("takeDamage", this, {damage, newHp: this.resources.hp, sourceActor, types});
+	defaultFriendlyTarget(){
+		return {//Highest hp enemy as default
+			type: "findBestActor",
+			relation: "ally",
+			conditions: [],
+			expression: {
+				type: "-",
+				value1: 100,
+				value2: {
+					type: "resource",
+					targetId: {
+						type: "parameter",
+						id: "targetId"
+					},
+					id: "hp",
+					check: "percentage"
+				}
+			}
+		};
 	}
 
-	heal(amount, sourceActor, types){
-		this.resources.hp += amount;
-		SharedData.eventLoop.triggerListeners("heal", this, {amount, newHp: this.resources.hp, sourceActor, types});
+	takeDamage(damage, types, sourceActor){
+		this.resources.health.value -= damage;
+		SharedData.eventLoop.triggerListeners("takeDamage", this, {damage, newHp: this.resources.health, sourceActor, types});
+	}
+
+	heal(amount, types, sourceActor){
+		this.resources.health.value += amount;
+		SharedData.eventLoop.triggerListeners("heal", this, {amount, newHp: this.resources.health, sourceActor, types});
+	}
+
+	get id(){
+		if (this.actorId){
+			return this.actorId;
+		} else{
+			this.actorId = SharedData.actors.indexOf(this);
+			return this.actorId;
+		}
 	}
 }
