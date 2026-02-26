@@ -1,4 +1,24 @@
 {
+	"_RunesToRegenerate": {
+		"type": "min",
+		"value1": {
+			"type": "-",
+			"value1": 6,
+			"value2": {
+				"type": "resource",
+				"id": "runes"
+			}
+		},
+		"value2": {
+			"type": "-",
+			"value1": 3,
+			"value2": {
+				"type": "buff",
+				"id": "_Rune Regeneration",
+				"check": "stacks"
+			}
+		}
+	},
 	"DeathStrikeCost": {
 		"type": "-",
 		"value1": {

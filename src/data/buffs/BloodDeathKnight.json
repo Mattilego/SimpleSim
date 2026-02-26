@@ -1,7 +1,6 @@
 {
-	"Riposte": {
+	"_Riposte": {
 		"duration": -1,
-		"applicationEffects": [],
 		"statModifiers": {
 			"parry": {
 				"type": "*",
@@ -15,6 +14,25 @@
 					"check": "rating"
 				}
 			}
-		}
+		},
+		"reapplicationType": "refresh"
+	},
+	"_Rune Regeneration": {
+		"duration": {
+			"type": "/",
+			"value1": 10,
+			"value2": {
+				"type": "stat",
+				"id": "haste",
+				"check": "effect"
+			}
+		},
+		"expirationEffects": [
+			{
+				"type": "useAbility",
+				"id": "_Regenerate Rune"
+			}
+		],
+		"reapplicationType": "overlap"
 	}
 }

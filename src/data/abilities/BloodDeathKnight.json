@@ -100,7 +100,7 @@
 	"_Riposte Initializer": {
 		"castEffects": [{
 			"type": "buff",
-			"id": "Riposte",
+			"id": "_Riposte",
 			"duration": -1,
 			"conditions": [{
 				"type": "level",
@@ -115,12 +115,56 @@
 				"type": "registerEventHandler",
 				"id": "resourceChange",
 				"resource": "rune",
-				"effect": {
-					"type": "event",
-					""
-				}
+				"effects": [{
+					"type": "useAbility",
+					"id": "_Start Rune Regeneration"
+				}]
 			}
 		]
+	},
+	"_Regenerate Rune": {
+		"castEffects": [
+			{
+				"type": "setResource",
+				"id": "rune",
+				"value": {
+					"type": "min",
+					"value1": 6,
+					"value2": {
+						"type": "+",
+						"value1": 1,
+						"value2": {
+							"type": "resource",
+							"id": "runes"
+						}
+					}
+				},
+				"conditions": []
+			},{
+				"type": "useAbility",
+				"id": "_Start Rune Regeneration"
+			}
+		]
+	},
+	"_Start Rune Regeneration": {
+		"castEffects": [{
+			"type": "buff",
+			"id": "_Rune Regeneration",
+			"stacks": {
+				"type": "shortcut",
+				"id": "_RunesToRegenerate"
+			},
+			"conditions": [
+				{
+					"type": ">=",
+					"value1": {
+						"type": "shortcut",
+						"id": "_RunesToRegenerate"
+					},
+					"value2": 1
+				}
+			]
+		}]
 	},
 	"Auto Attack Main Hand": {
 		"GCD": 0,

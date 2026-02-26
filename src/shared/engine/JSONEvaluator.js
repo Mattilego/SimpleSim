@@ -111,28 +111,32 @@ export class JSONEvaluator {
 							return JSONEvaluator.evaluateValue(actor, value.value1, parameters);
 						}
 					case "resource":
+						const target = actor;
+						if (value.targetId !== undefined && value.targetId !== null) {
+							target = JSONEvaluator.evaluateValue(actor, value.targetId, parameters);
+						}
 						switch (value.check){
 							case "value":
 								if (value.comparison) {
 									return JSONEvaluator.evaluateValue(actor, {
 										type: value.comparison,
-										value1: actor.resources[value.id].value,
+										value1: target.resources[value.id].value,
 										value2: value.value,
 										conditions: []
 									}, parameters);
 								} else{
-									return actor.resources[value.id].value;
+									return target.resources[value.id].value;
 								}
 							case "percentage":
 								if (value.comparison){
 									return JSONEvaluator.evaluateValue(actor, {
 										type: value.comparison,
-										value1: actor.resources[value.id].value,
+										value1: target.resources[value.id].value,
 										value2: value.value / actor.resources[value.id].max*100,
 										conditions: []
 									}, parameters);
 								} else{
-									return actor.resources[value.id].value / actor.resources[value.id].max*100;
+									return target.resources[value.id].value / actor.resources[value.id].max*100;
 								}
 							default:
 								Log.warn("Invalid resource check type: " + value.check + " in " + JSON.stringify(value));
