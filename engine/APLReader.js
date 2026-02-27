@@ -1,5 +1,4 @@
-import { SharedData } from "./SharedData";
-import { JSONEvaluator } from "./JSONEvaluator";
+import { JSONEvaluator } from "./JSONEvaluator.js";
 
 export class APLReader {
 	static parseAPL(initiator) {//Returns the ability definition of the ability to use and the apl entry that triggered it

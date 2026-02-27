@@ -35,6 +35,7 @@ export class Actor {
 		let [ability, targetId] = APLReader.parseAPL(this);
 		console.log(ability);
 		this.triggerEffects(ability.castEffects, targetId);
+		this.cooldowns[ability] = SharedData.eventLoop.time+JSONEvaluator.evaluateValue(this, ability.cooldown, {}) + (ability.castTime?JSONEvaluator.evaluateValue(this, ability.castTime, {})/this.getStatEffect("haste"):0);
 		SharedData.eventLoop.registerEvent(SharedData.eventLoop.time+ability.GCD/this.getStatEffect("haste"), {
 			type: "checkAPL",
 			security: this.notVerySecureButGoodEnough
@@ -62,6 +63,9 @@ export class Actor {
 					damage *= this.getStatEffect("versatility");
 					damage *= this.getModifier("damageDone", effect.damageTypes);
 					damage *= currentTarget.getModifier("damageTaken", effect.damageTypes);
+					if (this.getStatEffect("crit") > Math.random() && effect.noCrit !== true){
+						damage *= 2;
+					}
 	
 					currentTarget.takeDamage(damage, effect.damageTypes, this);
 					break;
@@ -140,7 +144,7 @@ export class Actor {
 						}
 					}
 					target = SharedData.actors[targetId];
-					AuraHandler.removeBuff(target, this, effect.id);
+					target.buffs.find(buff => buff.id === effect.id).duration = 0;
 					break;
 				case "removeDebuff":
 					targetId = -1;
@@ -154,7 +158,7 @@ export class Actor {
 						}
 					}
 					target = SharedData.actors[targetId];
-					AuraHandler.removeDebuff(target, this, effect.id);
+					target.debuffs.find(debuff => debuff.id === effect.id).duration = 0;
 					break;
 				default:
 					console.error(`Unknown effect type: ${effect.type}`);
@@ -171,7 +175,11 @@ export class Actor {
 			crit: this.applyStatDR(this.getStat("crit")/statCosts.crit[Math.max(this.level,12)]),
 			haste: 1+this.applyStatDR(this.getStat("haste")/statCosts.haste[Math.max(this.level,12)]),
 			mastery: this.applyStatDR(this.getStat("mastery")/statCosts.mastery[Math.max(this.level,12)]),
-			versatility: this.applyStatDR(this.getStat("versatility")/statCosts.versatility[Math.max(this.level,12)]),
+			versatility: 1+this.applyStatDR(this.getStat("versatility")/statCosts.versatility[Math.max(this.level,12)]),
+			leech: this.applyStatDR(this.getStat("leech")/statCosts.leech[Math.max(this.level,12)]),
+			parry: this.applyStatDR(this.getStat("parry")/statCosts.parry[Math.max(this.level,12)]),
+			block: this.applyStatDR(this.getStat("block")/statCosts.block[Math.max(this.level,12)]),
+			dodge: this.applyStatDR(this.getStat("dodge")/statCosts.dodge[Math.max(this.level,12)]),
 		}[stat];
 	}
 
@@ -307,8 +315,57 @@ export class Actor {
 	}
 
 	takeDamage(damage, types, sourceActor){
+		damage *= 1-(this.getStatEffect("versatility")-1)/2;
+		if (types.includes("physical") || types.includes("all")) {
+			if (sourceActor.level < 60) {
+				damage *= 1-this.getStat("armor")/(this.getStat("armor")+400+85*sourceActor.level);
+			} else if (sourceActor.level < 80) {
+				damage *= 1-this.getStat("armor")/(this.getStat("armor")+400+85*sourceActor.level+4.5*(sourceActor.level-59));
+			} else if (sourceActor.level < 85) {
+				damage *= 1-this.getStat("armor")/(this.getStat("armor")+400+85*sourceActor.level+4.5*(sourceActor.level-59)+20*(sourceActor.level-80));
+			} else {
+				damage *= 1-this.getStat("armor")/(this.getStat("armor")+400+85*sourceActor.level+4.5*(sourceActor.level-59)+20*(sourceActor.level-80)+22*(sourceActor.level-85));
+			}
+		}
+		damage = this.applyDamageTakenChanges(damage, types, this.resources.health.value);
+
+		let buffId = 0;//Absorbs
+		while (buffId < this.buffs.length && damage > 0) {
+			if (this.buffs[buffId].absorbTypes.includes("all") || types.includes("all") || this.buffs[buffId].absorbTypes.some(type => types.includes(type))) {
+				if (this.buffs[buffId].value > damage) {
+					this.buffs[buffId].value -= damage;
+					damage = 0;
+				} else {
+					damage -= this.buffs[buffId].value;
+					this.buffs[buffId].duration = 0;//Set duration so that it can remove expiration event
+				}
+			}
+			buffId++;
+		}
+
 		this.resources.health.value -= damage;
 		SharedData.eventLoop.triggerListeners("takeDamage", this, {damage, newHp: this.resources.health, sourceActor, types});
+	}
+
+	applyDamageTakenChanges(damage, types, currentHp){
+		for (let i = 0; i < this.buffs.length; i++) {
+			if (this.buffs[i].damagetakenChange && (this.buffs[i].types.includes("all") || types.includes("all") || this.buffs[i].types.some(type => types.includes(type)))){
+				damage = JSONEvaluator.evaluateValue(this, this.buffs[i].damagetakenChange, {damage, currentHp});
+			}
+		}
+		return damage;
+	}
+
+	checkForHit(parryable, dodgeable) {
+		if (parryable && this.getStatEffect("parry") > Math.random()) {
+			SharedData.eventLoop.triggerListeners("parry", this);
+			return false;
+		}
+		if (dodgeable && this.getStatEffect("dodge") > Math.random()) {
+			SharedData.eventLoop.triggerListeners("dodge", this);
+			return false;
+		}
+		return true;
 	}
 
 	heal(amount, types, sourceActor){

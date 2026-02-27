@@ -34,5 +34,49 @@
 			}
 		],
 		"reapplicationType": "overlap"
+	},
+	"Will of the Necropolis": {
+		"duration": -1,
+		"reapplicationType": "refresh",
+		"damagetakenChange": {
+			"type": "-",
+			"value1": { "type": "parameter", "id": "damage" },
+			"value2": {
+				"type": "*",
+				"value1": {
+					"type": "max",
+					"value1": 0,
+					"value2": {
+						"type": "-",
+						"value1": { "type": "parameter", "id": "damage" },
+						"value2": {
+							"type": "max",
+							"value1": 0,
+							"value2": {
+								"type": "-",
+								"value1": { "type": "parameter", "id": "currentHp" },
+								"value2": {
+									"type": "*",
+									"value1": 0.35,
+									"value2": { "type": "resource", "id": "health", "check": "max" }
+								}
+							}
+						}
+					}
+				},
+				"value2": {
+					"type": "+",
+					"value1": 0.15,
+					"value2": 0.15,
+					"conditions": [{
+						"type": "talent",
+						"id": "Will of the Necropolis",
+						"check": "points",
+						"comparison": "=",
+						"value": 2
+					}]
+				}
+			}
+		}
 	}
 }

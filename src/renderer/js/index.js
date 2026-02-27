@@ -4,6 +4,7 @@ import '../css/tooltips.css';
 import '../css/screenSizeChanges.css';
 
 import './siteNavigation.js';
+import "./UserDataRetiever.js";
 
 import './localAppFeatures.js';
 

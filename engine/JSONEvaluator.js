@@ -1,4 +1,4 @@
-import { SharedData } from "./SharedData";
+import { SharedData } from "./SharedData.js";
 
 export class JSONEvaluator {
 	static evaluateValue(actor, value, parameters = {}) {

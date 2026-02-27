@@ -390,6 +390,37 @@ section {
 						background-position: right;
 					}
 				}
+
+				.apexTalents {
+					grid-area: apex;
+					display: grid;
+					gap: 5px;
+					grid-template-columns: repeat(2, 1fr);
+					grid-template-rows: repeat(3, auto);
+					grid-template-areas:
+						"a a"
+						"b c"
+						"d d";
+					input {
+						width: 25px;
+						margin: auto;
+					}
+					.apexTalentNode1 {
+						grid-area: a;
+					}
+
+					.apexTalentNode2 {
+						grid-area: b;
+					}
+
+					.apexTalentNode3 {
+						grid-area: c;
+					}
+
+					.apexTalentNode4 {
+						grid-area: d;
+					}
+				}
 			}
 
 			.heroTalentContainers{
@@ -988,7 +1019,8 @@ section {
 					"bp . lb eb vo . bf"
 					". pi br ih blb co ."
 					". bm sg bs cs rt ."
-					". sb pt . cn ue .";
+					". sb pt . cn ue ."
+					"apex apex apex apex apex apex apex";
 
 				#talentHeartStrike {
 					grid-area: hs;
@@ -1197,6 +1229,12 @@ section {
 				#talentUmbilicusEternus {
 					grid-area: ue;
 					background-image: url("https://wow.zamimg.com/images/wow/icons/large/artifactability_blooddeathknight_umbilicuseternus.jpg");/*Wow, properly named*/
+				}
+
+				#talentNodesDanceOfMidnight{
+					input {
+						background-image: url("https://wow.zamimg.com/images/wow/icons/large/inv12_apextalent_deathknight_danceofmidnight.jpg");
+					}
 				}
 			}
 		}
