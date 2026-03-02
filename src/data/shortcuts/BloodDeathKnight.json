@@ -19,58 +19,49 @@
 			}
 		}
 	},
-	"DeathStrikeCost": {
-		"type": "-",
-		"value1": {
-			"type": "-",
-			"value1": {
+	"UseRune": [
+		{
+			"type": "setResource",
+			"id": "runes",
+			"value": {
 				"type": "-",
-				"value1": 45,
-				"value2": 5,
-				"conditions": [
-					{
-						"type": "talent",
-						"id": "Improved Death Strike",
-						"check": "exists"
-					}
-				]
-			},
-			"value2": 5,
-			"conditions": [
-				{
-					"type": "buff",
-					"id": "Ossuary",
-					"check": "exists"
+				"value1": {
+					"type": "resource",
+					"id": "runes",
+					"check": "value"
+				},
+				"value2": {
+					"type": "parameter",
+					"id": "amount"
 				}
-			]
-		},
-		"value2": 10,
-		"conditions": [
-			{
-				"type": "buff",
-				"id": "Blood Draw Cost Reduction",
-				"check": "exists"
 			}
-		]
-	},
-	"BaseDSHeal": {
-		"type": "max",
-		"value1": {
-			"type": "*",
-			"value1": 0.07,
-			"value2": {
-				"type": "stat",
-				"id": "maxHp"
+		}, {
+			"type": "setResource",
+			"id": "runicPower",
+			"value": {
+				"type": "min",
+				"value1": {
+					"type": "resource",
+					"id": "runicPower",
+					"check": "max"
+				},
+				"value2": {
+					"type": "+",
+					"value1": {
+						"type": "resource",
+						"id": "runicPower",
+						"check": "value"
+					},
+					"value2": {
+						"type": "*",
+						"value1": 10,
+						"value2": {
+							"type": "parameter",
+							"id": "amount"
+						}
+					}
+				}
 			}
-		},
-		"value2": {
-			"type": "*",
-			"value1": {
-				"type": "buff",
-				"id": "Coagulating Blood",
-				"check": "value"
-			},
-			"value2": 0.2
 		}
-	}
+	]
 }

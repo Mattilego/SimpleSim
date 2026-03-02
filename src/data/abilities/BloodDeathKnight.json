@@ -16,9 +16,24 @@
 				"id": "_Rune Regeneration Initializer"
 			},{
 				"type": "useAbility",
+				"id": "_Will of the Necropolis Initializer"
+			},{
+				"type": "useAbility",
 				"id": "_Race Initializer"
 			}
 		]
+	},
+	"_Will of the Necropolis Initializer": {
+		"castEffects": [{
+			"type": "buff",
+			"id": "_Will of the Necropolis",
+			"duration": -1,
+			"conditions": [{
+				"type": "talent",
+				"id": "Will of the Necropolis",
+				"check": "known"
+			}]
+		}]
 	},
 	"_Blood Fortification Initializer": {
 		"castEffects": [
@@ -114,7 +129,7 @@
 			{
 				"type": "registerEventHandler",
 				"id": "resourceChange",
-				"resource": "rune",
+				"resource": "runes",
 				"effects": [{
 					"type": "useAbility",
 					"id": "_Start Rune Regeneration"
@@ -126,7 +141,7 @@
 		"castEffects": [
 			{
 				"type": "setResource",
-				"id": "rune",
+				"id": "runes",
 				"value": {
 					"type": "min",
 					"value1": 6,
@@ -167,11 +182,6 @@
 		}]
 	},
 	"Auto Attack Main Hand": {
-		"GCD": 0,
-		"cooldown": {
-			"type": "stat",
-			"id": "mainWeaponSpeed"
-		},
 		"castEffects": [
 			{
 				"type": "damage",
@@ -179,6 +189,63 @@
 				"value": {
 					"type": "stat",
 					"id": "mainWeaponDamage"
+				},
+				"missable": true,
+				"dodgeable": true,
+				"parryable": true,
+				"blockable": true
+			}, {
+				"type": "event",
+				"time": {
+					"type": "+",
+					"value1": {
+						"type": "fightData",
+						"id": "time"
+					},
+					"value2": {
+						"type": "stat",
+						"id": "mainWeaponSpeed",
+						"check": "value"
+					}
+				},
+				"effects": [{
+					"type": "useAbility",
+					"id": "Auto Attack Main Hand"
+				}]
+			}
+		]
+	},
+	"Rune Strike": {
+		"GCD": 1,
+		"cooldown": 0,
+		"conditions": [
+			{
+				"type": "resource",
+				"id": "runes",
+				"check": "value",
+				"comparison": ">=",
+				"value": 1
+			}, {
+				"type": "talent",
+				"id": "Heart Strike",
+				"check": "known"
+			}
+		],
+		"castEffects": [
+			{
+				"type": "shortcut",
+				"id": "UseRune",
+				"parameters": {
+					"amount": 1
+				}
+			}, {
+				"type": "damage",
+				"value": {
+					"type": "shortcut",
+					"id": "%strength",
+					"parameters": {
+						"value": 60
+					}
 				}
 			}
 		]

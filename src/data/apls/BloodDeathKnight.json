@@ -1,9 +1,6 @@
 [
 	{
-		"ability": "Auto Attack Main Hand",
-		"conditions": []
-	},{
-		"ability": "Death's Caress",
+		"ability": "Rune Strike",
 		"conditions": []
 	}
 ]

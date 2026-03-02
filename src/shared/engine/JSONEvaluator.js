@@ -216,7 +216,7 @@ export class JSONEvaluator {
 										conditions: []
 									}, parameters));
 								} else{
-									return matchingBuffs.map((b) => b.value).reduce((a,b) => Math.max(a,b), 0);
+									return matchingBuffs.map((b) => b.value).reduce((a,b) => a+b, 0);
 								}
 							default:
 								Log.warn("Invalid buff check type: " + value.check + " in " + JSON.stringify(value));
@@ -459,6 +459,11 @@ export class JSONEvaluator {
 								}
 								return fightData.time;
 						}
+					case "proc":
+						if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)){
+							return actor.procHandler.checkProc(value.id, value.chance || value.ppm || value.rppm, value.type);
+						}
+						return false;
 				}
 			}
 		} catch (e) {

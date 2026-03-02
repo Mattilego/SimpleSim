@@ -1,9 +1,9 @@
 {
 	"_Riposte": {
 		"duration": -1,
-		"statModifiers": {
+		"statChanges": {
 			"parry": {
-				"type": "*",
+				"type": "+",
 				"value1": {
 					"type": "parameter",
 					"id": "currentStat"
@@ -35,7 +35,7 @@
 		],
 		"reapplicationType": "overlap"
 	},
-	"Will of the Necropolis": {
+	"_Will of the Necropolis": {
 		"duration": -1,
 		"reapplicationType": "refresh",
 		"damagetakenChange": {
