@@ -1,12 +1,11 @@
 import { Aura } from "./Aura.js";
 import { SharedData } from "./SharedData.js";
 
-
 export class AuraHandler {
 	static applyAura(actor, sourceActor, aura, duration, stacks, isBuff) {
 		let modifiedAura = null;
-		if (actor[isBuff ? "buffs" : "debuffs"].some(b => b.id === aura && b.source === sourceActor)) {
-			const currentMatch = actor[isBuff ? "buffs" : "debuffs"].find(b => b.id === aura && b.source === sourceActor);
+		if (actor[isBuff ? "buffs" : "debuffs"].some((b) => b.id === aura && b.source === sourceActor)) {
+			const currentMatch = actor[isBuff ? "buffs" : "debuffs"].find((b) => b.id === aura && b.source === sourceActor);
 			modifiedAura = currentMatch;
 			switch (sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].reapplicationType) {
 				case "refresh":
@@ -41,12 +40,12 @@ export class AuraHandler {
 					break;
 			}
 		} else {
-			modifiedAura = new Aura(aura, duration, stacks, sourceActor)
+			modifiedAura = new Aura(aura, duration, stacks, sourceActor);
 			actor[isBuff ? "buffs" : "debuffs"].push(modifiedAura);
-			SharedData.eventLoop.registerEvent(modifiedAura.expirationTime, {source: sourceActor, effects:[{type: isBuff ? "removeBuff" : "removeDebuff", id: aura, targetId: actor.id}]});
+			SharedData.eventLoop.registerEvent(modifiedAura.expirationTime, { source: sourceActor, effects: [{ type: isBuff ? "removeBuff" : "removeDebuff", id: aura, targetId: actor.id }] });
 			actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
 		}
-		SharedData.eventLoop.triggerListeners(isBuff ? "applyBuff" : "applyDebuff", actor, {aura, sourceActor, duration, stacks});
+		SharedData.eventLoop.triggerListeners(isBuff ? "applyBuff" : "applyDebuff", actor, { aura, sourceActor, duration, stacks });
 	}
 
 	static applyBuff(actor, sourceActor, buff, duration, stacks) {

@@ -2,83 +2,83 @@ import { DefaultSpecDataLoader } from "./DefaultSpecDataLoader";
 
 export class UserDataRetiever {
 	static nameToId = {
-		"Blood Death Knight": "bdk",
-		"Frost Death Knight": "fdk",
-		"Unholy Death Knight": "udk",
-		"Havoc Demon Hunter": "vdh",
-		"Vengeance Demon Hunter": "vdh",
-		"Devourer Demon Hunter": "ddh",
-		"Balance Druid": "bd",
-		"Feral Druid": "fd",
-		"Restoration Druid": "rd",
-		"Guardian Druid": "gd",
-		"Devastation Evoker": "de",
-		"Augmentation Evoker": "ae",
-		"Preservation Evoker": "pe",
-		"Arcane Mage": "am",
-		"Fire Mage": "fim",
-		"Frost Mage": "frm",
-		"Brewmaster Monk": "bmm",
-		"Mistweaver Monk": "mwm",
-		"Windwalker Monk": "wwm",
-		"Holy Paladin": "hp",
-		"Protection Paladin": "pp",
-		"Retribution Paladin": "rp",
-		"Discipline Priest": "dp",
-		"Holy Priest": "hpr",
-		"Shadow Priest": "sp",
-		"Elemental Shaman": "els",
-		"Enhancement Shaman": "ens",
-		"Restoration Shaman": "rs",
-		"Affliction Warlock": "al",
-		"Demonology Warlock": "dml",
-		"Destruction Warlock": "desl",
-		"Arms Warrior": "aw",
-		"Fury Warrior": "fw",
-		"Protection Warrior": "pw"
+		"BloodDeathKnight": "bdk",
+		"FrostDeathKnight": "fdk",
+		"UnholyDeathKnight": "udk",
+		"HavocDemonHunter": "vdh",
+		"VengeanceDemonHunter": "vdh",
+		"DevourerDemonHunter": "ddh",
+		"BalanceDruid": "bd",
+		"FeralDruid": "fd",
+		"RestorationDruid": "rd",
+		"GuardianDruid": "gd",
+		"DevastationEvoker": "de",
+		"AugmentationEvoker": "ae",
+		"PreservationEvoker": "pe",
+		"ArcaneMage": "am",
+		"FireMage": "fim",
+		"FrostMage": "frm",
+		"BrewmasterMonk": "bmm",
+		"MistweaverMonk": "mwm",
+		"WindwalkerMonk": "wwm",
+		"HolyPaladin": "hp",
+		"ProtectionPaladin": "pp",
+		"RetributionPaladin": "rp",
+		"DisciplinePriest": "dp",
+		"HolyPriest": "hpr",
+		"ShadowPriest": "sp",
+		"ElementalShaman": "els",
+		"EnhancementShaman": "ens",
+		"RestorationShaman": "rs",
+		"AfflictionWarlock": "al",
+		"DemonologyWarlock": "dml",
+		"DestructionWarlock": "desl",
+		"ArmsWarrior": "aw",
+		"FuryWarrior": "fw",
+		"ProtectionWarrior": "pw"
 	}
 
 	static specPrimaryStats = {
-		"Blood Death Knight": "strength",
-		"Frost Death Knight": "strength",
-		"Unholy Death Knight": "strength",
-		"Havoc Demon Hunter": "agility",
-		"Vengeance Demon Hunter": "agility",
-		"Devourer Demon Hunter": "intellect",
-		"Balance Druid": "intellect",
-		"Feral Druid": "agility",
-		"Restoration Druid": "intellect",
-		"Guardian Druid": "agility",
-		"Devastation Evoker": "intellect",
-		"Augmentation Evoker": "intellect",
-		"Preservation Evoker": "intellect",
-		"Arcane Mage": "intellect",
-		"Fire Mage": "intellect",
-		"Frost Mage": "intellect",
-		"Brewmaster Monk": "agility",
-		"Mistweaver Monk": "agility",
-		"Windwalker Monk": "intellect",
-		"Holy Paladin": "intellect",
-		"Protection Paladin": "strength",
-		"Retribution Paladin": "strength",
-		"Discipline Priest": "intellect",
-		"Holy Priest": "intellct",
-		"Shadow Priest": "intellect",
-		"Elemental Shaman": "intellect",
-		"Enhancement Shaman": "agility",
-		"Restoration Shaman": "intellect",
-		"Affliction Warlock": "intellect",
-		"Demonology Warlock": "intellect",
-		"Destruction Warlock": "intellect",
-		"Arms Warrior": "strength",
-		"Fury Warrior": "strength",
-		"Protection Warrior": "strength"
+		"BloodDeathKnight": "strength",
+		"FrostDeathKnight": "strength",
+		"UnholyDeathKnight": "strength",
+		"HavocDemonHunter": "agility",
+		"VengeanceDemonHunter": "agility",
+		"DevourerDemonHunter": "intellect",
+		"BalanceDruid": "intellect",
+		"FeralDruid": "agility",
+		"RestorationDruid": "intellect",
+		"GuardianDruid": "agility",
+		"DevastationEvoker": "intellect",
+		"AugmentationEvoker": "intellect",
+		"PreservationEvoker": "intellect",
+		"ArcaneMage": "intellect",
+		"FireMage": "intellect",
+		"FrostMage": "intellect",
+		"BrewmasterMonk": "agility",
+		"MistweaverMonk": "agility",
+		"WindwalkerMonk": "intellect",
+		"HolyPaladin": "intellect",
+		"ProtectionPaladin": "strength",
+		"RetributionPaladin": "strength",
+		"DisciplinePriest": "intellect",
+		"HolyPriest": "intellct",
+		"ShadowPriest": "intellect",
+		"ElementalShaman": "intellect",
+		"EnhancementShaman": "agility",
+		"RestorationShaman": "intellect",
+		"AfflictionWarlock": "intellect",
+		"DemonologyWarlock": "intellect",
+		"DestructionWarlock": "intellect",
+		"ArmsWarrior": "strength",
+		"FuryWarrior": "strength",
+		"ProtectionWarrior": "strength"
 	}
 
 
 	static getSpec() {
-		const input = document.querySelector('input[name="spec"]:checked');
-		return input.value;
+		const spec = document.querySelector('input[name="spec"]:checked').value;
+		return spec[0].toUpperCase()+spec.slice(1);
 	}
 
 	static getTalents(spec) {
@@ -87,9 +87,9 @@ export class UserDataRetiever {
 		const classTalentsDiv = specTalentDiv.parentElement.querySelector(".classTalents");
 		let heroTalentDivs = specTalentDiv.parentElement.querySelectorAll(".heroTalents");
 		heroTalentDivs = Array.from(heroTalentDivs).filter((div) => div.style.display !== "none");//Filter out inactive hero talents
-		const classTalentInputs = classTalentsDiv.querySelectorAll("input");
-		const heroTalentInputs = heroTalentDivs.map((div) => div.querySelectorAll("input"));
-		const specTalentInputs = specTalentDiv.querySelectorAll("input");
+		const classTalentInputs = Array.from(classTalentsDiv.querySelectorAll("input"));
+		const heroTalentInputs = heroTalentDivs.map((div) => Array.from(div.querySelectorAll("input")));
+		const specTalentInputs = Array.from(specTalentDiv.querySelectorAll("input"));
 		const nonHeroTalentInputs = classTalentInputs.concat(specTalentInputs);
 		nonHeroTalentInputs.forEach((input) => {
 			const talentObject = {};
@@ -170,15 +170,13 @@ export class UserDataRetiever {
 				debuffs: {},
 				shortcuts: {},
 				abilities: {
-					"Auto Attack Main Hand": DefaultSpecDataLoader.loadAbilities("BloodDeathKnight")["Auto Attack Main Hand"],//Stealing this one
-					"Tank Buster": {
-						castEffects: {
-
-						},
-						
-					}
-				}
-
+					"_Initialize": {castEffects: []},
+					"Auto Attack Main Hand": DefaultSpecDataLoader.loadAbilities("BloodDeathKnight")["Auto Attack Main Hand"]//Stealing this one
+				},
+				apl: [],
+				name: "enemy_"+i,
+				team: 1,
+				level: parseInt(document.getElementById("levelInput").value)
 			}
 			actors.push(actor);
 		}
@@ -187,7 +185,29 @@ export class UserDataRetiever {
 
 	static getRequestObject() {
 		const spec = this.getSpec();
+		console.log(spec);
 		const stats = this.getStats(spec);
 		const talents = this.getTalents(spec);
+		const enemies = this.generateEnemyActors();
+		const actors = [{
+			stats: stats,
+			talents: talents,
+			buffs: DefaultSpecDataLoader.loadBuffs(spec),
+			debuffs: DefaultSpecDataLoader.loadDebuffs(spec),
+			shortcuts: DefaultSpecDataLoader.loadShortcuts(spec),
+			abilities: DefaultSpecDataLoader.loadAbilities(spec),
+			apl: DefaultSpecDataLoader.loadApl(spec),
+			name: "player",
+			team: 0,
+			level: parseInt(document.getElementById("levelInput").value)
+		}].concat(enemies);
+		return {
+			setup: {
+				actors: actors,
+			},
+			config: {
+				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value)
+			}
+		};
 	}
 }

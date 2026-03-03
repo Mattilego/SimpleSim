@@ -1,4 +1,13 @@
 {
+	"hostileTarget": {
+		"type": "!=",
+		"value1": -1,
+		"value2": {
+			"type": "findActor",
+			"relation": "enemy",
+			"conditions": []
+		}
+	},
 	"_RunesToRegenerate": {
 		"type": "min",
 		"value1": {

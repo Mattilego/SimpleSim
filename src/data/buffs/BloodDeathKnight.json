@@ -17,6 +17,27 @@
 		},
 		"reapplicationType": "refresh"
 	},
+	"_Blood Fortification": {
+		"duration": -1,
+		"statModifiers": {
+			"stamina": {
+				"type": "*",
+				"value1": {
+					"type": "parameter",
+					"id": "currentStat"
+				},
+				"value2": 1.35
+			},
+			"armor": {
+				"type": "*",
+				"value1": {
+					"type": "parameter",
+					"id": "currentStat"
+				},
+				"value2": 1.35
+			}
+		}
+	},
 	"_Rune Regeneration": {
 		"duration": {
 			"type": "/",

@@ -17,9 +17,6 @@
 			},{
 				"type": "useAbility",
 				"id": "_Will of the Necropolis Initializer"
-			},{
-				"type": "useAbility",
-				"id": "_Race Initializer"
 			}
 		]
 	},
@@ -38,37 +35,14 @@
 	"_Blood Fortification Initializer": {
 		"castEffects": [
 			{
-				"type": "setStat",
-				"id": "maxHp",
-				"value": {
-					"type": "*",
-					"value1": {
-						"type": "stat",
-						"id": "maxHp"
-					},
-					"value2": 1.35,
-					"conditions": [{
-						"type": "level",
-						"comparison": ">=",
-						"value": 11
-					}]
-				}
-			}, {
-				"type": "setStat",
-				"id": "armor",
-				"value": {
-					"type": "*",
-					"value1": {
-						"type": "stat",
-						"id": "armor"
-					},
-					"value2": 1.35,
-					"conditions": [{
-						"type": "level",
-						"comparison": ">=",
-						"value": 11
-					}]
-				}
+				"type": "buff",
+				"id": "_Blood Fortification",
+				"duration": -1,
+				"conditions": [{
+					"type": "level",
+					"comparison": ">=",
+					"value": 11
+				}]
 			}
 		]
 	},
@@ -77,6 +51,7 @@
 			{
 				"type": "registerEventHandler",
 				"id": "abilityUse",
+				"targetId": -1,
 				"ability": "Auto Attack Main Hand",
 				"effect": {
 					"type": "proc",
@@ -126,6 +101,17 @@
 	},
 	"_Rune Regeneration Initializer": {
 		"castEffects": [
+			{
+				"type": "createResource",
+				"id": "runes",
+				"initialValue": 6,
+				"maxValue": 6
+			},{
+				"type": "createResource",
+				"id": "runicPower",
+				"initialValue": 0,
+				"maxValue": 125
+			},
 			{
 				"type": "registerEventHandler",
 				"id": "resourceChange",
@@ -226,9 +212,15 @@
 				"comparison": ">=",
 				"value": 1
 			}, {
-				"type": "talent",
-				"id": "Heart Strike",
-				"check": "known"
+				"type": "not",
+				"conditions": [{
+					"type": "talent",
+					"id": "Heart Strike",
+					"check": "known"
+				}]
+			}, {
+				"type": "shortcut",
+				"id": "hostileTarget"
 			}
 		],
 		"castEffects": [
@@ -240,6 +232,7 @@
 				}
 			}, {
 				"type": "damage",
+				"damageTypes": ["physical"],
 				"value": {
 					"type": "shortcut",
 					"id": "%strength",

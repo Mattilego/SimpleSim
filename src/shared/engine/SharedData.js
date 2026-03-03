@@ -1,6 +1,5 @@
 export class SharedData {
-	constructor(){}
+	constructor() {}
 	static actors = [];
 	static eventLoop = null;
-	
 }
