@@ -1,12 +1,14 @@
 import { SharedData } from "./SharedData.js";
 
 export class Aura {
-	constructor(id, duration, stacks, source) {
+	constructor(id, duration, stacks, source, isBuff, appliedOn) {
 		this.id = id;
-		this.expirationTime = duration > 0 ? SharedData.time + duration : Infinity;
+		this.expirationTime = duration > 0 ? SharedData.eventLoop.time + duration : Infinity;
 		this.stacks = stacks;
 		this.source = source;
-		this.expirationEvent = null;
+		this.expirationEvent = { source: source, effects: [{ type: isBuff ? "removeBuff" : "removeDebuff", id: this.id, targetId: appliedOn }] };
+		SharedData.eventLoop.registerEvent(this.expirationTime, this.expirationEvent);
+
 	}
 
 	set duration(duration) {

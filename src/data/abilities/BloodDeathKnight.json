@@ -17,6 +17,9 @@
 			},{
 				"type": "useAbility",
 				"id": "_Will of the Necropolis Initializer"
+			},{
+				"type": "useAbility",
+				"id": "Auto Attack Main Hand"
 			}
 		]
 	},
@@ -52,7 +55,12 @@
 				"type": "registerEventHandler",
 				"id": "abilityUse",
 				"targetId": -1,
-				"ability": "Auto Attack Main Hand",
+				"eventConditions": [{
+					"type": "parameter",
+					"id": "ability",
+					"comparison": "=",
+					"value": "Auto Attack Main Hand"
+				}],
 				"effect": {
 					"type": "proc",
 					"chance": 25,
@@ -115,7 +123,13 @@
 			{
 				"type": "registerEventHandler",
 				"id": "resourceChange",
-				"resource": "runes",
+				"targetId": -1,
+				"eventConditions": [{
+					"type": "parameter",
+					"id": "resource",
+					"comparison": "=",
+					"value": "runes"
+				}],
 				"effects": [{
 					"type": "useAbility",
 					"id": "_Start Rune Regeneration"
@@ -141,9 +155,6 @@
 					}
 				},
 				"conditions": []
-			},{
-				"type": "useAbility",
-				"id": "_Start Rune Regeneration"
 			}
 		]
 	},
@@ -154,6 +165,15 @@
 			"stacks": {
 				"type": "shortcut",
 				"id": "_RunesToRegenerate"
+			},
+			"duration": {
+				"type": "/",
+				"value1": 10,
+				"value2": {
+					"type": "stat",
+					"id": "haste",
+					"check": "effect"
+				}
 			},
 			"conditions": [
 				{

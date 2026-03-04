@@ -219,20 +219,18 @@ export class JSONEvaluator {
 								}
 								matchingBuffs = targetActor.buffs.filter((b) => b.id == value.id && b.source == actor);
 								if (value.comparison) {
-									return matchingBuffs.some((b) =>
-										JSONEvaluator.evaluateValue(
-											actor,
-											{
-												type: value.comparison,
-												value1: b.stacks,
-												value2: value.value,
-												conditions: []
-											},
-											parameters
-										)
+									return JSONEvaluator.evaluateValue(
+										actor,
+										{
+											type: value.comparison,
+											value1: matchingBuffs.map((b) => b.stacks).reduce((a, b) => a + b, 0),
+											value2: value.value,
+											conditions: []
+										},
+										parameters
 									);
 								} else {
-									return matchingBuffs.map((b) => b.stacks).reduce((a, b) => Math.max(a, b), 0);
+									return matchingBuffs.map((b) => b.stacks).reduce((a, b) => a + b, 0);
 								}
 
 							case "value":
@@ -372,7 +370,7 @@ export class JSONEvaluator {
 												value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs
 													.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.stacks)
-													.reduce((a, b) => Math.max(a, b), 0),
+													.reduce((a, b) => a + b, 0),
 												value2: value.value,
 												conditions: []
 											},
@@ -389,9 +387,9 @@ export class JSONEvaluator {
 													a.debuffs
 														.filter((b) => b.id == value.id && b.source == actor)
 														.map((b) => b.stacks)
-														.reduce((a, b) => Math.max(a, b), 0)
+														.reduce((a, b) => a + b, 0)
 												)
-												.reduce((a, b) => Math.max(a, b), 0),
+												.reduce((a, b) => a + b, 0),
 											value2: value.value,
 											conditions: []
 										},
@@ -406,7 +404,7 @@ export class JSONEvaluator {
 										return SharedData.actors[targetId].debuffs
 											.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.stacks)
-											.reduce((a, b) => Math.max(a, b), 0);
+											.reduce((a, b) => a + b, 0);
 									}
 									return SharedData.actors
 										.filter((a) => a.team != actor.team)
@@ -414,9 +412,9 @@ export class JSONEvaluator {
 											a.debuffs
 												.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.stacks)
-												.reduce((a, b) => Math.max(a, b), 0)
+												.reduce((a, b) => a + b, 0)
 										)
-										.reduce((a, b) => Math.max(a, b), 0);
+										.reduce((a, b) => a + b, 0);
 								}
 							case "value":
 								if (value.comparison) {
@@ -492,6 +490,18 @@ export class JSONEvaluator {
 								return 0;
 						}
 					case "parameter":
+						if (value.comparison) {
+							return JSONEvaluator.evaluateValue(
+								actor,
+								{
+									type: value.comparison,
+									value1: parameters[value.id],
+									value2: value.value,
+									conditions: []
+								},
+								parameters
+							);
+						}
 						return parameters[value.id];
 					case "shortcut":
 						if (value.parameters) {
@@ -618,7 +628,7 @@ export class JSONEvaluator {
 										parameters
 									);
 								}
-								return fightData.time;
+								return SharedData.eventLoop.time;
 						}
 					case "proc":
 						if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)) {

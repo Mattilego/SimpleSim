@@ -120,7 +120,9 @@ export class UserDataRetiever {
 			leech: 0,
 			parry: 0,
 			block: 0,
-			dodge: 0
+			dodge: 0,
+			mainWeaponDamage: 1,
+			mainWeaponSpeed: 1
 		};
 		stats[this.specPrimaryStats[spec]] = document.getElementById("primaryStatInput").value;
 		stats.armor = document.getElementById("armorStatInput").value;
@@ -206,7 +208,7 @@ export class UserDataRetiever {
 				actors: actors,
 			},
 			config: {
-				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value)
+				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value*60)
 			}
 		};
 	}

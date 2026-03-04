@@ -1,5 +1,6 @@
 import { Aura } from "./Aura.js";
 import { SharedData } from "./SharedData.js";
+import { Log } from "./Log.js"
 
 export class AuraHandler {
 	static applyAura(actor, sourceActor, aura, duration, stacks, isBuff) {
@@ -21,7 +22,7 @@ export class AuraHandler {
 					}
 					break;
 				case "overlap":
-					actor[isBuff ? "buffs" : "debuffs"].push(new Aura(aura, duration, stacks, sourceActor));
+					actor[isBuff ? "buffs" : "debuffs"].push(new Aura(aura, duration, stacks, sourceActor, isBuff, actor.id));
 					actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
 					break;
 				case "stackRefresh":
@@ -40,9 +41,8 @@ export class AuraHandler {
 					break;
 			}
 		} else {
-			modifiedAura = new Aura(aura, duration, stacks, sourceActor);
+			modifiedAura = new Aura(aura, duration, stacks, sourceActor, isBuff, actor.id);
 			actor[isBuff ? "buffs" : "debuffs"].push(modifiedAura);
-			SharedData.eventLoop.registerEvent(modifiedAura.expirationTime, { source: sourceActor, effects: [{ type: isBuff ? "removeBuff" : "removeDebuff", id: aura, targetId: actor.id }] });
 			actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
 		}
 		SharedData.eventLoop.triggerListeners(isBuff ? "applyBuff" : "applyDebuff", actor, { aura, sourceActor, duration, stacks });
@@ -50,9 +50,11 @@ export class AuraHandler {
 
 	static applyBuff(actor, sourceActor, buff, duration, stacks) {
 		this.applyAura(actor, sourceActor, buff, duration, stacks, true);
+		Log.log(actor.name + " given " + stacks +" stacks of buff " + buff + " for " + duration + " seconds by " + sourceActor.name);
 	}
 
-	static applyDebuff(actor, sourceActor, buff, duration, stacks) {
-		this.applyAura(actor, sourceActor, buff, duration, stacks, false);
+	static applyDebuff(actor, sourceActor, debuff, duration, stacks) {
+		this.applyAura(actor, sourceActor, debuff, duration, stacks, false);
+		Log.log(actor.name + " given " + stacks + " stacks of debuff " + debuff + " for " + duation + " seconds by " + sourceActor.name)
 	}
 }

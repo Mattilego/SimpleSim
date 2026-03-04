@@ -1,3 +1,4 @@
+import { JSONEvaluator } from "./JSONEvaluator.js";
 import { Log } from "./Log.js";
 
 export class EventLoop {
@@ -5,29 +6,59 @@ export class EventLoop {
 		this.maxTime = maxTime;
 		this.futureEvents = [];
 		this.time = 0;
+		this.listeners = {};
 	}
 
 	registerEvent(time, data) {
-		if (time > this.maxTime) return;
-		const index = this.futureEvents.findIndex((event) => event.time > time);
+		let index = this.futureEvents.findIndex((event) => event.time > time);
+		if (index === -1){
+			index = this.futureEvents.length;
+		}
 		const event = { time, data };
 		this.futureEvents.splice(index, 0, event);
 		return event;
 	}
 
-	processEvent(actors) {
+	processEvent() {
 		const event = this.futureEvents.shift();
-		Log.log("Processing event at time " + event.time + " with data " + Log.JSONstringify(event.data));
 		this.time = event.time;
+		if (this.time > this.maxTime) {
+			this.futureEvents.length = 0;
+			return;
+		}
 		const sourceActor = event.data.source;
 		if (sourceActor == null) {
 			this.handleSpecialEffect(event.data.effects);
 		}
 		const effects = event.data.effects;
-		sourceActor.triggerEffects(effects, actors, this);
+		sourceActor.triggerEffects(effects);
 	}
 
-	triggerListeners(type, target, source, data) {}
+	triggerListeners(type, target, data) {
+		if (this.listeners[target] === undefined){
+			return;
+		}
+		if (this.listeners[target][type] === undefined){
+			return;
+		}
+		const handlers = this.listeners[target][type];
+		for (const handler of handlers) {
+			if (JSONEvaluator.evaluateValue(handler.source, handler.eventConditions, data)){
+				handler.source.triggerEffects(handler.effects, null, data)
+			}
+		}
+	}
 
-	registerEventHandler(type, target, data) {}
+	registerEventHandler(type, target, source, eventConditions, effects) {
+		if (target === -1){
+			target = source.id;
+		}
+		if (this.listeners[target] === undefined){
+			this.listeners[target] = {};
+		}
+		if (this.listeners[target][type] === undefined) {
+			this.listeners[target][type] = [];
+		}
+		this.listeners[target][type].push({source, eventConditions, effects});
+	}
 }

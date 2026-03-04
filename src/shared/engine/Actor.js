@@ -74,13 +74,14 @@ export class Actor {
 							targetId = JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters);
 						}
 					}
-					const currentTarget = SharedData.actors[targetId];
+					let currentTarget = SharedData.actors[targetId];
 					let damage = JSONEvaluator.evaluateValue(this, effect.value, Object.assign({}, parameters, { targetId }));
 
 					// Apply multipliers (Versatility, Sanguine Ground, etc.)
 					damage *= this.getStatEffect("versatility");
 					damage *= this.getModifier("damageDone", effect.damageTypes);
 					damage *= currentTarget.getModifier("damageTaken", effect.damageTypes);
+					Log.log(this.name + " attacked " + currentTarget.name + " for " + damage + " " + JSON.stringify(effect.damageTypes) + " damage");
 					currentTarget.takeDamage(damage, effect.missable === true, effect.dodgeable === true, effect.parryable === true, effect.blockable === true, effect.damageTypes, this);
 					break;
 				case "heal":
@@ -94,6 +95,13 @@ export class Actor {
 							targetId = JSONEvaluator.evaluateValue(this, this.defaultFriendlyTarget(), parameters);
 						}
 					}
+					currentTarget = SharedData.actors[targetId];
+					let healing = JSONEvaluator.evaluateValue(this, effect.value, Object.assign({}, parameters, { targetId: targetId }));
+					healing *= this.getStatEffect("versatility");
+					healing *= currentTarget.getModifier("healingDone", effect.healingTypes);
+					healing *= currentTarget.getModifier("healingTaken", effect.healingTypes);
+					Log.log(this.name + " healed " + currentTarget.name + " for " + healing + " " + JSON.stringify(effect.healingTypes) + " healing");
+					currentTarget.heal(healing, effect.healingTypes, sourceActor);
 					break;
 				case "buff":
 					targetId = -1;
@@ -107,7 +115,7 @@ export class Actor {
 						}
 					}
 					let target = SharedData.actors[targetId];
-					AuraHandler.applyBuff(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign({}, parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks, Object.assign({}, parameters, { targetId: targetId })));
+					AuraHandler.applyBuff(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign({}, parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks || 1, Object.assign({}, parameters, { targetId: targetId })));
 					break;
 				case "debuff":
 					targetId = -1;
@@ -124,7 +132,7 @@ export class Actor {
 					AuraHandler.applyDebuff(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign({}, parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks, Object.assign({}, parameters, { targetId: targetId })));
 					break;
 				case "event":
-					eventLoop.registerEvent(effect.time, {
+					SharedData.eventLoop.registerEvent(JSONEvaluator.evaluateValue(this, effect.time, parameters), {
 						source: this,
 						effects: effect.effects
 					});
@@ -138,14 +146,19 @@ export class Actor {
 					break;
 				case "createResource":
 					this.resources[effect.id] = {
-						value: effect.initialValue,
-						max: effect.maxValue
+						value: JSONEvaluator.evaluateValue(this, effect.initialValue, parameters),
+						max: JSONEvaluator.evaluateValue(this, effect.maxValue, parameters)
 					};
+					break;
 				case "setResource":
+					let oldResourceValue = this.resources[effect.id].value;
 					this.resources[effect.id].value = JSONEvaluator.evaluateValue(this, effect.value, parameters);
+					Log.log(this.name + " had resource " + effect.id + " set to " + this.resources[effect.id].value);
+					SharedData.eventLoop.triggerListeners("resourceChange", this.id, { resource: effect.id, oldValue: oldResourceValue, newValue: this.resources[effect.id].value });
 					break;
 				case "setResourceMax":
-					this.resources[effect.id].max = JSONEvaluator.evaluateValue(this, effect.vaue, parameters);
+					this.resources[effect.id].max = JSONEvaluator.evaluateValue(this, effect.vaule, parameters);
+					break;
 				case "useAbility":
 					try {
 						this.triggerEffects(this.abilities[effect.id].castEffects, abilityTarget, parameters);
@@ -165,7 +178,14 @@ export class Actor {
 						}
 					}
 					target = SharedData.actors[targetId];
-					target.buffs.find((buff) => buff.id === effect.id).duration = 0;
+					let index = target.buffs.findIndex((buff) => buff.id === effect.id && buff.source === this)
+					if (target.buffs[index].expirationTime === SharedData.eventLoop.time){
+						this.triggerEffects(this.knownBuffs[target.buffs[index].id].expirationEffects, targetId, parameters);
+					} else {
+						this.triggerEffects(this.knownBuffs[target.buffs[index].id].removalEffects, targetId, parameters);
+					}
+					target.buffs.splice(index, 1);
+					Log.log("Buff " + effect.id + " removed from " + this.name);
 					break;
 				case "removeDebuff":
 					targetId = -1;
@@ -179,21 +199,25 @@ export class Actor {
 						}
 					}
 					target = SharedData.actors[targetId];
-					target.debuffs.find((debuff) => debuff.id === effect.id).duration = 0;
+					index = target.debuffs.findIndex((debuff) => debuff.id === effect.id && debuff.source === this)
+					if (target.debuffs[index].expirationTime === SharedData.eventLoop.time){
+						this.triggerEffects(this.knownDebuffs[target.debuffs[index].id].expirationEffects, targetId, parameters);
+					} else {
+						this.triggerEffects(this.knownDebuffs[target.debuffs[index].id].removalEffects, targetId, parameters);
+					}
+					target.debuffs.splice(index, 1);
+					Log.log("Debuff " + effect.id + " removed from " + this.name);
 					break;
 				case "shortcut":
 					try {
-						this.triggerEffects(this.shortcuts[effect.id], abilityTarget, parameters);
+						this.triggerEffects(this.shortcuts[effect.id], abilityTarget, Object.assign({}, effect.parameters, parameters));
 					} catch (e) {
 						Log.error("Infinite recusion with shortcut " + effect.id + ", please check it's definition");
 					}
 					break;
 				case "registerEventHandler":
 					if (JSONEvaluator.evaluateValue(effect.conditions)) {
-						SharedData.eventLoop.registerEventHandler(effect.id, targetId, {
-							source: this,
-							effects: effect.effects
-						});
+						SharedData.eventLoop.registerEventHandler(effect.id, JSONEvaluator.evaluateValue(this,effect.targetId,parameters), this, effect.eventConditions, effect.effects);
 					}
 					break;
 				default:
@@ -414,6 +438,7 @@ export class Actor {
 			damage *= hit === "crit" ? 2 : 1;
 			damage *= hit === "block" ? 0.3 : 1;
 			damage = this.applyDamageTakenChanges(damage, types, this.resources.health.value);
+			Log.log(this.name + " took " + damage + " " + JSON.stringify(types) + " damage from " + sourceActor.name);
 			sourceActor.heal(damage * sourceActor.getStatEffect("leech"), types, sourceActor);
 
 			let buffId = 0; //Absorbs
@@ -431,16 +456,16 @@ export class Actor {
 			}
 
 			this.resources.health.value -= damage;
-			SharedData.eventLoop.triggerListeners("takeDamage", this, { damage, newHp: this.resources.health, sourceActor, types });
+			SharedData.eventLoop.triggerListeners("takeDamage", this.id, { damage, newHp: this.resources.health, sourceActor, types });
 		} else if (hit === "parry") {
-			SharedData.eventLoop.triggerListeners("parry", this, { sourceActor });
+			SharedData.eventLoop.triggerListeners("parry", this.id, { sourceActor });
 		} else if (hit === "dodge") {
-			SharedData.eventLoop.triggerListeners("dodge", this, { sourceActor });
+			SharedData.eventLoop.triggerListeners("dodge", this.id, { sourceActor });
 		} else if (hit === "miss") {
-			SharedData.eventLoop.triggerListeners("miss", this, { sourceActor });
+			SharedData.eventLoop.triggerListeners("miss", this.id, { sourceActor });
 		}
 		if (hit === "block") {
-			SharedData.eventLoop.triggerListeners("block", this, { sourceActor });
+			SharedData.eventLoop.triggerListeners("block", this.id, { sourceActor });
 		}
 	}
 
@@ -476,7 +501,7 @@ export class Actor {
 	heal(amount, types, sourceActor) {
 		this.resources.health.value += amount;
 		Log.log(this.name + " healed for " + amount + " by " + sourceActor.name);
-		SharedData.eventLoop.triggerListeners("heal", this, { amount, newHp: this.resources.health, sourceActor, types });
+		SharedData.eventLoop.triggerListeners("heal", this.id, { amount, newHp: this.resources.health, sourceActor, types });
 	}
 
 	get id() {

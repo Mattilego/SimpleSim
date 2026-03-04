@@ -10,7 +10,6 @@ export class APLReader {
 		while (entry < apl.length && ability == null) {
 			if (JSONEvaluator.evaluateValue(initiator, initiator.abilities[apl[entry].ability].conditions) && JSONEvaluator.evaluateValue(initiator, apl[entry].conditions)) {
 				ability = initiator.abilities[apl[entry].ability];
-				Log.log("APLReader: Chose ability " + apl[entry].ability + " from entry " + entry);
 			}
 			entry++;
 		}
