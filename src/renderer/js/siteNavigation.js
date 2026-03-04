@@ -99,7 +99,8 @@ document.querySelectorAll(".positiveIntegerInput").forEach(input => {
 		console.log(e.target.value);
 		e.target.value = Math.floor(e.target.value);
 		console.log(e.target.value);
-		if (typeof(e.target.value) !== "number" || e.target.value < 1) {
+		const value = parseInt(e.target.value);
+		if (typeof(value) !== "number" || value < 1) {
 			e.target.value = 1;
 		}
 	});
