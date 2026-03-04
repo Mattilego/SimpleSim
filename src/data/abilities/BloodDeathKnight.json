@@ -150,7 +150,8 @@
 						"value1": 1,
 						"value2": {
 							"type": "resource",
-							"id": "runes"
+							"id": "runes",
+							"check": "value"
 						}
 					}
 				},
