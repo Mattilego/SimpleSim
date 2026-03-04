@@ -59,7 +59,7 @@ eval("{__webpack_require__.r(__webpack_exports__);\n/* harmony import */ var _cs
   \*********************************************/
 () {
 
-eval("{if (nodeAPI !== undefined) {\n  console.log(\"Nodeintegration enabled\");\n}\n\n//# sourceURL=webpack://simplesim/./src/renderer/js/localAppFeatures.js?\n}");
+eval("{try {\n  if (nodeAPI !== undefined) {\n    console.log(\"Nodeintegration enabled\");\n  } else {\n    console.log(\"Nodeintegration disabled\");\n  }\n} catch (_unused) {\n  console.log(\"Nodeintegration disabled\");\n}\n\n//# sourceURL=webpack://simplesim/./src/renderer/js/localAppFeatures.js?\n}");
 
 /***/ },
 
