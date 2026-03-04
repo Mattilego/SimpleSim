@@ -1,6 +1,6 @@
 
 try{
-	if (window.nodeAPI !== undefined){
+	if (eval("window.nodeAPI") !== undefined){
 		console.log("Nodeintegration enabled");
 	} else {
 		console.log("Nodeintegration disabled")
