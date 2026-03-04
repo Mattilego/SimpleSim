@@ -13,10 +13,7 @@ export class Aura {
 
 	set duration(duration) {
 		this.expirationTime = SharedData.time + duration;
-		if (this.expirationEvent === null) {
-			this.expirationEvent = SharedData.eventLoop.futureEvents.find((event) => event.time === this.expirationTime && event.data.source === this.source && event.data.effects[0].type === "removeBuff" && event.data.effects[0].id === this.id);
-		}
-		SharedData.eventLoop.futureEvents = SharedData.eventLoop.futureEvents.filter((event) => event !== this.expirationEvent);
+		SharedData.eventLoop.futureEvents = SharedData.eventLoop.futureEvents.filter((event) => event.data !== this.expirationEvent);
 		this.expirationEvent = SharedData.eventLoop.registerEvent(this.expirationTime, this.expirationEvent.data);
 	}
 

@@ -62,6 +62,9 @@ export class Actor {
 
 	triggerEffects(effects, abilityTarget, parameters = {}) {
 		effects.forEach((effect) => {
+			if (!JSONEvaluator.evaluateValue(this, effect.conditions, parameters)) {
+				return;
+			}
 			switch (effect.type) {
 				case "damage":
 					let targetId = -1;

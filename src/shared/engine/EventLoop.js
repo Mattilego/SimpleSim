@@ -16,6 +16,9 @@ export class EventLoop {
 		}
 		const event = { time, data };
 		this.futureEvents.splice(index, 0, event);
+		if(this.futureEvents.length > 1000){
+			debugger;
+		}
 		return event;
 	}
 
