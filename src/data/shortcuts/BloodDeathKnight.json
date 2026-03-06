@@ -81,5 +81,21 @@
 				}
 			}
 		}
-	]
+	],
+	"%strength": {
+		"type": "*",
+		"value1": {
+			"type": "stat",
+			"id": "strength",
+			"check": "rating"
+		},
+		"value2": {
+			"type": "/",
+			"value1": {
+				"type": "parameter",
+				"id": "value"
+			},
+			"value2": 100
+		}
+	}
 }

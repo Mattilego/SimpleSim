@@ -124,17 +124,17 @@ export class UserDataRetiever {
 			mainWeaponDamage: 1,
 			mainWeaponSpeed: 1
 		};
-		stats[this.specPrimaryStats[spec]] = document.getElementById("primaryStatInput").value;
-		stats.armor = document.getElementById("armorStatInput").value;
-		stats.stamina = document.getElementById("staminaStatInput").value;
-		stats.crit = document.getElementById("critStatInput").value;
-		stats.haste = document.getElementById("hasteStatInput").value;
-		stats.mastery = document.getElementById("masteryStatInput").value;
-		stats.versatility = document.getElementById("versatilityStatInput").value;
-		stats.leech = document.getElementById("leechStatInput").value;
-		stats.parry = document.getElementById("parryStatInput").value;
-		stats.block = document.getElementById("blockStatInput").value;
-		stats.dodge = document.getElementById("dodgeStatInput").value;
+		stats[this.specPrimaryStats[spec]] = parseFloat(document.getElementById("primaryStatInput").value);
+		stats.armor = parseFloat(document.getElementById("armorStatInput").value);
+		stats.stamina = parseFloat(document.getElementById("staminaStatInput").value);
+		stats.crit = parseFloat(document.getElementById("critStatInput").value);
+		stats.haste = parseFloat(document.getElementById("hasteStatInput").value);
+		stats.mastery = parseFloat(document.getElementById("masteryStatInput").value);
+		stats.versatility = parseFloat(document.getElementById("versatilityStatInput").value);
+		stats.leech = parseFloat(document.getElementById("leechStatInput").value);
+		stats.parry = parseFloat(document.getElementById("parryStatInput").value);
+		stats.block = parseFloat(document.getElementById("blockStatInput").value);
+		stats.dodge = parseFloat(document.getElementById("dodgeStatInput").value);
 		return stats;
 	}
 

@@ -7,6 +7,7 @@ export async function processRequest(request) {
 	SharedData.actors = request.setup.actors.map((a) => new Actor(a.name, a.level, a.apl, a.stats, a.talents, a.team, a.abilities, a.buffs, a.debuffs, a.shortcuts));
 	const maxFightLength = request.config.maxFightLength;
 	SharedData.eventLoop = new EventLoop(maxFightLength);
+	Log.initializeListeners();
 	SharedData.actors.forEach((actor) => {
 		actor.processStats();
 	});

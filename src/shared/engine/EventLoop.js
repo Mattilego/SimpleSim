@@ -34,7 +34,7 @@ export class EventLoop {
 			this.handleSpecialEffect(event.data.effects);
 		}
 		const effects = event.data.effects;
-		sourceActor.triggerEffects(effects);
+		sourceActor.triggerEffects(effects, null, {}, event.data.name);
 	}
 
 	triggerListeners(type, target, data) {
@@ -47,7 +47,7 @@ export class EventLoop {
 		const handlers = this.listeners[target][type];
 		for (const handler of handlers) {
 			if (JSONEvaluator.evaluateValue(handler.source, handler.eventConditions, data)){
-				handler.source.triggerEffects(handler.effects, null, data)
+				handler.source.triggerEffects(handler.effects, null, data, data.name)
 			}
 		}
 	}

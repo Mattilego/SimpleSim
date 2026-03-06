@@ -11,50 +11,34 @@ export class AuraHandler {
 			switch (sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].reapplicationType) {
 				case "refresh":
 					currentMatch.duration = Math.max(currentMatch.duration, duration);
-					if (sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].updateOnRefresh) {
-						actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
-					}
 					break;
 				case "pandemic":
 					currentMatch.duration = Math.max(currentMatch.duration, Math.min(1.3 * sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].duration, currentMatch.duration + duration));
-					if (sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].updateOnRefresh) {
-						actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
-					}
 					break;
 				case "overlap":
 					actor[isBuff ? "buffs" : "debuffs"].push(new Aura(aura, duration, stacks, sourceActor, isBuff, actor.id));
-					actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
 					break;
 				case "stackRefresh":
 					currentMatch.stacks = Math.min(currentMatch.stacks + stacks, sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].maxStacks);
 					currentMatch.duration = Math.max(currentMatch.duration, duration);
-					if (sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].updateOnRefresh) {
-						actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
-					}
 					break;
 				case "stackPandemic":
 					currentMatch.stacks = Math.min(currentMatch.stacks + stacks, sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].maxStacks);
 					currentMatch.duration = Math.max(currentMatch.duration, Math.min(1.3 * sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].duration, currentMatch.duration + duration));
-					if (sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura].updateOnRefresh) {
-						actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
-					}
 					break;
 			}
 		} else {
 			modifiedAura = new Aura(aura, duration, stacks, sourceActor, isBuff, actor.id);
 			actor[isBuff ? "buffs" : "debuffs"].push(modifiedAura);
-			actor.resetRelevantCaches(sourceActor[isBuff ? "knownBuffs" : "knownDebuffs"][aura]);
 		}
 		SharedData.eventLoop.triggerListeners(isBuff ? "applyBuff" : "applyDebuff", actor, { aura, sourceActor, duration, stacks });
 	}
 
 	static applyBuff(actor, sourceActor, buff, duration, stacks) {
 		this.applyAura(actor, sourceActor, buff, duration, stacks, true);
-		Log.log(actor.name + " given " + stacks +" stacks of buff " + buff + " for " + duration + " seconds by " + sourceActor.name);
 	}
 
 	static applyDebuff(actor, sourceActor, debuff, duration, stacks) {
 		this.applyAura(actor, sourceActor, debuff, duration, stacks, false);
-		Log.log(actor.name + " given " + stacks + " stacks of debuff " + debuff + " for " + duation + " seconds by " + sourceActor.name)
 	}
 }

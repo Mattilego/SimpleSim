@@ -581,6 +581,9 @@ export class JSONEvaluator {
 								return actor.getStatEffect(value.id);
 							case "rating":
 								return actor.getStat(value.id);
+							default:
+								Log.error("No check type specified in stat expression: " + JSON.stringify(value));
+								return 0;
 						}
 					case "talent":
 						switch (value.check) {

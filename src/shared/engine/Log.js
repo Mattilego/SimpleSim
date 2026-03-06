@@ -1,3 +1,5 @@
+import { SharedData } from "./SharedData.js";
+
 export class Log {
 	static logs = [];
 	static log(message) {
@@ -41,5 +43,15 @@ export class Log {
 		};
 
 		return JSON.stringify(object, getCircularReplacer());
+	}
+
+	static initializeListeners(){
+		SharedData.actors.forEach((actor) => {
+			SharedData.eventLoop.registerEventHandler("takeDamage", actor.id, {
+				triggerEffects: (_, __, data) => {
+					Log.log(`Actor ${data.target.name} took ${data.damage} damage from ${data.name} by ${data.sourceActor.name} (${data.mitigated} mitigated, ${data.absorbed} absorbed, ${data.newHp.value} HP left)`);
+				}
+			}, [], []);
+		});
 	}
 }

@@ -195,7 +195,8 @@
 				"damageTypes": ["physical"],
 				"value": {
 					"type": "stat",
-					"id": "mainWeaponDamage"
+					"id": "mainWeaponDamage",
+					"check": "rating"
 				},
 				"missable": true,
 				"dodgeable": true,
@@ -212,7 +213,7 @@
 					"value2": {
 						"type": "stat",
 						"id": "mainWeaponSpeed",
-						"check": "value"
+						"check": "rating"
 					}
 				},
 				"effects": [{
@@ -261,6 +262,36 @@
 						"value": 60
 					}
 				}
+			}
+		]
+	},
+	"Death and Decay": {
+		"GCD": 1,
+		"cooldown": 0,
+		"conditions": [
+			{
+				"type": "resource",
+				"id": "runes",
+				"check": "value",
+				"comparison": ">=",
+				"value": 1
+			}
+		],
+		"castEffects": [
+			{
+				"type": "buff",
+				"id": "Death and Decay",
+				"duration": 10
+			},{
+				"type": "runOnActors",
+				"relation": "enemy",
+				"effects": [
+					{
+						"type": "debuff",
+						"id": "Death and Decay",
+						"duration": 10
+					}
+				]
 			}
 		]
 	}
