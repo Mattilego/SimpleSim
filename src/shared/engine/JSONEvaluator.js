@@ -167,7 +167,7 @@ export class JSONEvaluator {
 								Log.warn("Invalid resource check type: " + value.check + " in " + JSON.stringify(value));
 								return 0;
 						}
-					case "buff":
+					case "aura":
 						switch (value.check) {
 							case "exists":
 								if (value.targetId) {
@@ -175,9 +175,9 @@ export class JSONEvaluator {
 									if (!SharedData.actors[targetId]) {
 										return false;
 									}
-									return SharedData.actors[targetId].buffs.some((b) => b.id == value.id && b.source == actor);
+									return SharedData.actors[targetId].auras.some((b) => b.id == value.id && b.source == actor);
 								}
-								return actor.buffs.some((b) => b.id == value.id && b.source == actor);
+								return actor.auras.some((b) => b.id == value.id && b.source == actor);
 							case "duration":
 								let targetActor = actor;
 								if (value.targetId) {
@@ -187,13 +187,13 @@ export class JSONEvaluator {
 									}
 									targetActor = SharedData.actors[targetId];
 								}
-								let matchingBuffs = targetActor.buffs.filter((b) => b.id == value.id && b.source == actor);
+								let matchingAuras = targetActor.auras.filter((b) => b.id == value.id && b.source == actor);
 								if (value.comparison) {
 									let multiplier = 1;
 									if (value.scale == "GCD") {
 										multiplier = actor.gcd;
 									}
-									return matchingBuffs.some((b) =>
+									return matchingAuras.some((b) =>
 										JSONEvaluator.evaluateValue(
 											actor,
 											{
@@ -206,7 +206,7 @@ export class JSONEvaluator {
 										)
 									);
 								} else {
-									return matchingBuffs.map((b) => b.duration).reduce((a, b) => Math.max(a, b), 0);
+									return matchingAuras.map((b) => b.duration).reduce((a, b) => Math.max(a, b), 0);
 								}
 							case "stacks":
 								targetActor = actor;
@@ -217,20 +217,20 @@ export class JSONEvaluator {
 									}
 									targetActor = SharedData.actors[targetId];
 								}
-								matchingBuffs = targetActor.buffs.filter((b) => b.id == value.id && b.source == actor);
+								matchingAuras = targetActor.auras.filter((b) => b.id == value.id && b.source == actor);
 								if (value.comparison) {
 									return JSONEvaluator.evaluateValue(
 										actor,
 										{
 											type: value.comparison,
-											value1: matchingBuffs.map((b) => b.stacks).reduce((a, b) => a + b, 0),
+											value1: matchingAuras.map((b) => b.stacks).reduce((a, b) => a + b, 0),
 											value2: value.value,
 											conditions: []
 										},
 										parameters
 									);
 								} else {
-									return matchingBuffs.map((b) => b.stacks).reduce((a, b) => a + b, 0);
+									return matchingAuras.map((b) => b.stacks).reduce((a, b) => a + b, 0);
 								}
 
 							case "value":
@@ -242,9 +242,9 @@ export class JSONEvaluator {
 									}
 									targetActor = SharedData.actors[targetId];
 								}
-								matchingBuffs = targetActor.buffs.filter((b) => b.id == value.id && b.source == actor);
+								matchingAuras = targetActor.auras.filter((b) => b.id == value.id && b.source == actor);
 								if (value.comparison) {
-									return matchingBuffs.some((b) =>
+									return matchingAuras.some((b) =>
 										JSONEvaluator.evaluateValue(
 											actor,
 											{
@@ -257,13 +257,13 @@ export class JSONEvaluator {
 										)
 									);
 								} else {
-									return matchingBuffs.map((b) => b.value).reduce((a, b) => a + b, 0);
+									return matchingAuras.map((b) => b.value).reduce((a, b) => a + b, 0);
 								}
 							default:
-								Log.warn("Invalid buff check type: " + value.check + " in " + JSON.stringify(value));
+								Log.warn("Invalid aura check type: " + value.check + " in " + JSON.stringify(value));
 								return 0;
 						}
-					case "debuff":
+					case "aura":
 						switch (value.check) {
 							case "exists":
 								if (value.targetId) {
@@ -271,9 +271,9 @@ export class JSONEvaluator {
 									if (!SharedData.actors[targetId]) {
 										return false;
 									}
-									return SharedData.actors[targetId].debuffs.some((b) => b.id == value.id && b.source == actor);
+									return SharedData.actors[targetId].Auras.some((b) => b.id == value.id && b.source == actor);
 								}
-								return SharedData.actors.filter((a) => a.team != actor.team).some((a) => a.debuffs.some((b) => b.id == value.id && b.source == actor));
+								return SharedData.actors.filter((a) => a.team != actor.team).some((a) => a.Auras.some((b) => b.id == value.id && b.source == actor));
 							case "duration":
 								let multiplier = 1;
 								if (value.scale == "GCD") {
@@ -298,7 +298,7 @@ export class JSONEvaluator {
 											actor,
 											{
 												type: value.comparison,
-												value1: SharedData.actors[targetId].debuffs
+												value1: SharedData.actors[targetId].Auras
 													.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.duration)
 													.reduce((a, b) => Math.max(a, b), 0),
@@ -315,7 +315,7 @@ export class JSONEvaluator {
 											value1: SharedData.actors
 												.filter((a) => a.team != actor.team)
 												.map((a) =>
-													a.debuffs
+													a.Auras
 														.filter((b) => b.id == value.id && b.source == actor)
 														.map((b) => b.duration)
 														.reduce((a, b) => Math.max(a, b), 0)
@@ -332,7 +332,7 @@ export class JSONEvaluator {
 										if (!SharedData.actors[targetId]) {
 											return 0;
 										}
-										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs
+										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
 											.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.duration)
 											.reduce((a, b) => Math.max(a, b), 0);
@@ -340,7 +340,7 @@ export class JSONEvaluator {
 									return SharedData.actors
 										.filter((a) => a.team != actor.team)
 										.map((a) =>
-											a.debuffs
+											a.Auras
 												.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.duration)
 												.reduce((a, b) => Math.max(a, b), 0)
@@ -367,7 +367,7 @@ export class JSONEvaluator {
 											actor,
 											{
 												type: value.comparison,
-												value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs
+												value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
 													.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.stacks)
 													.reduce((a, b) => a + b, 0),
@@ -384,7 +384,7 @@ export class JSONEvaluator {
 											value1: SharedData.actors
 												.filter((a) => a.team != actor.team)
 												.map((a) =>
-													a.debuffs
+													a.Auras
 														.filter((b) => b.id == value.id && b.source == actor)
 														.map((b) => b.stacks)
 														.reduce((a, b) => a + b, 0)
@@ -401,7 +401,7 @@ export class JSONEvaluator {
 										if (!SharedData.actors[targetId]) {
 											return 0;
 										}
-										return SharedData.actors[targetId].debuffs
+										return SharedData.actors[targetId].Auras
 											.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.stacks)
 											.reduce((a, b) => a + b, 0);
@@ -409,7 +409,7 @@ export class JSONEvaluator {
 									return SharedData.actors
 										.filter((a) => a.team != actor.team)
 										.map((a) =>
-											a.debuffs
+											a.Auras
 												.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.stacks)
 												.reduce((a, b) => a + b, 0)
@@ -436,7 +436,7 @@ export class JSONEvaluator {
 											actor,
 											{
 												type: value.comparison,
-												value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs
+												value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
 													.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.value)
 													.reduce((a, b) => Math.max(a, b), 0),
@@ -453,7 +453,7 @@ export class JSONEvaluator {
 											value1: SharedData.actors
 												.filter((a) => a.team != actor.team)
 												.map((a) =>
-													a.debuffs
+													a.Auras
 														.filter((b) => b.id == value.id && b.source == actor)
 														.map((b) => b.value)
 														.reduce((a, b) => Math.max(a, b), 0)
@@ -470,7 +470,7 @@ export class JSONEvaluator {
 										if (!SharedData.actors[targetId]) {
 											return 0;
 										}
-										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].debuffs
+										return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
 											.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.value)
 											.reduce((a, b) => Math.max(a, b), 0);
@@ -478,7 +478,7 @@ export class JSONEvaluator {
 									return SharedData.actors
 										.filter((a) => a.team != actor.team)
 										.map((a) =>
-											a.debuffs
+											a.Auras
 												.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.value)
 												.reduce((a, b) => Math.max(a, b), 0)
@@ -486,7 +486,7 @@ export class JSONEvaluator {
 										.reduce((a, b) => Math.max(a, b), 0);
 								}
 							default:
-								Log.warn("Invalid check type for debuff: " + value.check + " in " + JSON.stringify(value));
+								Log.warn("Invalid check type for aura: " + value.check + " in " + JSON.stringify(value));
 								return 0;
 						}
 					case "parameter":

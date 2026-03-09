@@ -168,8 +168,7 @@ export class UserDataRetiever {
 					dodge: 0
 				},
 				talents: {},
-				buffs: {},
-				debuffs: {},
+				auras: {},
 				shortcuts: {},
 				abilities: {
 					"_Initialize": {castEffects: []},
@@ -194,8 +193,7 @@ export class UserDataRetiever {
 		const actors = [{
 			stats: stats,
 			talents: talents,
-			buffs: DefaultSpecDataLoader.loadBuffs(spec),
-			debuffs: DefaultSpecDataLoader.loadDebuffs(spec),
+			auras: DefaultSpecDataLoader.loadAuras(spec),
 			shortcuts: DefaultSpecDataLoader.loadShortcuts(spec),
 			abilities: DefaultSpecDataLoader.loadAbilities(spec),
 			apl: DefaultSpecDataLoader.loadApl(spec),

@@ -1,12 +1,10 @@
 const abilityContext = require.context("../../data/abilities", false, /\.json$/);
-const buffContext = require.context("../../data/buffs", false, /\.json$/);
-const debuffContext = require.context("../../data/debuffs", false, /\.json$/);
+const auraContext = require.context("../../data/auras", false, /\.json$/);
 const shortcutContext = require.context("../../data/shortcuts", false, /\.json$/);
 const aplContext = require.context("../../data/apls", false, /\.json$/);
 
 const abilityRegistry = {};
-const buffRegistry = {};
-const debuffRegistry = {};
+const auraRegistry = {};
 const shortcutRegistry = {};
 const aplRegistry = {};
 
@@ -16,14 +14,9 @@ abilityContext.keys().forEach((key) => {
     abilityRegistry[spec] = abilityContext(key);
 });
 
-buffContext.keys().forEach((key) => {
+auraContext.keys().forEach((key) => {
     const spec = key.replace("./", "").replace(".json", "");
-    buffRegistry[spec] = buffContext(key);
-});
-
-debuffContext.keys().forEach((key) => {
-    const spec = key.replace("./", "").replace(".json", "");
-    debuffRegistry[spec] = debuffContext(key);
+    auraRegistry[spec] = auraContext(key);
 });
 
 shortcutContext.keys().forEach((key) => {
@@ -40,8 +33,7 @@ export class DefaultSpecDataLoader {
     static load(spec) {
 		return {
 			abilities: abilityRegistry[spec] || {},
-			buffs: buffRegistry[spec] || {},
-			debuffs: debuffRegistry[spec] || {},
+			auras: auraRegistry[spec] || {},
 			shortcuts: shortcutRegistry[spec] || {},
 			apls: aplRegistry[spec] || {}
 		}
@@ -51,12 +43,8 @@ export class DefaultSpecDataLoader {
 		return abilityRegistry[spec] || {};
 	}
 
-    static loadBuffs(spec){
-        return buffRegistry[spec] || {};
-    }
-
-    static loadDebuffs(spec){
-        return debuffRegistry[spec] || {};
+    static loadAuras(spec){
+        return auraRegistry[spec] || {};
     }
 
     static loadShortcuts(spec){

@@ -4,10 +4,13 @@ import { SharedData } from "./SharedData.js";
 import { Log } from "./Log.js";
 
 export async function processRequest(request) {
-	SharedData.actors = request.setup.actors.map((a) => new Actor(a.name, a.level, a.apl, a.stats, a.talents, a.team, a.abilities, a.buffs, a.debuffs, a.shortcuts));
+	SharedData.actors = request.setup.actors.map((a) => new Actor(a.name, a.level, a.apl, a.stats, a.talents, a.team, a.abilities, a.auras, a.shortcuts));
 	const maxFightLength = request.config.maxFightLength;
 	SharedData.eventLoop = new EventLoop(maxFightLength);
 	Log.initializeListeners();
+	if (!request.compile === false){
+		SharedData.actors.forEach((actor) => {actor.compile();});
+	}
 	SharedData.actors.forEach((actor) => {
 		actor.processStats();
 	});

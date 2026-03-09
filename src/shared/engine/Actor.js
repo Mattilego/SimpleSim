@@ -7,26 +7,21 @@ import { ProcHandler } from "./ProcHandler.js";
 import statCosts from "../../data/statCosts.json";
 
 export class Actor {
-	constructor(name, level, apl, stats = {}, talents, team = 0, abilities = {}, knownBuffs = {}, knownDebuffs = {}, shortcuts = []) {
+	constructor(name, level, apl, stats = {}, talents, team = 0, abilities = {}, knownAuras = {}, shortcuts = []) {
 		this.level = level;
 		this.stats = stats;
 		this.statPercentageAdditions = {};
 		this.talents = talents;
 		this.abilities = abilities;
 		this.apl = apl;
-		this.knownBuffs = knownBuffs;
-		this.knownDebuffs = knownDebuffs;
-		this.buffs = [];
-		this.debuffs = [];
+		this.knownAuras = knownAuras;
+		this.auras = [];
 		this.shortcuts = shortcuts;
 		this.resources = {};
 		this.cooldowns = {};
 		this.team = team;
 		this.stats.maxHp = 8 * this.stats.stamina;
-		this.resources.health = {
-			max: this.stats.maxHp,
-			value: this.stats.maxHp
-		};
+		this.resources.health = this.stats.maxHp;
 		this.procHandler = new ProcHandler();
 		this.name = name;
 		this.statModifiers = {};
@@ -97,6 +92,9 @@ export class Actor {
 			if (!JSONEvaluator.evaluateValue(this, effect.conditions, parameters)) {
 				return;
 			}
+			if (SharedData.compiling){
+				effect(SharedData, this, parameters);
+			}
 			switch (effect.type) {
 				case "damage":
 					let targetId = -1;
@@ -135,21 +133,7 @@ export class Actor {
 					healing *= this.getStatEffect("versatility")*this.gethealingDoneModifier(effect.healingTypes);
 					currentTarget.heal(healing+this.getHealingDoneAddition(effect.healingTypes), effect.healingTypes, sourceActor);
 					break;
-				case "buff":
-					targetId = -1;
-					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign({}, parameters, { abilityTarget: abilityTarget || this.id }));
-					} else {
-						if (abilityTarget !== undefined && abilityTarget !== null) {
-							targetId = abilityTarget;
-						} else {
-							targetId = this.id;
-						}
-					}
-					let target = SharedData.actors[targetId];
-					AuraHandler.applyBuff(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign({}, parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks || 1, Object.assign({}, parameters, { targetId: targetId })));
-					break;
-				case "debuff":
+				case "aura":
 					targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
 						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign({}, parameters, { abilityTarget: abilityTarget || JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters) }));
@@ -160,8 +144,8 @@ export class Actor {
 							targetId = JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters);
 						}
 					}
-					target = SharedData.actors[targetId];
-					AuraHandler.applyDebuff(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign({}, parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks, Object.assign({}, parameters, { targetId: targetId })));
+					let target = SharedData.actors[targetId];
+					AuraHandler.applyAura(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign({}, parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks, Object.assign({}, parameters, { targetId: targetId })));
 					break;
 				case "event":
 					SharedData.eventLoop.registerEvent(JSONEvaluator.evaluateValue(this, effect.time, parameters), {
@@ -187,16 +171,13 @@ export class Actor {
 					this.resources[effect.id].value = JSONEvaluator.evaluateValue(this, effect.value, parameters);
 					SharedData.eventLoop.triggerListeners("resourceChange", this.id, { resource: effect.id, oldValue: oldResourceValue, newValue: this.resources[effect.id].value });
 					break;
-				case "setResourceMax":
-					this.resources[effect.id].max = JSONEvaluator.evaluateValue(this, effect.vaule, parameters);
-					break;
 				case "useAbility":
 					try {
 						this.triggerEffects(this.abilities[effect.id].castEffects, abilityTarget, parameters, effect.id);
 					} catch (error) {
 					}
 					break;
-				case "removeBuff":
+				case "removeAura":
 					targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
 						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign({}, parameters, { abilityTarget: abilityTarget || this.id }));
@@ -208,33 +189,13 @@ export class Actor {
 						}
 					}
 					target = SharedData.actors[targetId];
-					let index = target.buffs.findIndex((buff) => buff.id === effect.id && buff.source === this)
-					if (target.buffs[index].expirationTime === SharedData.eventLoop.time){
-						this.triggerEffects(this.knownBuffs[target.buffs[index].id].expirationEffects, targetId, parameters, name);
+					index = target.auras.findIndex((aura) => aura.id === effect.id && aura.source === this)
+					if (target.auras[index].expirationTime === SharedData.eventLoop.time){
+						this.triggerEffects(this.knownAuras[target.auras[index].id].expirationEffects, targetId, parameters, name);
 					} else {
-						this.triggerEffects(this.knownBuffs[target.buffs[index].id].removalEffects, targetId, parameters, name);
+						this.triggerEffects(this.knownAuras[target.auras[index].id].removalEffects, targetId, parameters, name);
 					}
-					target.buffs.splice(index, 1);
-					break;
-				case "removeDebuff":
-					targetId = -1;
-					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign({}, parameters, { abilityTarget: abilityTarget || this.id }));
-					} else {
-						if (abilityTarget !== undefined && abilityTarget !== null) {
-							targetId = abilityTarget;
-						} else {
-							targetId = this.id;
-						}
-					}
-					target = SharedData.actors[targetId];
-					index = target.debuffs.findIndex((debuff) => debuff.id === effect.id && debuff.source === this)
-					if (target.debuffs[index].expirationTime === SharedData.eventLoop.time){
-						this.triggerEffects(this.knownDebuffs[target.debuffs[index].id].expirationEffects, targetId, parameters, name);
-					} else {
-						this.triggerEffects(this.knownDebuffs[target.debuffs[index].id].removalEffects, targetId, parameters, name);
-					}
-					target.debuffs.splice(index, 1);
+					target.auras.splice(index, 1);
 					break;
 				case "shortcut":
 					try {
@@ -366,18 +327,18 @@ export class Actor {
 			damage = this.applyDamageTakenSpecialChanges(damage, types);
 			sourceActor.heal(damage * sourceActor.getStatEffect("leech"), types, sourceActor);
 			const preAbsorbDamage = damage;
-			let buffId = 0; //Absorbs
-			while (buffId < this.absorbs.length && damage > 0) {
-				if (this.absorbs[buffId].absorbTypes.includes("all") || types.includes("all") || this.absorbs[buffId].absorbTypes.some((type) => types.includes(type))) {
-					if (this.absorbs[buffId].value > damage) {
-						this.absorbs[buffId].value -= damage;
+			let auraId = 0; //Absorbs
+			while (auraId < this.absorbs.length && damage > 0) {//Needs to be redone to match new absorb format
+				if (this.absorbs[auraId].absorbTypes.includes("all") || types.includes("all") || this.absorbs[auraId].absorbTypes.some((type) => types.includes(type))) {
+					if (this.absorbs[auraId].value > damage) {
+						this.absorbs[auraId].value -= damage;
 						damage = 0;
 					} else {
-						damage -= this.absorbs[buffId].value;
-						this.absorbs[buffId].duration = 0; //Set duration so that it can remove expiration event
+						damage -= this.absorbs[auraId].value;
+						this.absorbs[auraId].duration = 0;
 					}
 				}
-				buffId++;
+				auraId++;
 			}
 
 			this.resources.health.value -= damage;
@@ -446,5 +407,135 @@ export class Actor {
 
 	chanceToBlockFrom(sourceActor) {
 		return 0;
+	}
+
+	compileEffects(effect, callStack=[], altCall=null, createFunction=true){
+		if (callStack.includes(effect)){
+			if (altCall !== null){
+				return altCall;
+			} else {
+				throw new Error("Circular reference in effect compilation without reference to recurse with");
+			}
+		}
+		let effectString = "";
+		if (Array.isArray(effect)){
+			effectString = effect.map((effect, index) => this.compileEffects(effect, callStack, (altCall !== null)?altCall.slice(0,-2)+"["+index+"]()":null, false)).join("");
+		} else{
+			if (effect.conditions !== undefined && effect.conditions.length > 0){
+				effectString = "if(!"+JSONEvaluator.compileValue(effect.conditions)+"){return;};";
+			}
+			switch(effect.type){
+				case "damage":
+					let baseDamage = ""+JSONEvaluator.compileValue(effect.value, this) + "*actor.getStatEffect('versatility')*actor.getDamageDoneModifier(["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"])+actor.getDamageDoneAdditions(["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"])";
+					let targetActor = null;
+					if (effect.targetId === undefined){
+						targetActor = "SharedData.actors["+JSONEvaluator.compileValue(this.defaultEnemyTarget(), this)+"]";
+					} else {
+						targetActor = "SharedData.actors["+JSONEvaluator.compileValue(effect.targetId, this)+"]";//abilityTarget already in scope
+					}
+					effectString += targetActor+".takeDamage("+baseDamage+","+effect.missable===true+","+effect.dodgeable===true+","+effect.parryable===true+","+effect.blockable===true+", ["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"], actor, name);";
+					break;
+				case "heal":
+					let baseHealing = ""+JSONEvaluator.compileValue(effect.value, this) + "*actor.getStatEffect('versatility')*actor.getDamageDoneModifier(["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"])+actor.getDamageDoneAdditions(["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"])";
+					targetActor = null;
+					if (effect.targetId === undefined){
+						targetActor = "SharedData.actors["+JSONEvaluator.compileValue(this.defaultFriendlyTarget(), this)+"]";
+					} else {
+						targetActor = "SharedData.actors["+JSONEvaluator.compileValue(effect.targetId, this)+"]";//abilityTarget already in scope
+					}
+					effectString += targetActor+".heal("+baseHealing+", ["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"], actor, name);";
+					break;
+				case "applyAura":
+					break;
+				case "event":
+					effectString += "SharedData.eventLoop.registerEvent(" + JSONEvaluator.compileValue(effect.time, this) + ",{source:actor,effects:"+JSON.stringify(effect.effects)+"});";//Event effects not compiled as it would need to be a function being passed as effects.compiled, which unless I want to store all event effects compiled on the actor (which I might do later) would require creating a new function every time time the event is registered, which would be slower than just interpreting
+					break;
+				case "checkAPL":
+					effectString = "if(uncompiled.security===actor.name){actor.useAbility();}";
+					break;
+				case "createResource":
+					SharedData.strings.push(effect.id);
+					effectString = "actor.resources['prototypeProtection'+SharedData.strings["+SharedData.strings.indexOf(effect.id)+"]] = " + JSONEvaluator.compileValue(effect.value, this) + ";";
+					break;
+				case "setResource":
+					if (!SharedData.strings.includes(effect.id)){
+						Log.log("Unknown reource: " + effect.id);
+						return "";
+					}
+					effectString += "actor.resources['prototypeProtection'+SharedData.strings["+SharedData.strings.indexOf(effect.id)+"]] =" + JSONEvaluator.compileValue(effect.value, this) + ";";
+					break;
+				case "useAbility":
+					if (this.abilities[effect.id] === undefined){
+						Log.error("Unknown ability: " + effect.id);
+						return "";
+					}
+					if (!SharedData.strings.includes(effect.id)){
+						SharedData.strings.push(effect.id);
+					}
+					effectString += this.compileEffects(this.abilities[effect.id].castEffects, [].concat(callStack, [effect]), "actor.abilities[SharedData.strings["+SharedData.strings.indexOf(effect.id)+"]].castEffects.compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", false);
+					break;
+				case "removeAura":
+					break;
+				case "shortcut":
+					const shortcutId = effect.id;
+					if (!SharedData.strings.includes(shortcutId)){
+						SharedData.strings.push(shortcutId);
+					}
+					const subEffect = this.shortcuts[shortcutId];
+					if (subEffect === undefined){
+						Log.error("Unknown effect shortcut: " + shortcutId);
+						return "";
+					}
+					if (!SharedData.strings.includes(shortcutId))
+					effectString += this.compileEffects(subEffect, [].concat(callStack, [effect]), "actor.shortcuts[SharedData.strings[" + SharedData.indexOf(shortcutId) + "]].compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", false);
+					break;
+				case "registerEventHandler":
+					if (!SharedData.strings.includes(effect.id)){
+						if (!SharedData.eventLoop.eventTypes.includes(effect.id)){
+							Log.error("Unknown event type: " + effect.id);
+							return "";
+						} else {
+							SharedData.strings.push(effect.id);
+						}
+					}
+					effectString += "SharedData.eventLoop.registerEventHandler(SharedData.strings["+SharedData.strings.indexOf(effect.id)+"],"+JSONEvaluator.compileValue(effect.targetId, this)+", actor,"+JSONEvaluator.compileValue(effect.eventConditions, this)+","+effect.effects.map((effect, index)=>this.compileEffects(effect, callStack, null, false)).join(",")+");";
+					break;
+				case "runOnActors":
+					const actorCheck = "";
+					if (effect.relation !== undefined){
+						if (effect.relation === "enemy"){
+							actorCheck = "actorToRunOn.team !== actor.team";
+						} else {
+							actorCheck = "actorToRunOn.team === actor.team";
+						}
+					}
+					if (effect.conditions !== undefined && effect.conditions.length > 0){
+						if (actorCheck !== ""){
+							actorCheck += "&&";
+						}
+						actorCheck += JSONEvaluator.compileValue(effect.conditions, this);
+					}
+					if (actorCheck !== ""){
+						actorCheck = "if (!(" + actorCheck + ")){return;};"
+					}//Overwrite effectString since conditions server a different purpose
+					effectString = `SharedData.actors.forEach((actorToRunOn,actorId)=>{const prevActorId=parameters.actorId;parameters.actorId=actorId;${actorCheck}${this.compileEffects(effect.effect, [].concat(callStack, [effect]), null, false)}parameters.actorId=prevActorId;);`;
+					break;
+			}
+		}
+		const compiledFunction = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", effectString);
+		effect.compiled = compiledFunction;
+		if (createFunction) {
+			return compiledFunction;
+		}
+		return effectString;
+	}
+
+	compile(){
+		this.abilities._Initialize.compiled = this.compileEffects(this.abilities._Initialize.castEffects, [], "actor.abilities._Initialize.compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", true);//Make sure resources are created first
+		this.abilities.forEach((ability, index) => {
+			ability.castEffects.compiled = this.compileEffects(ability.castEffects, [], "actor.abilities["+index+"].castEffects.compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", true);
+		});
+		//Shortcuts processed as they are used by abilities
+		//Auras expiration/removal/ticking will be changed to 
 	}
 }

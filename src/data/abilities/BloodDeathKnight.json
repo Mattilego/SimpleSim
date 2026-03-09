@@ -25,7 +25,7 @@
 	},
 	"_Will of the Necropolis Initializer": {
 		"castEffects": [{
-			"type": "buff",
+			"type": "aura",
 			"id": "_Will of the Necropolis",
 			"duration": -1,
 			"conditions": [{
@@ -38,7 +38,7 @@
 	"_Blood Fortification Initializer": {
 		"castEffects": [
 			{
-				"type": "buff",
+				"type": "aura",
 				"id": "_Blood Fortification",
 				"duration": -1,
 				"conditions": [{
@@ -65,12 +65,12 @@
 					"type": "proc",
 					"chance": 25,
 					"effect": {
-						"type": "buff",
+						"type": "aura",
 						"id": "Crimson Scourge"
 					},
 					"conditions": [
 						{
-							"type": "debuff",
+							"type": "aura",
 							"id": "Blood Plague",
 							"target": {
 								"type": "parameter",
@@ -80,7 +80,7 @@
 						}, {
 							"type": "not",
 							"value": {
-								"type": "buff",
+								"type": "aura",
 								"id": "Death and Decay",
 								"check": "exists"
 							}
@@ -97,7 +97,7 @@
 	},
 	"_Riposte Initializer": {
 		"castEffects": [{
-			"type": "buff",
+			"type": "aura",
 			"id": "_Riposte",
 			"duration": -1,
 			"conditions": [{
@@ -161,7 +161,7 @@
 	},
 	"_Start Rune Regeneration": {
 		"castEffects": [{
-			"type": "buff",
+			"type": "aura",
 			"id": "_Rune Regeneration",
 			"stacks": {
 				"type": "shortcut",
@@ -279,7 +279,7 @@
 		],
 		"castEffects": [
 			{
-				"type": "buff",
+				"type": "aura",
 				"id": "Death and Decay",
 				"duration": 10
 			},{
@@ -287,7 +287,7 @@
 				"relation": "enemy",
 				"effects": [
 					{
-						"type": "debuff",
+						"type": "aura",
 						"id": "Death and Decay",
 						"duration": 10
 					}
