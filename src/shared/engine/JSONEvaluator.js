@@ -25,7 +25,11 @@ export class JSONEvaluator {
 				case "and":
 					return value.conditions.every((c) => JSONEvaluator.evaluateValue(actor, c, parameters));
 				case "not":
-					return !JSONEvaluator.evaluateValue(actor, value.conditions[0], parameters);
+					if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)) {
+						return !JSONEvaluator.evaluateValue(actor, value.value, parameters);
+					} else {
+						return JSONEvaluator.evaluateValue(actor, value.value, parameters);
+					}
 				case "+":
 					if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)) {
 						return JSONEvaluator.evaluateValue(actor, value.value1, parameters) + JSONEvaluator.evaluateValue(actor, value.value2, parameters);
@@ -639,9 +643,9 @@ export class JSONEvaluator {
 					case "not":
 					case "!":
 						if (Array.isArray(value.conditions) && value.conditions.length > 1){//Disabling a not doubles as an xor
-							return "("+this.compileValue(value.conditions[0], actor, [].concat(callStack, [value]))+"!=="+this.compileValue(value.conditions.slice(1), actor, [].concat(callStack, [value]))+")";
+							return "("+this.compileValue(value.value, actor, [].concat(callStack, [value]))+"!=="+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")";
 						}else{
-							return "(!"+this.compileValue(value.conditions[0])+")";
+							return "(!"+this.compileValue(value.value, actor, [].concat(callStack, [value]))+")";
 						}
 					case "+":
 						if (Array.isArray(value.conditions) && value.conditions.length > 0){
@@ -754,14 +758,18 @@ export class JSONEvaluator {
 							if (!SharedData.strings.includes(value.id)){
 								SharedData.strings.push(value.id);
 							}
-							return "actor.stats[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
+							if (value.check === "rating"){
+								return "actor.getStat(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
+							} else if (value.check === "effect"){
+								return "actor.getStatEffect(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
+							}
 						}
 					case "talent":
 						if ((value.comparison === undefined || value.check === "known") && value.type==="talent"){
 							if (!SharedData.strings.includes(value.id)){
 								SharedData.strings.push(value.id);
 							}
-							if (value.check == "known"){
+							if (value.check == "known" || value.check === undefined){
 								return "actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
 							} else if (value.check == "points"){
 								let talentString = "(+actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
@@ -905,6 +913,14 @@ export class JSONEvaluator {
 						}
 
 						return "(" + parameterAssignments + this.compileValue(actor.shortcuts[value.id], actor, [].concat(callStack, [value]), "actor.shortcuts[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]].compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)") + ")";
+					case "proc":
+						if (!SharedData.strings.includes(value.id)){
+							SharedData.strings.push(value.id);
+						}
+						if (value.conditions === undefined || value.conditions.length === 0){
+							return "actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.type)+"])";
+						}
+						return "("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"&&actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.type)+"]))";
 				}
 			}
 		}

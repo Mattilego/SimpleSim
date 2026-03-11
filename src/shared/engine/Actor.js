@@ -36,7 +36,7 @@ export class Actor {
 		this.damageTakenModifiers = {};
 		this.damageTakenAdditions = {};
 		this.damagetakenSpecialChanges = {};
-		this.absorbs = {};
+		this.absorbs = new Set();
 		this.healAbsorbs = {};
 	}
 
@@ -165,21 +165,15 @@ export class Actor {
 					}
 					break;
 				case "createResource":
-					this.resources[effect.id] = {
-						value: JSONEvaluator.evaluateValue(this, effect.initialValue, parameters),
-						max: JSONEvaluator.evaluateValue(this, effect.maxValue, parameters)
-					};
+					this.resources[effect.id] = JSONEvaluator.evaluateValue(this, effect.value, parameters);
 					break;
 				case "setResource":
 					let oldResourceValue = this.resources[effect.id].value;
-					this.resources[effect.id].value = JSONEvaluator.evaluateValue(this, effect.value, parameters);
+					this.resources[effect.id] = JSONEvaluator.evaluateValue(this, effect.value, parameters);
 					SharedData.eventLoop.triggerListeners("resourceChange", this.id, { resource: effect.id, oldValue: oldResourceValue, newValue: this.resources[effect.id].value });
 					break;
 				case "useAbility":
-					try {
-						this.triggerEffects(this.abilities[effect.id].castEffects, abilityTarget, parameters, effect.id);
-					} catch (error) {
-					}
+					this.triggerEffects(this.abilities[effect.id].castEffects, abilityTarget, parameters, effect.id);
 					break;
 				case "removeAura":
 					targetId = -1;
@@ -196,6 +190,9 @@ export class Actor {
 					let removedAura = target.auras.get(effect.id).shift();
 					if (target.auras.get(effect.id).length === 0){
 						target.auras.delete(effect.id);
+					}
+					if (this.absorbs.has(removedAura)){
+						this.absorbs.delete(removedAura);
 					}
 					break;
 				case "shortcut":
@@ -481,6 +478,7 @@ export class Actor {
 			if (effect.conditions !== undefined && effect.conditions.length > 0){
 				effectString = "if(!"+JSONEvaluator.compileValue(effect.conditions, this)+"){return;};";
 			}
+			const variablePrefix = "_".repeat(callStack.length);//For any internal variables to not overwrite
 			switch(effect.type){
 				case "damage":
 					let baseDamage = ""+JSONEvaluator.compileValue(effect.value, this) + "*actor.getStatEffect('versatility')*actor.getDamageDoneModifier(["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"])+actor.getDamageDoneAddition(["+effect.types.map((type) => "SharedData.types["+SharedData.types.indexOf(type)+"]").join(",")+"])";
@@ -555,6 +553,9 @@ export class Actor {
 							SharedData.strings.push(effect.id);
 						}
 					}
+					if (effect.targetId === undefined){
+						effect.targetId = this.id;
+					}
 					effectString += "SharedData.eventLoop.registerEventHandler(SharedData.strings["+SharedData.strings.indexOf(effect.id)+"],"+JSONEvaluator.compileValue(effect.targetId, this)+", actor,"+JSONEvaluator.compileValue(effect.eventConditions, this)+","+JSON.stringify(effect.effects)+");";
 					break;
 				case "runOnActors":
@@ -575,7 +576,7 @@ export class Actor {
 					if (actorCheck !== ""){
 						actorCheck = "if (!(" + actorCheck + ")){return;};"
 					}//Overwrite effectString since conditions server a different purpose
-					effectString = `SharedData.actors.forEach((actorToRunOn,actorId)=>{const prevActorId=parameters.actorId;parameters.actorId=actorId;${actorCheck}${this.compileEffects(effect.effects, [].concat(callStack, [effect]), null, false)}parameters.actorId=prevActorId;});`;
+					effectString = `${variablePrefix}actorNumber=1;SharedData.actors.forEach((actorToRunOn,actorId)=>{const prevActorId=parameters.actorId;parameters.actorId=actorId;${actorCheck}${variablePrefix}actorNumber++;actorNumber=${variablePrefix}actorNumber;${this.compileEffects(effect.effects, [].concat(callStack, [effect]), null, false)}parameters.actorId=prevActorId;});`;
 					break;
 			}
 		}

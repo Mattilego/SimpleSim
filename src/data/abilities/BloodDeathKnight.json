@@ -1,5 +1,6 @@
 {
 	"_Initialize": {
+		"GCD": 0,
 		"castEffects": [
 			{
 				"type": "useAbility",
@@ -24,6 +25,7 @@
 		]
 	},
 	"_Will of the Necropolis Initializer": {
+		"GCD": 0,
 		"castEffects": [{
 			"type": "applyAura",
 			"id": "_Will of the Necropolis",
@@ -36,6 +38,7 @@
 		}]
 	},
 	"_Blood Fortification Initializer": {
+		"GCD": 0,
 		"castEffects": [
 			{
 				"type": "applyAura",
@@ -50,6 +53,7 @@
 		]
 	},
 	"_Crimson Scourge Initializer": {
+		"GCD": 0,
 		"castEffects": [
 			{
 				"type": "registerEventHandler",
@@ -96,6 +100,7 @@
 		]
 	},
 	"_Riposte Initializer": {
+		"GCD": 0,
 		"castEffects": [{
 			"type": "applyAura",
 			"id": "_Riposte",
@@ -108,6 +113,7 @@
 		}]
 	},
 	"_Rune Regeneration Initializer": {
+		"GCD": 0,
 		"castEffects": [
 			{
 				"type": "createResource",
@@ -136,6 +142,7 @@
 		]
 	},
 	"_Regenerate Rune": {
+		"GCD": 0,
 		"castEffects": [
 			{
 				"type": "setResource",
@@ -158,6 +165,7 @@
 		]
 	},
 	"_Start Rune Regeneration": {
+		"GCD": 0,
 		"castEffects": [{
 			"type": "applyAura",
 			"id": "_Rune Regeneration",
@@ -222,7 +230,6 @@
 		]
 	},
 	"Rune Strike": {
-		"GCD": 1,
 		"cooldown": 0,
 		"conditions": [
 			{
@@ -233,11 +240,11 @@
 				"value": 1
 			}, {
 				"type": "not",
-				"conditions": [{
+				"value": {
 					"type": "talent",
 					"id": "Heart Strike",
 					"check": "known"
-				}]
+				}
 			}, {
 				"type": "shortcut",
 				"id": "hostileTarget"
@@ -264,7 +271,6 @@
 		]
 	},
 	"Death and Decay": {
-		"GCD": 1,
 		"cooldown": 0,
 		"conditions": [
 			{

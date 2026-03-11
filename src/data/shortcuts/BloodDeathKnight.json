@@ -58,11 +58,7 @@
 			"id": "runicPower",
 			"value": {
 				"type": "min",
-				"value1": {
-					"type": "resource",
-					"id": "runicPower",
-					"check": "max"
-				},
+				"value1": 125,
 				"value2": {
 					"type": "+",
 					"value1": {
