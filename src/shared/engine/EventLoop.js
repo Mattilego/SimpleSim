@@ -7,6 +7,7 @@ export class EventLoop {
 		this.futureEvents = [];
 		this.time = 0;
 		this.listeners = {};
+		this.eventTypes = ["takeDamage", "dealDamage", "recieveHealing", "heal", "applyAura", "removeAura", "expireAura", "resourceChange", "parry", "dodge", "miss", "block", "abilityUse"];
 	}
 
 	registerEvent(time, data) {

@@ -7,8 +7,10 @@ export async function processRequest(request) {
 	SharedData.actors = request.setup.actors.map((a) => new Actor(a.name, a.level, a.apl, a.stats, a.talents, a.team, a.abilities, a.auras, a.shortcuts));
 	const maxFightLength = request.config.maxFightLength;
 	SharedData.eventLoop = new EventLoop(maxFightLength);
-	Log.initializeListeners();
-	if (!request.compile === false){
+	//Log.initializeListeners();
+	if (!(request.config.compile === false)){
+		SharedData.compiling = true;
+		SharedData.strings = [];
 		SharedData.actors.forEach((actor) => {actor.compile();});
 	}
 	SharedData.actors.forEach((actor) => {

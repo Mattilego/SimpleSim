@@ -25,7 +25,7 @@
 	},
 	"_Will of the Necropolis Initializer": {
 		"castEffects": [{
-			"type": "aura",
+			"type": "applyAura",
 			"id": "_Will of the Necropolis",
 			"duration": -1,
 			"conditions": [{
@@ -38,7 +38,7 @@
 	"_Blood Fortification Initializer": {
 		"castEffects": [
 			{
-				"type": "aura",
+				"type": "applyAura",
 				"id": "_Blood Fortification",
 				"duration": -1,
 				"conditions": [{
@@ -65,7 +65,7 @@
 					"type": "proc",
 					"chance": 25,
 					"effect": {
-						"type": "aura",
+						"type": "applyAura",
 						"id": "Crimson Scourge"
 					},
 					"conditions": [
@@ -97,7 +97,7 @@
 	},
 	"_Riposte Initializer": {
 		"castEffects": [{
-			"type": "aura",
+			"type": "applyAura",
 			"id": "_Riposte",
 			"duration": -1,
 			"conditions": [{
@@ -112,13 +112,11 @@
 			{
 				"type": "createResource",
 				"id": "runes",
-				"initialValue": 6,
-				"maxValue": 6
+				"value": 6
 			},{
 				"type": "createResource",
 				"id": "runicPower",
-				"initialValue": 0,
-				"maxValue": 125
+				"value": 0
 			},
 			{
 				"type": "registerEventHandler",
@@ -161,7 +159,7 @@
 	},
 	"_Start Rune Regeneration": {
 		"castEffects": [{
-			"type": "aura",
+			"type": "applyAura",
 			"id": "_Rune Regeneration",
 			"stacks": {
 				"type": "shortcut",
@@ -192,7 +190,7 @@
 		"castEffects": [
 			{
 				"type": "damage",
-				"damageTypes": ["physical"],
+				"types": ["physical"],
 				"value": {
 					"type": "stat",
 					"id": "mainWeaponDamage",
@@ -254,7 +252,7 @@
 				}
 			}, {
 				"type": "damage",
-				"damageTypes": ["physical"],
+				"types": ["physical"],
 				"value": {
 					"type": "shortcut",
 					"id": "%strength",
@@ -279,7 +277,7 @@
 		],
 		"castEffects": [
 			{
-				"type": "aura",
+				"type": "applyAura",
 				"id": "Death and Decay",
 				"duration": 10
 			},{
@@ -287,8 +285,8 @@
 				"relation": "enemy",
 				"effects": [
 					{
-						"type": "aura",
-						"id": "Death and Decay",
+						"type": "applyAura",
+						"id": "Death and Decay DoT",
 						"duration": 10
 					}
 				]

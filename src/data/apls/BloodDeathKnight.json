@@ -1,6 +1,11 @@
 [
 	{
 		"ability": "Rune Strike",
-		"conditions": []
+		"conditions": [{
+			"type": "resource",
+			"id": "runes",
+			"comparison": ">=",
+			"value": 3
+		}]
 	}
 ]

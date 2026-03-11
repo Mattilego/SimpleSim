@@ -206,7 +206,8 @@ export class UserDataRetiever {
 				actors: actors,
 			},
 			config: {
-				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value*60)
+				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value*60),
+				compile: true
 			}
 		};
 	}
