@@ -1,6 +1,6 @@
 import { DefaultSpecDataLoader } from "./DefaultSpecDataLoader";
 
-export class UserDataRetiever {
+export class UserDataRetriever {
 	static nameToId = {
 		"BloodDeathKnight": "bdk",
 		"FrostDeathKnight": "fdk",
@@ -121,8 +121,8 @@ export class UserDataRetiever {
 			parry: 0,
 			block: 0,
 			dodge: 0,
-			mainWeaponDamage: 1,
-			mainWeaponSpeed: 1
+			mainWeaponDamage: 216,
+			mainWeaponSpeed: 3.6
 		};
 		stats[this.specPrimaryStats[spec]] = parseFloat(document.getElementById("primaryStatInput").value);
 		stats.armor = parseFloat(document.getElementById("armorStatInput").value);

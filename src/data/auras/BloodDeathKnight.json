@@ -1,3 +1,14 @@
 {
-	
+	"_Rune Regeneration": {
+		"duration": {
+			"type": "/",
+			"value1": 10,
+			"value2": {
+				"type": "stat",
+				"id": "haste",
+				"check": "effect"
+			}
+		},
+		"expirationAbility": "_Regenerate Rune"
+	}
 }

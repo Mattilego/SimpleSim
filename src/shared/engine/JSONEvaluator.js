@@ -607,7 +607,7 @@ export class JSONEvaluator {
 					}
 				case "proc":
 					if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)) {
-						return actor.procHandler.checkProc(value.id, value.chance || value.ppm || value.rppm, value.type);
+						return actor.procHandler.checkProc(value.id, value.chance || value.ppm || value.rppm, value.system);
 					}
 					return false;
 			}
@@ -744,7 +744,13 @@ export class JSONEvaluator {
 							if (!SharedData.strings.includes(value.id)){
 								SharedData.strings.push(value.id);
 							}
-							return "actor.resources['prototypeProtection'+SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
+							let targetString = "";
+							if (value.targetId !== undefined){
+								targetString = "SharedData.actors["+this.compileValue(value.targetId, actor)+"]";
+							} else {
+								targetString = "actor";
+							}
+							return targetString+".getResource(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
 						}//Intentional fallthrough towards the shared comparison handling
 					case "parameter":
 						if (value.comparison === undefined && value.type==="parameter"){
@@ -823,13 +829,13 @@ export class JSONEvaluator {
 							}
 							switch (value.check){
 								case "exists":
-									return targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
+									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]))";
 								case "duration":
-									return targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?("+variablePrefix+"maxDuration = 0, "+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).forEach(aura => {if(aura.duration>"+variablePrefix+"maxDuration){"+variablePrefix+"maxDuration = aura.duration}}), "+variablePrefix+"maxDuration):0";
+									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?("+variablePrefix+"maxDuration = 0, "+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).forEach(aura => {if(aura.duration>"+variablePrefix+"maxDuration){"+variablePrefix+"maxDuration = aura.duration}}), "+variablePrefix+"maxDuration):0)";
 								case "stacks":
-									return targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?"+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).reduce((acc, aura)=>acc+aura.stacks, 0):0";
+									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?"+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).reduce((acc, aura)=>acc+aura.stacks, 0):0)";
 								case "value":
-									return targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?"+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).reduce((acc, aura)=>acc+aura.value, 0):0";
+									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?"+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).reduce((acc, aura)=>acc+aura.value, 0):0)";
 								default:
 									Log.error("Invalid check type for aura lookup: " + value.check);
 									return "0";
@@ -896,9 +902,9 @@ export class JSONEvaluator {
 							actorChecks = actorChecks.slice(0,-2);
 						}
 						if (actorChecks !== ""){
-							return "("+variablePrefix+"best=-1,"+variablePrefix+"bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{if("+actorChecks+"){const "+variablePrefix+"score="+this.compileValue(value.expression, actor, [].concat(callStack, [value]))+";if("+variablePrefix+"score>"+variablePrefix+"bestScore){"+variablePrefix+"bestScore="+variablePrefix+"score;"+variablePrefix+"best=actorId}}}),"+variablePrefix+"best)";
+							return "("+variablePrefix+"best=-1,"+variablePrefix+"bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{parameters.actorId = actorId;if("+actorChecks+"){const "+variablePrefix+"score="+this.compileValue(value.expression, actor, [].concat(callStack, [value]))+";if("+variablePrefix+"score>"+variablePrefix+"bestScore){"+variablePrefix+"bestScore="+variablePrefix+"score;"+variablePrefix+"best=actorId}}}),"+variablePrefix+"best)";
 						} else {
-							return "("+variablePrefix+"best=-1,"+variablePrefix+"bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{const "+variablePrefix+"score="+this.compileValue(value.expression, actor, [].concat(callStack, [value]))+";if("+variablePrefix+"score>"+variablePrefix+"bestScore){"+variablePrefix+"bestScore="+variablePrefix+"score;"+variablePrefix+"best=actorId}}}),"+variablePrefix+"best)";
+							return "("+variablePrefix+"best=-1,"+variablePrefix+"bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{parameters.actorId = actorId;const "+variablePrefix+"score="+this.compileValue(value.expression, actor, [].concat(callStack, [value]))+";if("+variablePrefix+"score>"+variablePrefix+"bestScore){"+variablePrefix+"bestScore="+variablePrefix+"score;"+variablePrefix+"best=actorId}}}),"+variablePrefix+"best)";
 						}
 					case "shortcut":
 						if (!SharedData.strings.includes(value.id)){
@@ -920,7 +926,7 @@ export class JSONEvaluator {
 						if (value.conditions === undefined || value.conditions.length === 0){
 							return "actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.type)+"])";
 						}
-						return "("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"&&actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.type)+"]))";
+						return "("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"&&actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.system)+"]))";
 				}
 			}
 		}

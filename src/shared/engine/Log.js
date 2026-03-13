@@ -49,9 +49,22 @@ export class Log {
 		SharedData.actors.forEach((actor) => {
 			SharedData.eventLoop.registerEventHandler("takeDamage", actor.id, {
 				triggerEffects: (_, __, data) => {
-					Log.log(`Actor ${data.target.name} took ${data.damage} damage from ${data.name} by ${data.sourceActor.name} (${data.mitigated} mitigated, ${data.absorbed} absorbed, ${data.newHp.value} HP left)`);
+					Log.log(`Actor ${data.target.name} took ${data.damage} damage from ${data.name} by ${data.sourceActor.name} (${data.mitigated} mitigated, ${data.absorbed} absorbed, ${data.newHp} HP left)`);
 				}
 			}, [], []);
+			
+			SharedData.eventLoop.registerEventHandler("applyAura", actor.id, {
+				triggerEffects: (_, __, data) => {
+					Log.log(`Actor ${data.target.name} applied ${data.stacks} stacks of ${data.aura} to ${data.sourceActor.name} for ${data.duration} seconds`);
+				}
+			}, [], []);
+			
+			SharedData.eventLoop.registerEventHandler("resourceChange", actor.id, {
+				triggerEffects: (_, __, data) => {
+					Log.log(`Actor ${data.actor.name}'s ${data.resource} changed from ${data.oldValue} to ${data.newValue}`);
+				}
+			}, [], []);
+			
 		});
 	}
 }

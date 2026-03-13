@@ -36,6 +36,6 @@ export class AuraHandler {
 			modifiedAura = new Aura(aura, duration, stacks, sourceActor, actor.id);
 			multimap.push(modifiedAura);
 		}
-		SharedData.eventLoop.triggerListeners("applyAura", actor, { aura, sourceActor, duration, stacks });
+		SharedData.eventLoop.triggerListeners("applyAura", actor.id, { aura, sourceActor, duration, stacks, target: actor });
 	}
 }

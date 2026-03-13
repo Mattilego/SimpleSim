@@ -1,5 +1,5 @@
 import { JSONEvaluator } from "./JSONEvaluator.js";
-import { Log } from "./Log.js";
+import { SharedData } from "./SharedData.js"
 
 export class APLReader {
 	static parseAPL(initiator) {

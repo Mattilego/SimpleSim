@@ -7,13 +7,21 @@ Damage:
 	"type": "damage",
 	"value": Value (Number),
 	"types": Array[String],
-	"targetId": Value (Number)
+	"targetId": Value (Number),
+	"missable": Boolean,
+	"dodgeable": Boolean,
+	"parryable": Boolean,
+	"blockable": Boolean
 }
 Deals damage to a target actor with damage multipliers and such included
 Properties:
 value: the base amount of damage to deal
 types: array of damage types to count the damage as
 targetId (optional): The actorId to deal damage to, defaults to highest hp enemy, value given abilityTarget as parameter
+missable (optional): If the damage can miss, defaults to false
+dodgeable (optional): If the damage can be dodged, defaults to false
+parryable (optional): If the damage can be parried, defaults to false
+blockable (optional): If the damage can be blocked, defaults to false
 
 Heal:
 {
@@ -28,9 +36,9 @@ value: the base amount of health to restore
 types: array of healing types to count the healing as
 targetId (optional): The actorId to heal, defaults to lowest hp ally, value given abilityTarget as parameter
 
-Aura:
+Apply Aura:
 {
-	"type": "aura",
+	"type": "applyAura",
 	"id": String,
 	"duration": Value (Number),
 	"stacks": Value (Number),
@@ -40,7 +48,7 @@ Aura:
 Applies an aura to the target actor
 Properties:
 id: the id/name of the aura to apply
-duration: the duration of the aura in seconds
+duration (optional): the duration of the aura in seconds, uses aura definition duration if not present
 stacks (optional): the number of stacks to apply, defaults to 1
 value (optional): the value to give the aura (absorb amount mostly)
 targetId (optional): The actorId to apply the aura to, defaults to self, value given abilityTarget as parameter
@@ -360,12 +368,11 @@ parameters (optional): Additional parameters to give the shortcut
 Proc:
 {
 	"type": "proc",
-	"type": "chance" | "ppm" | "rppm",
+	"system": "chance" | "ppm" | "rppm",
 	"id": String,
 	"chance" | "ppm" | "rppm": Value (Number)
 } = Boolean
 
-type: what method to use for determining the chance
+system: what method to use for determining the chance
 chance/ppm/rppm: the value indicating how often it should proc with respect to the type (chance in %)
 id: the id/name of the proc, not needed other than for the rppm type
-

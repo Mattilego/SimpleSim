@@ -3,11 +3,11 @@ import { EventLoop } from "../engine/EventLoop.js";
 import { SharedData } from "./SharedData.js";
 import { Log } from "./Log.js";
 
-export async function processRequest(request) {
+export function processRequest(request) {
 	SharedData.actors = request.setup.actors.map((a) => new Actor(a.name, a.level, a.apl, a.stats, a.talents, a.team, a.abilities, a.auras, a.shortcuts));
 	const maxFightLength = request.config.maxFightLength;
 	SharedData.eventLoop = new EventLoop(maxFightLength);
-	//Log.initializeListeners();
+	Log.initializeListeners();
 	if (!(request.config.compile === false)){
 		SharedData.compiling = true;
 		SharedData.strings = [];
