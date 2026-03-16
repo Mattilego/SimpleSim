@@ -1,17 +1,17 @@
 Warning: No functionality implemented yet.
 
-This is a lightweight tool to simualte world of warcraft characters, similar to Simulationcraft / Raidbots.
+This is a lightweight tool to simualte world of warcraft characters, similar to Simulationcraft / Raidbots but running locally.
 
 You can check out the web version here: [Github pages](https://mattilego.github.io/SimpleSim/dist/renderer/)
 
 It will prioritize support for blood death knight because it's my main spec, feel free to add others though :).
 
-This aims to be a simple and lightweight tool, so it will not have as many features as Simulationcraft / Raidbots, but will try to support the most common features.
+This aims to be a simple and lightweight tool, so it will not have as many features as Simulationcraft / Raidbots, but have enough flexibility for most use cases.
 
-Low level characters are also supported for some specs to varying degrees, but it's not the main focus. You can use the UI to override the APL to work better for low level characters if you'd like.
+Low level characters are also supported for some specs to varying degrees, but it's not the main focus. You can use the (unimplemented) advanced UI to override the APL to work better for low level characters if you'd like.
 
-Special effects on gear is not supported, other than enabling current set bonuses. This notably includes most trinkets and weapon enchantments, though I might manually add the top tier trinkets and enchants.
+Special effects on gear is not supported, other than enabling current set bonuses. This notably includes most trinkets and weapon enchantments, though I might manually add the top tier trinkets and enchants, you can add effects yourself with custom abilities+auras.
 
 Support for importing your character from the Simulationcraft addon is planned, but not implemented yet.
 
-Mitigation and healing can be tested, though default apls focus primarily on damage. Default or custom attack patterns can be selected for the enemy(ies) in the UI.
+Mitigation and healing can be tested, though default apls focus primarily on damage. Default or custom attack patterns can be selected for the enemy(ies) in the (unimplemented) advanced UI.

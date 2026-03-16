@@ -7,7 +7,7 @@ export function processRequest(request) {
 	SharedData.actors = request.setup.actors.map((a) => new Actor(a.name, a.level, a.apl, a.stats, a.talents, a.team, a.abilities, a.auras, a.shortcuts));
 	const maxFightLength = request.config.maxFightLength;
 	SharedData.eventLoop = new EventLoop(maxFightLength);
-	Log.initializeListeners();
+	//Log.initializeListeners();
 	if (!(request.config.compile === false)){
 		SharedData.compiling = true;
 		SharedData.strings = [];
@@ -22,7 +22,7 @@ export function processRequest(request) {
 			source: actor
 		});
 	});
-	while (SharedData.eventLoop.futureEvents.length > 0) {
+	while (SharedData.eventLoop.futureEvents.root !== null) {
 		SharedData.eventLoop.processEvent();
 	}
 	return Log.getString();

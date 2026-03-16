@@ -13,7 +13,7 @@ export class Aura {
 
 	set duration(duration) {
 		this.expirationTime = SharedData.time + duration;
-		SharedData.eventLoop.futureEvents = SharedData.eventLoop.futureEvents.filter((event) => event.data !== this.expirationEvent);
+		SharedData.eventLoop.futureEvents.remove(this.expirationEvent);
 		this.expirationEvent = SharedData.eventLoop.registerEvent(this.expirationTime, this.expirationEvent.data);
 	}
 

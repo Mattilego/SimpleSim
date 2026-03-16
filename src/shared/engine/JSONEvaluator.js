@@ -477,7 +477,7 @@ export class JSONEvaluator {
 					return parameters[value.id];
 				case "shortcut":
 					if (value.parameters) {
-						return JSONEvaluator.evaluateValue(actor, actor.shortcuts[value.id], Object.assign({}, parameters, value.parameters));
+						return JSONEvaluator.evaluateValue(actor, actor.shortcuts[value.id], Object.assign(parameters, value.parameters));
 					} else {
 						return JSONEvaluator.evaluateValue(actor, actor.shortcuts[value.id], parameters);
 					}
@@ -521,7 +521,7 @@ export class JSONEvaluator {
 							return JSONEvaluator.evaluateValue(actor, actor.abilities[value.id].conditions, parameters) && actor.cooldowns[value.id].charges >= 1;
 					}
 				case "findActor":
-					return SharedData.actors.findIndex((a, i) => !((actor.team === a.team && value.relation === "enemy") || (actor.team !== a.team && value.relation === "ally")) && JSONEvaluator.evaluateValue(actor, value.conditions, Object.assign({}, parameters, { actorId: i })));
+					return SharedData.actors.findIndex((a, i) => !((actor.team === a.team && value.relation === "enemy") || (actor.team !== a.team && value.relation === "ally")) && JSONEvaluator.evaluateValue(actor, value.conditions, Object.assign(parameters, { actorId: i })));
 				case "findBestActor":
 					let _best = -Infinity;
 					let bestIndex = -1;
@@ -530,10 +530,10 @@ export class JSONEvaluator {
 						if ((a.team === actor.team && value.relation === "enemy") || (a.team !== actor.team && value.relation === "ally")) {
 							continue;
 						}
-						if (!JSONEvaluator.evaluateValue(actor, value.conditions, Object.assign({}, parameters, { actorId: i }))) {
+						if (!JSONEvaluator.evaluateValue(actor, value.conditions, Object.assign(parameters, { actorId: i }))) {
 							continue;
 						}
-						const score = JSONEvaluator.evaluateValue(actor, value.expression, Object.assign({}, parameters, { actorId: i }));
+						const score = JSONEvaluator.evaluateValue(actor, value.expression, Object.assign(parameters, { actorId: i }));
 						if (score > _best) {
 							_best = score;
 							bestIndex = i;
@@ -544,7 +544,7 @@ export class JSONEvaluator {
 					if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)) {
 						let newParameter = {};
 						newParameter[value.to] = parameters[value.from];
-						return JSONEvaluator.evaluateValue(actor, value.value, Object.assign({}, parameters, newParameter));
+						return JSONEvaluator.evaluateValue(actor, value.value, Object.assign(parameters, newParameter));
 					}
 					return JSONEvaluator.evaluateValue(actor, value.value, parameters);
 				case "stat":
@@ -569,7 +569,7 @@ export class JSONEvaluator {
 					let matchingActors = 0;
 					for (let i = 0; i < SharedData.actors.length; i++) {
 						const a = SharedData.actors[i];
-						if (!((a.team === actor.team && value.relation === "enemy") || (a.team !== actor.team && value.relation === "ally")) && JSONEvaluator.evaluateValue(actor, value.conditions, Object.assign({}, parameters, { actorId: i }))) {
+						if (!((a.team === actor.team && value.relation === "enemy") || (a.team !== actor.team && value.relation === "ally")) && JSONEvaluator.evaluateValue(actor, value.conditions, Object.assign(parameters, { actorId: i }))) {
 							matchingActors++;
 						}
 					}
