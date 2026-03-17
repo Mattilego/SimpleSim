@@ -69,7 +69,6 @@ section {
 
 #specConfigurationContainer {
 	display: grid;
-	max-height: 900px;
 	transition: max-height 0.2s ease-in-out;
 	grid-template-columns:  0.5fr repeat(6, 1fr) 0.5fr;
 	grid-template-areas:
@@ -320,7 +319,6 @@ section {
 }
 
 #characterStatsContainer {
-	max-height: 1750px;
 	transition: max-height 0.2s ease-in-out;
 
 	#talents {
@@ -1246,7 +1244,6 @@ section {
 
 #enemySettings {
 	#enemySettingsContainer {
-		max-height: 400px;
 		transition: max-height 0.5s ease-in-out;
 
 	}
@@ -1254,7 +1251,6 @@ section {
 
 #fightSettings {
 	#fightSettingsContainer {
-		max-height: 400px;
 		transition: max-height 0.5s ease-in-out;
 	}
 
@@ -1412,7 +1408,6 @@ section {
 	}
 	
 	#characterStatsContainer {
-		max-height: 890px;
 		#statInputs {
 			grid-template-columns: repeat(4, auto);
 		}
@@ -1433,7 +1428,6 @@ section {
 
 @media screen and (min-width: 1010px) {
 	#characterStatsContainer {
-		max-height: 680px;
 		#talents {
 			.classTalentGroups {
 				grid-template-columns: repeat(3, auto);

@@ -24,13 +24,23 @@ export class Actor {
 		this.resources.prototypeProtectionhealth = this.stats.maxHp;
 		this.procHandler = new ProcHandler();
 		this.name = name;
-		this.statMultipliers = {};
-		this.statAdditions = {};
-		this.statSpecialMultipliers = {};
-		this.statSpecialAdditions = {};
+		this.statRatingMultipliers = {};
+		this.statRatingAdditions = {};
+		this.statEffectMultipliers = {};
+		this.statEffectAdditions = {};
+		this.statRatingSpecialMultipliers = {};
+		this.statRatingSpecialAdditions = {};
+		this.statEffectSpecialMultipliers = {};
+		this.statEffectSpecialAdditions = {};
 		for (const stat in this.stats){
-			this.statMultipliers[stat] = 1;
-			this.statAdditions[stat] = 0;
+			this.statRatingMultipliers[stat] = 1;
+			this.statEffectMultipliers[stat] = 1;
+			this.statRatingAdditions[stat] = 0;
+			this.statEffectAdditions[stat] = 0;
+			this.statRatingSpecialMultipliers[stat] = [];
+			this.statEffectSpecialMultipliers[stat] = [];
+			this.statRatingSpecialAdditions[stat] = [];
+			this.statEffectSpecialAdditions[stat] = []
 		}
 		this.damageDoneModifiers = {};
 		this.damageDoneAdditions = {};
@@ -44,6 +54,28 @@ export class Actor {
 		this.healingDoneAdditions = {};
 		this.healingDoneSpecialModifiers = {};
 		this.healingDoneSpecialAdditions = {};
+		this.healingTakenModifiers = {};
+		this.healingTakenAdditions = {};
+		this.healingTakenSpecialModifiers = {};
+		this.healingTakenSpecialAdditions = {};
+		for (let i = 0; i < 128; i++) {
+			this.damageDoneModifiers[i] = 1;
+			this.damageDoneAdditions[i] = 0;
+			this.damageDoneSpecialModifiers[i] = [];
+			this.damageDoneSpecialAdditions[i] = [];
+			this.damageTakenModifiers[i] = 1;
+			this.damageTakenAdditions[i] = 0;
+			this.damageTakenSpecialModifiers[i] = [];
+			this.damageTakenSpecialAdditions[i] = [];
+			this.healingDoneModifiers[i] = 1;
+			this.healingDoneAdditions[i] = 0;
+			this.healingDoneSpecialModifiers[i] = [];
+			this.healingDoneSpecialAdditions[i] = [];
+			this.healingTakenModifiers[i] = 1;
+			this.healingTakenAdditions[i] = 0;
+			this.healingTakenSpecialModifiers[i] = [];
+			this.healingTakenSpecialAdditions[i] = [];
+		}
 		this.absorbs = new Set();
 		this.healAbsorbs = {};
 		this.baseGCD = baseGCD
@@ -423,13 +455,19 @@ export class Actor {
 	}
 
 	getDamageDoneModifier(types) {
-		//TODO: implement
-		return 1;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.damageDoneModifiers[index];
 	}
 
 	getDamageDoneAddition(types) {
-		//TODO: implement
-		return 0;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.damageDoneAdditions[index];
 	}
 
 	getDamageDoneSpecialModifier(baseDamage, types){
@@ -443,13 +481,20 @@ export class Actor {
 	}
 
 	getDamageTakenModifier(types) {
-		//TODO: implement
-		return 1;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.damageTakenModifiers[index];
+		
 	}
 
 	getDamageTakenAddition(types) {
-		//TODO: implement
-		return 0;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.damageTakenAdditions[index];
 	}
 
 	getDamageTakenSpecialModifier(baseDamage, types){
@@ -463,13 +508,19 @@ export class Actor {
 	}
 
 	getHealingTakenAddition(types) {
-		//TODO: implement
-		return 0;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.healingTakenAdditions[index];
 	}
 
 	getHealingTakenModifier(types) {
-		//TODO: implement
-		return 1;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.healingTakenModifiers[index];
 	}
 
 	getHealingTakenSpecialModifier(baseHeal, types){
@@ -483,13 +534,19 @@ export class Actor {
 	}
 
 	getHealingDoneModifier(types){
-		//TODO: implement
-		return 1;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.healingDoneModifiers[index];
 	}
 
 	getHealingDoneAddition(types){
-		//TODO: implement
-		return 0;
+		let index = 0;
+		for (let i = 0; i < types.length; i++){
+			index += SharedData.types.get(types[i]);
+		}
+		return this.healingDoneAdditions[index];
 	}
 
 	getHealingDoneSpecialModifier(baseHeal, types){

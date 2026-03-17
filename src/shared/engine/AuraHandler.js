@@ -46,31 +46,19 @@ export class AuraHandler {
 	}
 
 	static applyAuraModifiers(aura, actor){
-		const auraDef = aura.sourceActor.knownAuras[aura.id];
+		const auraDef = aura.source.knownAuras[aura.id];
 		if (auraDef.statsModified !== undefined){
 			for (const stat of auraDef.statsModified) {
 				if (auraDef.statRatingMultiplier !== undefined) {
-					if (actor.statRatingMultipliers[stat] === undefined) {
-						actor.statRatingMultipliers[stat] = 1;
-					}
 					actor.statRatingMultipliers[stat] *= typeOf(auraDef.statRatingMultiplier.compiled)==="function"?auraDef.statRatingMultiplier.compiled(SharedData, aura.sourceActor, aura):JSONEvaluator.evaluateValue(aura.sourceActor, auraDef.statRatingMultiplier);
 				}
 				if (auraDef.statEffectMultiplier !== undefined) {
-					if (actor.statEffectMultipliers[stat] === undefined) {
-						actor.statEffectMultipliers[stat] = 1;
-					}
 					actor.statEffectMultipliers[stat] *= typeOf(auraDef.statEffectMultiplier.compiled)==="function"?auraDef.statEffectMultiplier.compiled(SharedData, aura.sourceActor, aura):JSONEvaluator.evaluateValue(aura.sourceActor, auraDef.statEffectMultiplier);
 				}
 				if (auraDef.statRatingAddition !== undefined) {
-					if (actor.statRatingAdditions[stat] === undefined) {
-						actor.statRatingAdditions[stat] = 0;
-					}
 					actor.statRatingAdditions[stat] += typeOf(auraDef.statRatingAddition.compiled)==="function"?auraDef.statRatingAddition.compiled(SharedData, aura.sourceActor, aura):JSONEvaluator.evaluateValue(aura.sourceActor, auraDef.statRatingAddition);
 				}
 				if (auraDef.statEffectAddition !== undefined) {
-					if (actor.statEffectAdditions[stat] === undefined) {
-						actor.statEffectAdditions[stat] = 0;
-					}
 					actor.statEffectAdditions[stat] += typeOf(auraDef.statEffectAddition.compiled)==="function"?auraDef.statEffectAddition.compiled(SharedData, aura.sourceActor, aura):JSONEvaluator.evaluateValue(aura.sourceActor, auraDef.statEffectAddition);
 				}
 				if (auraDef.statRatingSpecialModifier !== undefined){
@@ -147,15 +135,15 @@ export class AuraHandler {
 	}
 
 	static removeAuraModifiers(aura, actor) {
-		const auraDef = aura.sourceActor.knownAuras[aura.id];
+		const auraDef = aura.source.knownAuras[aura.id];
 		if (!auraDef) return;
 
 		// Helper to evaluate a modifier in the same way as applyAuraModifiers
 		function evaluate(modifier) {
 			if (modifier && modifier.compiled && typeof modifier.compiled === "function") {
-				return modifier.compiled(SharedData, aura.sourceActor, aura);
+				return modifier.compiled(SharedData, aura.source, aura);
 			}
-			return JSONEvaluator.evaluateValue(aura.sourceActor, modifier);
+			return JSONEvaluator.evaluateValue(aura.source, modifier);
 		}
 
 		// --- Stats modifications ---
@@ -164,59 +152,42 @@ export class AuraHandler {
 				// Multipliers (undo by division)
 				if (auraDef.statRatingMultiplier !== undefined) {
 					const val = evaluate(auraDef.statRatingMultiplier);
-					if (actor.statRatingMultipliers[stat] !== undefined) {
-						actor.statRatingMultipliers[stat] /= val;
-					}
+					actor.statRatingMultipliers[stat] /= val;
 				}
 				if (auraDef.statEffectMultiplier !== undefined) {
 					const val = evaluate(auraDef.statEffectMultiplier);
-					if (actor.statEffectMultipliers[stat] !== undefined) {
-						actor.statEffectMultipliers[stat] /= val;
-					}
+					actor.statEffectMultipliers[stat] /= val;
 				}
 
 				// Additions (undo by subtraction)
 				if (auraDef.statRatingAddition !== undefined) {
 					const val = evaluate(auraDef.statRatingAddition);
-					if (actor.statRatingAdditions[stat] !== undefined) {
-						actor.statRatingAdditions[stat] -= val;
-					}
+					actor.statRatingAdditions[stat] -= val;
 				}
 				if (auraDef.statEffectAddition !== undefined) {
 					const val = evaluate(auraDef.statEffectAddition);
-					if (actor.statEffectAdditions[stat] !== undefined) {
-						actor.statEffectAdditions[stat] -= val;
-					}
+					actor.statEffectAdditions[stat] -= val;
 				}
 
-				// Special arrays (remove the exact modifier object)
 				if (auraDef.statRatingSpecialModifier !== undefined) {
-					if (Array.isArray(actor.statRatingSpecialModifiers[stat])) {
-						actor.statRatingSpecialModifiers[stat] = actor.statRatingSpecialModifiers[stat].filter(
-							item => item !== auraDef.statRatingSpecialModifier
-						);
-					}
+					actor.statRatingSpecialModifiers[stat] = actor.statRatingSpecialModifiers[stat].filter(
+						item => item !== auraDef.statRatingSpecialModifier
+					);
 				}
 				if (auraDef.statRatingSpecialAddition !== undefined) {
-					if (Array.isArray(actor.statRatingSpecialAdditions[stat])) {
-						actor.statRatingSpecialAdditions[stat] = actor.statRatingSpecialAdditions[stat].filter(
-							item => item !== auraDef.statRatingSpecialAddition
-						);
-					}
+					actor.statRatingSpecialAdditions[stat] = actor.statRatingSpecialAdditions[stat].filter(
+						item => item !== auraDef.statRatingSpecialAddition
+					);
 				}
 				if (auraDef.statEffectSpecialMultiplier !== undefined) {
-					if (Array.isArray(actor.statEffectSpecialMultipliers[stat])) {
-						actor.statEffectSpecialMultipliers[stat] = actor.statEffectSpecialMultipliers[stat].filter(
-							item => item !== auraDef.statEffectSpecialMultiplier
-						);
-					}
+					actor.statEffectSpecialMultipliers[stat] = actor.statEffectSpecialMultipliers[stat].filter(
+						item => item !== auraDef.statEffectSpecialMultiplier
+					);
 				}
 				if (auraDef.statEffectSpecialAddition !== undefined) {
-					if (Array.isArray(actor.statEffectSpecialAdditions[stat])) {
-						actor.statEffectSpecialAdditions[stat] = actor.statEffectSpecialAdditions[stat].filter(
-							item => item !== auraDef.statEffectSpecialAddition
-						);
-					}
+					actor.statEffectSpecialAdditions[stat] = actor.statEffectSpecialAdditions[stat].filter(
+						item => item !== auraDef.statEffectSpecialAddition
+					);
 				}
 			}
 		}
@@ -227,19 +198,17 @@ export class AuraHandler {
 				(acc, type) => acc + SharedData.types.get(type), 0
 			);
 
-			// Pre‑evaluate all scalar modifiers (they are type‑independent)
-			const damageDealtModVal   = auraDef.damageDealtModifier   !== undefined ? evaluate(auraDef.damageDealtModifier)   : null;
-			const damageDealtAddVal   = auraDef.damageDealtAddition   !== undefined ? evaluate(auraDef.damageDealtAddition)   : null;
-			const healingDoneModVal   = auraDef.healingDoneModifier   !== undefined ? evaluate(auraDef.healingDoneModifier)   : null;
-			const healingDoneAddVal   = auraDef.healingDoneAddition   !== undefined ? evaluate(auraDef.healingDoneAddition)   : null;
-			const damageTakenModVal   = auraDef.damageTakenModifier   !== undefined ? evaluate(auraDef.damageTakenModifier)   : null;
-			const damageTakenAddVal   = auraDef.damageTakenAddition   !== undefined ? evaluate(auraDef.damageTakenAddition)   : null;
-			const healingTakenModVal  = auraDef.healingTakenModifier  !== undefined ? evaluate(auraDef.healingTakenModifier)  : null;
-			const healingTakenAddVal  = auraDef.healingTakenAddition  !== undefined ? evaluate(auraDef.healingTakenAddition)  : null;
+			const damageDealtModVal = auraDef.damageDealtModifier !== undefined ? evaluate(auraDef.damageDealtModifier) : null;
+			const damageDealtAddVal = auraDef.damageDealtAddition !== undefined ? evaluate(auraDef.damageDealtAddition) : null;
+			const healingDoneModVal = auraDef.healingDoneModifier !== undefined ? evaluate(auraDef.healingDoneModifier) : null;
+			const healingDoneAddVal = auraDef.healingDoneAddition !== undefined ? evaluate(auraDef.healingDoneAddition) : null;
+			const damageTakenModVal = auraDef.damageTakenModifier !== undefined ? evaluate(auraDef.damageTakenModifier) : null;
+			const damageTakenAddVal = auraDef.damageTakenAddition !== undefined ? evaluate(auraDef.damageTakenAddition) : null;
+			const healingTakenModVal = auraDef.healingTakenModifier !== undefined ? evaluate(auraDef.healingTakenModifier) : null;
+			const healingTakenAddVal = auraDef.healingTakenAddition !== undefined ? evaluate(auraDef.healingTakenAddition) : null;
 
 			for (let i = 0; i < 128; i++) {
 				if (typeMask & (1 << i)) {
-					// Multipliers (division)
 					if (damageDealtModVal !== null && actor.damageDealtModifiers[i] !== undefined) {
 						actor.damageDealtModifiers[i] /= damageDealtModVal;
 					}
@@ -267,7 +236,6 @@ export class AuraHandler {
 						actor.healingTakenAdditions[i] -= healingTakenAddVal;
 					}
 
-					// Special arrays (remove the exact modifier object)
 					if (auraDef.damageDealtSpecialModifier !== undefined && Array.isArray(actor.damageDealtSpecialModifiers[i])) {
 						actor.damageDealtSpecialModifiers[i] = actor.damageDealtSpecialModifiers[i].filter(
 							item => item !== auraDef.damageDealtSpecialModifier

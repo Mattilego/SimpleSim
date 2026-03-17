@@ -4,113 +4,12 @@
 		"castEffects": [
 			{
 				"type": "useAbility",
-				"id": "_Crimson Scourge Initializer"
-			},
-			{
-				"type": "useAbility",
-				"id": "_Riposte Initializer"
-			},{
-				"type": "useAbility",
-				"id": "_Blood Fortification Initializer"
-			},{
-				"type": "useAbility",
 				"id": "_Rune Regeneration Initializer"
-			},{
-				"type": "useAbility",
-				"id": "_Will of the Necropolis Initializer"
 			},{
 				"type": "useAbility",
 				"id": "Auto Attack Main Hand"
 			}
 		]
-	},
-	"_Will of the Necropolis Initializer": {
-		"GCD": 0,
-		"castEffects": [{
-			"type": "applyAura",
-			"id": "_Will of the Necropolis",
-			"duration": -1,
-			"conditions": [{
-				"type": "talent",
-				"id": "Will of the Necropolis",
-				"check": "known"
-			}]
-		}]
-	},
-	"_Blood Fortification Initializer": {
-		"GCD": 0,
-		"castEffects": [
-			{
-				"type": "applyAura",
-				"id": "_Blood Fortification",
-				"duration": -1,
-				"conditions": [{
-					"type": "level",
-					"comparison": ">=",
-					"value": 11
-				}]
-			}
-		]
-	},
-	"_Crimson Scourge Initializer": {
-		"GCD": 0,
-		"castEffects": [
-			{
-				"type": "registerEventHandler",
-				"id": "abilityUse",
-				"targetId": -1,
-				"eventConditions": [{
-					"type": "parameter",
-					"id": "ability",
-					"comparison": "=",
-					"value": "Auto Attack Main Hand"
-				}],
-				"effect": {
-					"type": "proc",
-					"chance": 25,
-					"effect": {
-						"type": "applyAura",
-						"id": "Crimson Scourge"
-					},
-					"conditions": [
-						{
-							"type": "aura",
-							"id": "Blood Plague",
-							"target": {
-								"type": "parameter",
-								"id": "eventTarget"
-							},
-							"check": "exists"
-						}, {
-							"type": "not",
-							"value": {
-								"type": "aura",
-								"id": "Death and Decay",
-								"check": "exists"
-							}
-						}
-					]
-				},
-				"conditions": [{
-					"type": "level",
-					"comparison": ">=",
-					"value": 21
-				}]
-			}
-		]
-	},
-	"_Riposte Initializer": {
-		"GCD": 0,
-		"castEffects": [{
-			"type": "applyAura",
-			"id": "_Riposte",
-			"duration": -1,
-			"conditions": [{
-				"type": "level",
-				"comparison": ">=",
-				"value": 29
-			}]
-		}]
 	},
 	"_Rune Regeneration Initializer": {
 		"GCD": 0,

@@ -1,22 +1,27 @@
 document.getElementById("collapseSpecSettings").addEventListener("click", function() {
-	document.getElementById("specConfigurationContainer").style.maxHeight = (document.getElementById("specConfigurationContainer").style.maxHeight == "0px")?document.getElementById("specConfigurationContainer").style.height:"0px";
+	document.getElementById("specConfigurationContainer").style.maxHeight = (document.getElementById("specConfigurationContainer").style.maxHeight == "0px")?document.getElementById("specConfigurationContainer").scrollHeight+"px":"0px";
 });
+document.getElementById("specConfigurationContainer").style.maxHeight = document.getElementById("specConfigurationContainer").scrollHeight+"px";
 
 document.getElementById("collapseCharacterSettings").addEventListener("click", function() {
-	document.getElementById("characterStatsContainer").style.maxHeight = (document.getElementById("characterStatsContainer").style.maxHeight == "0px")?document.getElementById("characterStatsContainer").style.height:"0px";
+	document.getElementById("characterStatsContainer").style.maxHeight = (document.getElementById("characterStatsContainer").style.maxHeight == "0px")?document.getElementById("characterStatsContainer").scrollHeight+"px":"0px";
 });
+document.getElementById("characterStatsContainer").style.maxHeight = document.getElementById("characterStatsContainer").scrollHeight+"px";
 
 document.getElementById("collapseEnemySettings").addEventListener("click", function() {
-	document.getElementById("enemySettingsContainer").style.maxHeight = (document.getElementById("enemySettingsContainer").style.maxHeight == "0px")?document.getElementById("enemySettingsContainer").style.height:"0px";
+	document.getElementById("enemySettingsContainer").style.maxHeight = (document.getElementById("enemySettingsContainer").style.maxHeight == "0px")?document.getElementById("enemySettingsContainer").scrollHeight+"px":"0px";
 });
+document.getElementById("enemySettingsContainer").style.maxHeight = document.getElementById("enemySettingsContainer").scrollHeight+"px";
 
 document.getElementById("collapseFightSettings").addEventListener("click", function() {
-	document.getElementById("fightSettingsContainer").style.maxHeight = (document.getElementById("fightSettingsContainer").style.maxHeight == "0px")?document.getElementById("fightSettingsContainer").style.height:"0px";
+	document.getElementById("fightSettingsContainer").style.maxHeight = (document.getElementById("fightSettingsContainer").style.maxHeight == "0px")?document.getElementById("fightSettingsContainer").scrollHeight+"px":"0px";
 });
+document.getElementById("fightSettingsContainer").style.maxHeight = document.getElementById("fightSettingsContainer").scrollHeight+"px";
 
 document.getElementById("collapseResults").addEventListener("click", function() {
 	document.getElementById("resultsContainer").style.maxHeight = (document.getElementById("resultsContainer").style.maxHeight == "0px")?document.getElementById("resultsContainer").style.height:"0px";
 });
+document.getElementById("resultsContainer").style.maxHeight = document.getElementById("resultsContainer").style.height;
 
 document.addEventListener('mousedown', async function(e) {
     if (e.target.type === 'radio' && e.target.checked) {
