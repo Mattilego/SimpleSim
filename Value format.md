@@ -212,10 +212,10 @@ Copy Parameter:
 	"to": String,
 	"value": Value (Any)
 } = Any
-Copies a parameter from one actor to another that can be used in the sub value and returns the sub value
+Copies a parameter to another parameter name that can be used in the sub value and returns the sub value
 Properties:
-from: the id of the actor to copy from
-to: the id of the actor to copy to
+from: the id/name of the parameter to copy from
+to: the id/name of the parameter to copy to
 value: the value to pass through
 
 Shortcut:
@@ -236,7 +236,8 @@ Proc:
 	"id": String,
 	"chance" | "ppm" | "rppm": Value (Number)
 } = Boolean
-
+Randomly returns true or false according to proc rules, usually used as a conditions for applyAura, sometimes as a condition for an effect directly
+Properties:
 system: what method to use for determining the chance
 chance/ppm/rppm: the value indicating how often it should proc with respect to the type (chance in %)
 id: the id/name of the proc, not needed other than for the rppm type

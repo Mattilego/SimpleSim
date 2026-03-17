@@ -45,7 +45,7 @@ Aura Definition:
 }
 
 Properties:
-duration: default duration and used for pandemic max duration,
+duration: default duration and used for pandemic max duration, -1 can be used for infinite duration
 reapplicationType: how the aura is reapplied, refresh updates duration, pandemic extends duration up to maxDuration*1.3, overlap creates a new instance, stackRefresh and stackPandemic work like refresh and pandemic but add the new and previous stacks upt to maxStacks
 maxStacks (optional): maximum number of stacks allowed and maximum amount of instances for type overlap
 expirationAbility (optional): Ability with effects to trigger when the aura expires

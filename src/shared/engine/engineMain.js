@@ -22,7 +22,7 @@ export function processRequest(request) {
 			source: actor
 		});
 	});
-	while (SharedData.eventLoop.futureEvents.root !== null) {
+	while (SharedData.eventLoop.futureEvents.length > 0) {
 		SharedData.eventLoop.processEvent();
 	}
 	return Log.getString();

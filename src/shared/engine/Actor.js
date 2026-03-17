@@ -50,21 +50,21 @@ export class Actor {
 	}
 
 	updateCooldowns() {
-		Object.keys(this.cooldowns).forEach((ability) => {
+		for (const ability in this.cooldowns) {
 			if (this.cooldowns[ability].refreshTime <= SharedData.eventLoop.time) {
 				this.cooldowns[ability].charges++;
 				if (this.cooldowns[ability].charges < JSONEvaluator.evaluateValue(this, this.abilities[ability].charges || 1, {})) {
 					this.cooldowns[ability].refreshTime = this.cooldowns[ability].refreshTime + JSONEvaluator.evaluateValue(this, this.abilities[ability].cooldown || 0, {});
 				}
 			}
-		});
+		}
 	}
 
 	useAbility() {
 		this.updateCooldowns();
-		let [ability, abilityName, targetId] = APLReader.parseAPL(this);
-		if (ability == null) {
-			SharedData.eventLoop.registerEvent(({ time: SharedData.eventLoop.time + 0.1 }).time, {
+		let aplIndex = APLReader.parseAPL(this);
+		if (aplIndex === -1) {
+			SharedData.eventLoop.registerEvent(SharedData.eventLoop.time + 0.1, {
 				effects: [
 					{
 						type: "checkAPL",
@@ -75,6 +75,9 @@ export class Actor {
 			});
 			return;
 		}
+		let abilityName = this.apl[aplIndex].ability;
+		let ability = this.abilities[abilityName];
+		let targetId = this.apl[aplIndex].targetId;
 		this.triggerEffects(ability.castEffects, targetId, {}, abilityName);
 		if (ability.cooldown !== 0) {
 			if (this.cooldowns[abilityName] === undefined) {
@@ -678,8 +681,12 @@ export class Actor {
 			if (this.abilities[ability].conditions !== undefined) {
 				this.abilities[ability].conditions.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].conditions, this) + ");");
 			}
-			this.abilities[ability].charges = JSONEvaluator.compileValue(this.abilities[ability].charges || 1, this);
-			this.abilities[ability].cooldown = JSONEvaluator.compileValue(this.abilities[ability].cooldown || 0, this);
+			if (typeof(this.abilities[ability].charges) === "object"){
+				this.abilities[ability].charges.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].charges || 1, this) + ");");
+			}
+			if (typeof(this.abilities[ability].cooldown) === "object"){
+				this.abilities[ability].cooldown.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].cooldown || 0, this) + ");");
+			}
 		});
 		//Shortcuts processed as they are used by abilities
 		//Auras expiration/removal/ticking will be changed to specify an ability to handle effects, so they don't need compilation either

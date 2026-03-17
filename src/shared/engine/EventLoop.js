@@ -10,21 +10,57 @@ export class EventLoop {
 		this.eventTypes = ["takeDamage", "dealDamage", "recieveHealing", "heal", "applyAura", "removeAura", "expireAura", "resourceChange", "parry", "dodge", "miss", "block", "abilityUse"];
 	}
 
-	registerEvent(time, data) {
-		let index = this.futureEvents.findIndex((event) => event.time > time);
-		if (index === -1){
-			index = this.futureEvents.length;
+	binaryHeapInsert(heap, node) {
+		heap.push(node);
+		let index = heap.length - 1;
+		while (index > 0) {
+			const parentIndex = Math.floor((index - 1) / 2);
+			if (heap[index].time >= heap[parentIndex].time) {
+				break;
+			}
+			[heap[index], heap[parentIndex]] = [heap[parentIndex], heap[index]];
+			index = parentIndex;
 		}
-		const event = { time, data };
-		this.futureEvents.splice(index, 0, event);
-		if(this.futureEvents.length > 1000){
+	}
+
+	binaryHeapRemove(heap, index) {
+		const removed = heap[index];
+		heap[index] = heap.pop();
+		let index2 = index;
+		while (index2 * 2 + 1 < heap.length) {
+			let childIndex1 = index2 * 2 + 1;
+			let childIndex2 = index2 * 2 + 2;
+			let swapIndex = childIndex1;
+			if (childIndex2 < heap.length && heap[childIndex2].time < heap[childIndex1].time) {
+				swapIndex = childIndex2;
+			}
+			if (heap[index2].time <= heap[swapIndex].time) {
+				break;
+			}
+			[heap[index2], heap[swapIndex]] = [heap[swapIndex], heap[index2]];
+			index2 = swapIndex;
+		}
+		return removed;
+	}
+
+	registerEvent(time, data) {
+		const event = { time, data, canceled: false };
+		this.binaryHeapInsert(this.futureEvents, event);
+		if(this.futureEvents.length > 10000){//Sign of exponential event registering due to recursion
 			debugger;
 		}
 		return event;
 	}
 
+	removeEvent(event) {
+		if (event.canceled) {
+			return;
+		}
+		event.canceled = true;
+	}
+
 	processEvent() {
-		const event = this.futureEvents.shift();
+		const event = this.binaryHeapRemove(this.futureEvents, 0);
 		this.time = event.time;
 		if (this.time > this.maxTime) {
 			this.futureEvents.length = 0;
