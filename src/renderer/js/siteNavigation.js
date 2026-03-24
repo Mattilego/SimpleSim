@@ -1,3 +1,5 @@
+import { WorkerManager } from "./WorkerManager.js";
+
 document.getElementById("collapseSpecSettings").addEventListener("click", function() {
 	document.getElementById("specConfigurationContainer").style.maxHeight = (document.getElementById("specConfigurationContainer").style.maxHeight == "0px")?document.getElementById("specConfigurationContainer").scrollHeight+"px":"0px";
 });

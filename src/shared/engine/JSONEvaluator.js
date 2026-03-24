@@ -3,7 +3,7 @@ import { Log } from "./Log.js";
 
 export class JSONEvaluator {
 	static evaluateValue(actor, value, parameters = {}) {
-		if (value !== undefined && SharedData.compiling && typeof(value.compiled)==="function"){
+		if (value !== undefined && SharedData.compiling && typeof value.compiled === "function") {
 			return value.compiled(SharedData, actor, parameters, null, value, null);
 		}
 		if (typeof value == "number" || typeof value == "string" || typeof value == "boolean") {
@@ -14,11 +14,9 @@ export class JSONEvaluator {
 				//Default true if no condition
 				return true;
 			} else {
-				console.log("Uncompiled value: ", value);
 				return value.every((c) => JSONEvaluator.evaluateValue(actor, c, parameters)); //Array is by default an and
 			}
 		} else {
-			console.log("Uncompiled value: ", value);
 			switch (value.type) {
 				case "or":
 					return value.conditions.some((c) => JSONEvaluator.evaluateValue(actor, c, parameters));
@@ -270,8 +268,7 @@ export class JSONEvaluator {
 										actor,
 										{
 											type: value.comparison,
-											value1: SharedData.actors[targetId].Auras
-												.filter((b) => b.id == value.id && b.source == actor)
+											value1: SharedData.actors[targetId].Auras.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.duration)
 												.reduce((a, b) => Math.max(a, b), 0),
 											value2: value.value * multiplier,
@@ -287,8 +284,7 @@ export class JSONEvaluator {
 										value1: SharedData.actors
 											.filter((a) => a.team != actor.team)
 											.map((a) =>
-												a.Auras
-													.filter((b) => b.id == value.id && b.source == actor)
+												a.Auras.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.duration)
 													.reduce((a, b) => Math.max(a, b), 0)
 											)
@@ -304,16 +300,14 @@ export class JSONEvaluator {
 									if (!SharedData.actors[targetId]) {
 										return 0;
 									}
-									return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
-										.filter((b) => b.id == value.id && b.source == actor)
+									return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras.filter((b) => b.id == value.id && b.source == actor)
 										.map((b) => b.duration)
 										.reduce((a, b) => Math.max(a, b), 0);
 								}
 								return SharedData.actors
 									.filter((a) => a.team != actor.team)
 									.map((a) =>
-										a.Auras
-											.filter((b) => b.id == value.id && b.source == actor)
+										a.Auras.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.duration)
 											.reduce((a, b) => Math.max(a, b), 0)
 									)
@@ -339,8 +333,7 @@ export class JSONEvaluator {
 										actor,
 										{
 											type: value.comparison,
-											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
-												.filter((b) => b.id == value.id && b.source == actor)
+											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.stacks)
 												.reduce((a, b) => a + b, 0),
 											value2: value.value,
@@ -356,8 +349,7 @@ export class JSONEvaluator {
 										value1: SharedData.actors
 											.filter((a) => a.team != actor.team)
 											.map((a) =>
-												a.Auras
-													.filter((b) => b.id == value.id && b.source == actor)
+												a.Auras.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.stacks)
 													.reduce((a, b) => a + b, 0)
 											)
@@ -373,16 +365,14 @@ export class JSONEvaluator {
 									if (!SharedData.actors[targetId]) {
 										return 0;
 									}
-									return SharedData.actors[targetId].Auras
-										.filter((b) => b.id == value.id && b.source == actor)
+									return SharedData.actors[targetId].Auras.filter((b) => b.id == value.id && b.source == actor)
 										.map((b) => b.stacks)
 										.reduce((a, b) => a + b, 0);
 								}
 								return SharedData.actors
 									.filter((a) => a.team != actor.team)
 									.map((a) =>
-										a.Auras
-											.filter((b) => b.id == value.id && b.source == actor)
+										a.Auras.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.stacks)
 											.reduce((a, b) => a + b, 0)
 									)
@@ -408,8 +398,7 @@ export class JSONEvaluator {
 										actor,
 										{
 											type: value.comparison,
-											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
-												.filter((b) => b.id == value.id && b.source == actor)
+											value1: SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras.filter((b) => b.id == value.id && b.source == actor)
 												.map((b) => b.value)
 												.reduce((a, b) => Math.max(a, b), 0),
 											value2: value.value,
@@ -425,8 +414,7 @@ export class JSONEvaluator {
 										value1: SharedData.actors
 											.filter((a) => a.team != actor.team)
 											.map((a) =>
-												a.Auras
-													.filter((b) => b.id == value.id && b.source == actor)
+												a.Auras.filter((b) => b.id == value.id && b.source == actor)
 													.map((b) => b.value)
 													.reduce((a, b) => Math.max(a, b), 0)
 											)
@@ -442,16 +430,14 @@ export class JSONEvaluator {
 									if (!SharedData.actors[targetId]) {
 										return 0;
 									}
-									return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras
-										.filter((b) => b.id == value.id && b.source == actor)
+									return SharedData.actors[JSONEvaluator.evaluateValue(actor, value.targetId, parameters)].Auras.filter((b) => b.id == value.id && b.source == actor)
 										.map((b) => b.value)
 										.reduce((a, b) => Math.max(a, b), 0);
 								}
 								return SharedData.actors
 									.filter((a) => a.team != actor.team)
 									.map((a) =>
-										a.Auras
-											.filter((b) => b.id == value.id && b.source == actor)
+										a.Auras.filter((b) => b.id == value.id && b.source == actor)
 											.map((b) => b.value)
 											.reduce((a, b) => Math.max(a, b), 0)
 									)
@@ -604,6 +590,8 @@ export class JSONEvaluator {
 								);
 							}
 							return SharedData.eventLoop.time;
+						case "self":
+							return actor.id;
 					}
 				case "proc":
 					if (JSONEvaluator.evaluateValue(actor, value.conditions, parameters)) {
@@ -614,319 +602,334 @@ export class JSONEvaluator {
 		}
 	}
 
-	static compileValue(value, actor, callStack = [], altCall = null){
+	static compileValue(value, actor, callStack = [], altCall = null) {
 		if (callStack.includes(value)) {
-			if (altCall !== null){
-				Log.warn("Potential infinite recursion with "+value);
+			if (altCall !== null) {
+				Log.warn("Potential infinite recursion with " + value);
 			} else {
-				Log.error("Recursion without reference with "+value);
+				Log.error("Recursion without reference with " + value);
 			}
 		}
-		if (Array.isArray(value)){
-			if (value.length > 0){
-				return "("+value.map(v => this.compileValue(v, actor, [].concat(callStack, [value]))).join(")&&(")+")";
+		if (Array.isArray(value)) {
+			if (value.length > 0) {
+				return "(" + value.map((v) => this.compileValue(v, actor, [].concat(callStack, [value]))).join(")&&(") + ")";
 			} else {
 				return "true";
 			}
 		} else {
-			if (typeof(value) === "number" || typeof(value) === "boolean"){
-				return ""+value;
+			if (typeof value === "number" || typeof value === "boolean") {
+				return "" + value;
 			} else {
-				const variablePrefix = "_".repeat(callStack.length);//For any internal variables to not overwrite
-				switch (value.type){
+				const variablePrefix = "_".repeat(callStack.length); //For any internal variables to not overwrite
+				switch (value.type) {
 					case "or":
 					case "||":
-						return "("+value.conditions.map(c => this.compileValue(c, actor, [].concat(callStack, [value]))).join("||")+")";
+						return "(" + value.conditions.map((c) => this.compileValue(c, actor, [].concat(callStack, [value]))).join("||") + ")";
 					case "and":
 					case "&&":
-						return "("+value.conditions.map(c => this.compileValue(c, actor, [].concat(callStack, [value]))).join("&&")+")";
+						return "(" + value.conditions.map((c) => this.compileValue(c, actor, [].concat(callStack, [value]))).join("&&") + ")";
 					case "not":
 					case "!":
-						if (Array.isArray(value.conditions) && value.conditions.length > 1){//Disabling a not doubles as an xor
-							return "("+this.compileValue(value.value, actor, [].concat(callStack, [value]))+"!=="+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")";
-						}else{
-							return "(!"+this.compileValue(value.value, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 1) {
+							//Disabling a not doubles as an xor
+							return "(" + this.compileValue(value.value, actor, [].concat(callStack, [value])) + "!==" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")";
+						} else {
+							return "(!" + this.compileValue(value.value, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "+":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"+("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"?"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+":0))";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "+(" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + "?" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ":0))";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"+"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "+" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "-":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"-("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"?"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+":0))";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "-(" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + "?" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ":0))";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"-"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "-" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "*":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"*("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"?1:"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+"))";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "*(" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + "?1:" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + "))";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"*"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "*" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "/":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"/("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"?1:"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+"))";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "/(" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + "?1:" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + "))";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"/"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "/" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "**":
 					case "^":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"?"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"**"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+":"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "(" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + "?" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "**" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ":" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"**"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "**" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "max":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?Math.max("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+","+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?Math.max(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "," + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "Math.max("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+","+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "Math.max(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "," + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "min":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?Math.min("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+","+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?Math.min(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "," + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "Math.min("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+","+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "Math.min(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "," + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "%":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"/100):"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "/100):" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"/100)";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "/100)";
 						}
 					case "mod":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"%"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "%" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"%"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+							return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "%" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "sqrt":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?Math.sqrt("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?Math.sqrt(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "Math.sqrt("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+							return "Math.sqrt(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "log":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?Math.log("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?Math.log(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "Math.log("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+							return "Math.log(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "exp":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?Math.exp("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?Math.exp(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "Math.exp("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+							return "Math.exp(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						}
 					case "abs":
-						if (Array.isArray(value.conditions) && value.conditions.length > 0){
-							return "(("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+")?Math.abs("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"):"+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+						if (Array.isArray(value.conditions) && value.conditions.length > 0) {
+							return "((" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + ")?Math.abs(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "):" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						} else {
-							return "Math.abs("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+")";
+							return "Math.abs(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ")";
 						}
 					case ">":
-						return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+">"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ">" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 					case "<":
-						return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"<"+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "<" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 					case ">=":
-						return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+">="+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + ">=" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 					case "<=":
-						return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"<="+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "<=" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 					case "=":
 					case "==":
-						return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"=="+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "==" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 					case "!=":
-						return "("+this.compileValue(value.value1, actor, [].concat(callStack, [value]))+"!="+this.compileValue(value.value2, actor, [].concat(callStack, [value]))+")";
+						return "(" + this.compileValue(value.value1, actor, [].concat(callStack, [value])) + "!=" + this.compileValue(value.value2, actor, [].concat(callStack, [value])) + ")";
 					case "resource":
-						if (value.comparison === undefined){
-							if (!SharedData.strings.includes(value.id)){
+						if (value.comparison === undefined) {
+							if (!SharedData.strings.includes(value.id)) {
 								SharedData.strings.push(value.id);
 							}
 							let targetString = "";
-							if (value.targetId !== undefined){
-								targetString = "SharedData.actors["+this.compileValue(value.targetId, actor)+"]";
+							if (value.targetId !== undefined) {
+								targetString = "SharedData.actors[" + this.compileValue(value.targetId, actor) + "]";
 							} else {
 								targetString = "actor";
 							}
-							return targetString+".getResource(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
-						}//Intentional fallthrough towards the shared comparison handling
+							return targetString + ".getResource(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "])";
+						} //Intentional fallthrough towards the shared comparison handling
 					case "parameter":
-						if (value.comparison === undefined && value.type==="parameter"){
-							if (!SharedData.strings.includes(value.id)){
+						if (value.comparison === undefined && value.type === "parameter") {
+							if (!SharedData.strings.includes(value.id)) {
 								SharedData.strings.push(value.id);
 							}
-							return "parameters[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
+							return "parameters[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]]";
 						}
 					case "stat":
-						if (value.comparison === undefined && value.type==="stat"){
-							if (!SharedData.strings.includes(value.id)){
+						if (value.comparison === undefined && value.type === "stat") {
+							if (!SharedData.strings.includes(value.id)) {
 								SharedData.strings.push(value.id);
 							}
-							if (value.check === "rating"){
-								return "actor.getStat(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
-							} else if (value.check === "effect"){
-								return "actor.getStatEffect(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])";
+							if (value.check === "rating") {
+								return "actor.getStat(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "])";
+							} else if (value.check === "effect") {
+								return "actor.getStatEffect(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "])";
 							}
 						}
 					case "talent":
-						if ((value.comparison === undefined || value.check === "known") && value.type==="talent"){
-							if (!SharedData.strings.includes(value.id)){
+						if ((value.comparison === undefined || value.check === "known") && value.type === "talent") {
+							if (!SharedData.strings.includes(value.id)) {
 								SharedData.strings.push(value.id);
 							}
-							if (value.check == "known" || value.check === undefined){
-								return "actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
-							} else if (value.check == "points"){
-								let talentString = "(+actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]]";
-								if (actor.talents[value.id+"2"]){
-									talentString += "+actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]+'2']";
+							if (value.check == "known" || value.check === undefined) {
+								return "actor.talents[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]]";
+							} else if (value.check == "points") {
+								let talentString = "(+actor.talents[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]]";
+								if (actor.talents[value.id + "2"]) {
+									talentString += "+actor.talents[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]+'2']";
 								}
-								if (actor.talents[value.id+"3"]){
-									talentString += "+actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]+'3']";
+								if (actor.talents[value.id + "3"]) {
+									talentString += "+actor.talents[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]+'3']";
 								}
-								if (actor.talents[value.id+"4"]){
-									talentString += "+actor.talents[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]+'4']";
+								if (actor.talents[value.id + "4"]) {
+									talentString += "+actor.talents[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]+'4']";
 								}
-								return talentString+")";
+								return talentString + ")";
 							}
 						}
 					case "level":
-						if (value.comparison === undefined && value.type==="level"){
+						if (value.comparison === undefined && value.type === "level") {
 							return "actor.level";
 						}
 					case "ability":
-						if (value.comparison === undefined && value.type==="ability"){
-							if (actor.ablities[value.id] === undefined){
+						if (value.comparison === undefined && value.type === "ability") {
+							if (actor.ablities[value.id] === undefined) {
 								Log.error("Unknown ability: " + value.id);
 								return "0";
 							}
-							if (!SharedData.strings.includes(value.id)){
+							if (!SharedData.strings.includes(value.id)) {
 								SharedData.strings.push(value.id);
 							}
-							if (value.check === "cooldown"){
-								return "(actor.abilities[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]].refreshTime-SharedData.eventLoop.time)";
-							} else if (value.check === "charges"){
-								return "actor.abilities[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]].charges";
+							if (value.check === "cooldown") {
+								return "(actor.abilities[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]].refreshTime-SharedData.eventLoop.time)";
+							} else if (value.check === "charges") {
+								return "actor.abilities[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]].charges";
 							} else if (value.check === "usable") {
-								return "("+this.compileValue({
-									type: "ability",
-									check: "charges",
-									id: value.id,
-									check: ">=",
-									value: 1
-								}, actor, [].concat(callStack, [value]))+"&&"+this.compileValue(actor.abilities[value.id].conditions)+")";
+								return (
+									"(" +
+									this.compileValue(
+										{
+											type: "ability",
+											check: "charges",
+											id: value.id,
+											check: ">=",
+											value: 1
+										},
+										actor,
+										[].concat(callStack, [value])
+									) +
+									"&&" +
+									this.compileValue(actor.abilities[value.id].conditions) +
+									")"
+								);
 							}
 						}
 					case "aura":
-						if (value.comparison === undefined && value.type==="aura"){
-							if (!SharedData.strings.includes(value.id)){
+						if (value.comparison === undefined && value.type === "aura") {
+							if (!SharedData.strings.includes(value.id)) {
 								SharedData.strings.push(value.id);
 							}
 							let targetActor = "actor";
-							if (value.targetId){
-								targetActor = "SharedData.actors["+this.compileValue(value.targetId, actor, [].concat(callStack, [value]))+"]";
+							if (value.targetId) {
+								targetActor = "SharedData.actors[" + this.compileValue(value.targetId, actor, [].concat(callStack, [value])) + "]";
 							}
-							switch (value.check){
+							switch (value.check) {
 								case "exists":
-									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]))";
+									return "(" + targetActor + ".auras.has(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]))";
 								case "duration":
-									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?("+variablePrefix+"maxDuration = 0, "+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).forEach(aura => {if(aura.duration>"+variablePrefix+"maxDuration){"+variablePrefix+"maxDuration = aura.duration}}), "+variablePrefix+"maxDuration):0)";
+									return "(" + targetActor + ".auras.has(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "])?(" + variablePrefix + "maxDuration = 0, " + targetActor + ".auras.get(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]).forEach(aura => {if(aura.duration>" + variablePrefix + "maxDuration){" + variablePrefix + "maxDuration = aura.duration}}), " + variablePrefix + "maxDuration):0)";
 								case "stacks":
-									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?"+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).reduce((acc, aura)=>acc+aura.stacks, 0):0)";
+									return "(" + targetActor + ".auras.has(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "])?" + targetActor + ".auras.get(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]).reduce((acc, aura)=>acc+aura.stacks, 0):0)";
 								case "value":
-									return "("+targetActor+".auras.has(SharedData.strings["+SharedData.strings.indexOf(value.id)+"])?"+targetActor+".auras.get(SharedData.strings["+SharedData.strings.indexOf(value.id)+"]).reduce((acc, aura)=>acc+aura.value, 0):0)";
+									return "(" + targetActor + ".auras.has(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "])?" + targetActor + ".auras.get(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]).reduce((acc, aura)=>acc+aura.value, 0):0)";
 								default:
 									Log.error("Invalid check type for aura lookup: " + value.check);
 									return "0";
 							}
 						}
 					case "matchingActors":
-						if (value.comparison === undefined && value.type==="matchingActors"){
-							let actorChecks = ""
-							if (value.relation === "enemy"){
+						if (value.comparison === undefined && value.type === "matchingActors") {
+							let actorChecks = "";
+							if (value.relation === "enemy") {
 								actorChecks += "testActor.team !== actor.team&&";
-							} else if (value.relation === "ally"){
+							} else if (value.relation === "ally") {
 								actorChecks += "testActor.team === actor.team&&";
 							}
 							actorChecks += this.compileValue(value.conditions, actor, [].concat(callStack, [value]));
-							return "SharedData.actors.filter((testActor, actorId)=>"+actorChecks+").length";
-							
+							return "SharedData.actors.filter((testActor, actorId)=>" + actorChecks + ").length";
 						}
 					case "fightData":
-						if (value.comparison === undefined && value.type==="fightData"){
-							switch (value.id){
+						if (value.comparison === undefined && value.type === "fightData") {
+							switch (value.id) {
 								case "time":
 									return "SharedData.eventLoop.time";
+								case "self":
+									return "actor.id";
 							}
 						}
-					
-					
-						return this.compileValue({
-							type: value.comparison,
-							value1: {
-								type: value.type,
-								id: value.id,
-								targetId: value.targetId
+
+						return this.compileValue(
+							{
+								type: value.comparison,
+								value1: {
+									type: value.type,
+									id: value.id,
+									targetId: value.targetId
+								},
+								value2: value.value
 							},
-							value2: value.value
-						}, actor, [].concat(callStack, [value]));
+							actor,
+							[].concat(callStack, [value])
+						);
 					case "copyParameter":
-						if (!SharedData.strings.includes(value.from)){
+						if (!SharedData.strings.includes(value.from)) {
 							SharedData.strings.push(value.from);
 						}
-						if (!SharedData.strings.includes(value.to)){
+						if (!SharedData.strings.includes(value.to)) {
 							SharedData.strings.push(value.to);
 						}
-						return "(parameters[SharedData.strings["+SharedData.strings.indexOf(value.to)+"]]=parameters[SharedData.strings["+SharedData.strings.indexOf(value.from)+"]],"+this.compileValue(value.value, actor, [].concat(callStack, [value]))+")";
+						return "(parameters[SharedData.strings[" + SharedData.strings.indexOf(value.to) + "]]=parameters[SharedData.strings[" + SharedData.strings.indexOf(value.from) + "]]," + this.compileValue(value.value, actor, [].concat(callStack, [value])) + ")";
 					case "findActor":
-						let actorChecks = ""
-						if (value.relation === "enemy"){
+						let actorChecks = "";
+						if (value.relation === "enemy") {
 							actorChecks += "testActor.team !== actor.team&&";
-						} else if (value.relation === "ally"){
+						} else if (value.relation === "ally") {
 							actorChecks += "testActor.team === actor.team&&";
 						}
 						actorChecks += this.compileValue(value.conditions, actor, [].concat(callStack, [value]));
-						return "SharedData.actors.findIndex((testActor, actorId)=>"+actorChecks+")";
+						return "SharedData.actors.findIndex((testActor, actorId)=>" + actorChecks + ")";
 					case "findBestActor":
-						actorChecks = ""
-						if (value.relation === "enemy"){
+						actorChecks = "";
+						if (value.relation === "enemy") {
 							actorChecks += "testActor.team !== actor.team&&";
-						} else if (value.relation === "ally"){
+						} else if (value.relation === "ally") {
 							actorChecks += "testActor.team === actor.team&&";
 						}
 						const specifiedConditions = this.compileValue(value.conditions, actor, [].concat(callStack, [value]));
-						if (specifiedConditions !== ""){
+						if (specifiedConditions !== "") {
 							actorChecks += specifiedConditions;
 						} else {
-							actorChecks = actorChecks.slice(0,-2);
+							actorChecks = actorChecks.slice(0, -2);
 						}
-						if (actorChecks !== ""){
-							return "("+variablePrefix+"best=-1,"+variablePrefix+"bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{parameters.actorId = actorId;if("+actorChecks+"){const "+variablePrefix+"score="+this.compileValue(value.expression, actor, [].concat(callStack, [value]))+";if("+variablePrefix+"score>"+variablePrefix+"bestScore){"+variablePrefix+"bestScore="+variablePrefix+"score;"+variablePrefix+"best=actorId}}}),"+variablePrefix+"best)";
+						if (actorChecks !== "") {
+							return "(" + variablePrefix + "best=-1," + variablePrefix + "bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{parameters.actorId = actorId;if(" + actorChecks + "){const " + variablePrefix + "score=" + this.compileValue(value.expression, actor, [].concat(callStack, [value])) + ";if(" + variablePrefix + "score>" + variablePrefix + "bestScore){" + variablePrefix + "bestScore=" + variablePrefix + "score;" + variablePrefix + "best=actorId}}})," + variablePrefix + "best)";
 						} else {
-							return "("+variablePrefix+"best=-1,"+variablePrefix+"bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{parameters.actorId = actorId;const "+variablePrefix+"score="+this.compileValue(value.expression, actor, [].concat(callStack, [value]))+";if("+variablePrefix+"score>"+variablePrefix+"bestScore){"+variablePrefix+"bestScore="+variablePrefix+"score;"+variablePrefix+"best=actorId}}}),"+variablePrefix+"best)";
+							return "(" + variablePrefix + "best=-1," + variablePrefix + "bestScore=-Infinity,SharedData.actors.forEach((testActor, actorId)=>{parameters.actorId = actorId;const " + variablePrefix + "score=" + this.compileValue(value.expression, actor, [].concat(callStack, [value])) + ";if(" + variablePrefix + "score>" + variablePrefix + "bestScore){" + variablePrefix + "bestScore=" + variablePrefix + "score;" + variablePrefix + "best=actorId}}})," + variablePrefix + "best)";
 						}
 					case "shortcut":
-						if (!SharedData.strings.includes(value.id)){
+						if (!SharedData.strings.includes(value.id)) {
 							SharedData.strings.push(value.id);
 						}
 						let parameterAssignments = "";
 						for (let key in value.parameters) {
-							if (!SharedData.strings.includes(key)){
+							if (!SharedData.strings.includes(key)) {
 								SharedData.strings.push(key);
 							}
-							parameterAssignments += "parameters[SharedData.strings["+SharedData.strings.indexOf(key)+"]]=" + this.compileValue(value.parameters[key], actor, [].concat(callStack, [value])) + ",";
+							parameterAssignments += "parameters[SharedData.strings[" + SharedData.strings.indexOf(key) + "]]=" + this.compileValue(value.parameters[key], actor, [].concat(callStack, [value])) + ",";
 						}
 
-						return "(" + parameterAssignments + this.compileValue(actor.shortcuts[value.id], actor, [].concat(callStack, [value]), "actor.shortcuts[SharedData.strings["+SharedData.strings.indexOf(value.id)+"]].compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)") + ")";
+						return "(" + parameterAssignments + this.compileValue(actor.shortcuts[value.id], actor, [].concat(callStack, [value]), "actor.shortcuts[SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]].compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)") + ")";
 					case "proc":
-						if (!SharedData.strings.includes(value.id)){
+						if (!SharedData.strings.includes(value.id)) {
 							SharedData.strings.push(value.id);
 						}
-						if (value.conditions === undefined || value.conditions.length === 0){
-							return "actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.type)+"])";
+						if (value.conditions === undefined || value.conditions.length === 0) {
+							return "actor.procHandler.checkProc(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]," + this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value])) + ",SharedData.strings[" + SharedData.strings.indexOf(value.type) + "])";
 						}
-						return "("+this.compileValue(value.conditions, actor, [].concat(callStack, [value]))+"&&actor.procHandler.checkProc(SharedData.strings["+SharedData.strings.indexOf(value.id)+"],"+this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value]))+",SharedData.strings["+SharedData.strings.indexOf(value.system)+"]))";
+						return "(" + this.compileValue(value.conditions, actor, [].concat(callStack, [value])) + "&&actor.procHandler.checkProc(SharedData.strings[" + SharedData.strings.indexOf(value.id) + "]," + this.compileValue(value.chance || value.ppm || value.rppm, actor, [].concat(callStack, [value])) + ",SharedData.strings[" + SharedData.strings.indexOf(value.system) + "]))";
 				}
 			}
 		}

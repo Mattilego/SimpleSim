@@ -9,8 +9,7 @@ import statCosts from "../../data/statCosts.json";
 export class Actor {
 	constructor(name, level, apl, stats = {}, talents, team = 0, abilities = {}, knownAuras = {}, shortcuts = [], baseGCD = 1.5) {
 		this.level = level;
-		this.stats = stats;
-		this.statPercentageAdditions = {};
+		this.stats = { ...stats };
 		this.talents = talents;
 		this.abilities = abilities;
 		this.apl = apl;
@@ -32,7 +31,7 @@ export class Actor {
 		this.statRatingSpecialAdditions = {};
 		this.statEffectSpecialMultipliers = {};
 		this.statEffectSpecialAdditions = {};
-		for (const stat in this.stats){
+		for (const stat in this.stats) {
 			this.statRatingMultipliers[stat] = 1;
 			this.statEffectMultipliers[stat] = 1;
 			this.statRatingAdditions[stat] = 0;
@@ -40,45 +39,84 @@ export class Actor {
 			this.statRatingSpecialMultipliers[stat] = [];
 			this.statEffectSpecialMultipliers[stat] = [];
 			this.statRatingSpecialAdditions[stat] = [];
-			this.statEffectSpecialAdditions[stat] = []
+			this.statEffectSpecialAdditions[stat] = [];
 		}
-		this.damageDoneModifiers = {};
-		this.damageDoneAdditions = {};
-		this.damageDoneSpecialModifiers = {};
-		this.damageDoneSpecialAdditions = {};
-		this.damageTakenModifiers = {};
-		this.damageTakenAdditions = {};
-		this.damageTakenSpecialModifiers = {};
-		this.damageTakenSpecialAdditions = {};
-		this.healingDoneModifiers = {};
-		this.healingDoneAdditions = {};
-		this.healingDoneSpecialModifiers = {};
-		this.healingDoneSpecialAdditions = {};
-		this.healingTakenModifiers = {};
-		this.healingTakenAdditions = {};
-		this.healingTakenSpecialModifiers = {};
-		this.healingTakenSpecialAdditions = {};
-		for (let i = 0; i < 128; i++) {
-			this.damageDoneModifiers[i] = 1;
+		this.damageDoneMultipliers = new Float32Array(128);
+		this.damageDoneAdditions = new Float32Array(128);
+		this.damageDoneSpecialMultipliers = new Array(128);
+		this.damageDoneSpecialAdditions = new Array(128);
+		this.damageTakenMultipliers = new Float32Array(128);
+		this.damageTakenAdditions = new Float32Array(128);
+		this.damageTakenSpecialMultipliers = new Array(128);
+		this.damageTakenSpecialAdditions = new Array(128);
+		this.healingDoneMultipliers = new Float32Array(128);
+		this.healingDoneAdditions = new Float32Array(128);
+		this.healingDoneSpecialMultipliers = new Array(128);
+		this.healingDoneSpecialAdditions = new Array(128);
+		this.healingTakenMultipliers = new Float32Array(128);
+		this.healingTakenAdditions = new Float32Array(128);
+		this.healingTakenSpecialMultipliers = new Array(128);
+		this.healingTakenSpecialAdditions = new Array(128);
+		for (let i = 0; i < 256; i++) {
+			this.damageDoneMultipliers[i] = 1;
 			this.damageDoneAdditions[i] = 0;
-			this.damageDoneSpecialModifiers[i] = [];
+			this.damageDoneSpecialMultipliers[i] = [];
 			this.damageDoneSpecialAdditions[i] = [];
-			this.damageTakenModifiers[i] = 1;
+			this.damageTakenMultipliers[i] = 1;
 			this.damageTakenAdditions[i] = 0;
-			this.damageTakenSpecialModifiers[i] = [];
+			this.damageTakenSpecialMultipliers[i] = [];
 			this.damageTakenSpecialAdditions[i] = [];
-			this.healingDoneModifiers[i] = 1;
+			this.healingDoneMultipliers[i] = 1;
 			this.healingDoneAdditions[i] = 0;
-			this.healingDoneSpecialModifiers[i] = [];
+			this.healingDoneSpecialMultipliers[i] = [];
 			this.healingDoneSpecialAdditions[i] = [];
-			this.healingTakenModifiers[i] = 1;
+			this.healingTakenMultipliers[i] = 1;
 			this.healingTakenAdditions[i] = 0;
-			this.healingTakenSpecialModifiers[i] = [];
+			this.healingTakenSpecialMultipliers[i] = [];
 			this.healingTakenSpecialAdditions[i] = [];
 		}
 		this.absorbs = new Set();
-		this.healAbsorbs = {};
-		this.baseGCD = baseGCD
+		this.healAbsorbs = new Set();
+		this.baseGCD = baseGCD;
+	}
+
+	reset(originalStats) {
+		this.stats = { ...originalStats };
+		this.stats.maxHp = 8 * this.stats.stamina;
+		this.procHandler.RPPMHistory = {};
+		this.resources = {};
+		this.resources.prototypeProtectionhealth = this.stats.maxHp;
+		this.cooldowns = {};
+		for (const stat in this.stats) {
+			this.statRatingMultipliers[stat] = 1;
+			this.statEffectMultipliers[stat] = 1;
+			this.statRatingAdditions[stat] = 0;
+			this.statEffectAdditions[stat] = 0;
+			this.statRatingSpecialMultipliers[stat].length = 0;
+			this.statEffectSpecialMultipliers[stat].length = 0;
+			this.statRatingSpecialAdditions[stat].length = 0;
+			this.statEffectSpecialAdditions[stat].length = 0;
+		}
+		this.damageDoneMultipliers.fill(1);
+		this.damageDoneAdditions.fill(0);
+		this.damageTakenMultipliers.fill(1);
+		this.damageTakenAdditions.fill(0);
+		this.healingDoneMultipliers.fill(1);
+		this.healingDoneAdditions.fill(0);
+		this.healingTakenMultipliers.fill(1);
+		this.healingTakenAdditions.fill(0);
+		for (let i = 0; i < 128; i++) {
+			this.damageDoneSpecialMultipliers[i].length = 0;
+			this.damageDoneSpecialAdditions[i].length = 0;
+			this.damageTakenSpecialMultipliers[i].length = 0;
+			this.damageTakenSpecialAdditions[i].length = 0;
+			this.healingDoneSpecialMultipliers[i].length = 0;
+			this.healingDoneSpecialAdditions[i].length = 0;
+			this.healingTakenSpecialMultipliers[i].length = 0;
+			this.healingTakenSpecialAdditions[i].length = 0;
+		}
+		this.absorbs.clear();
+		this.healAbsorbs.clear();
 	}
 
 	updateCooldowns() {
@@ -110,7 +148,7 @@ export class Actor {
 		let abilityName = this.apl[aplIndex].ability;
 		let ability = this.abilities[abilityName];
 		let targetId = this.apl[aplIndex].targetId;
-		this.triggerEffects(ability.castEffects, targetId, {}, abilityName);
+		this.triggerEffects(ability.castEffects, { abilityTarget: JSONEvaluator.evaluateValue(targetId || this.defaultEnemyTarget(), {}) }, abilityName);
 		if (ability.cooldown !== 0) {
 			if (this.cooldowns[abilityName] === undefined) {
 				this.cooldowns[abilityName] = {
@@ -120,7 +158,7 @@ export class Actor {
 			}
 			this.cooldowns[abilityName].refreshTime = SharedData.eventLoop.time + JSONEvaluator.evaluateValue(this, ability.cooldown, {}) + (ability.castTime ? JSONEvaluator.evaluateValue(this, ability.castTime, {}) / this.getStatEffect("haste") : 0);
 		}
-		SharedData.eventLoop.registerEvent(SharedData.eventLoop.time + (ability.castTime ? JSONEvaluator.evaluateValue(this, ability.castTime, {}):((ability.GCD || 1) * this.baseGCD)) / this.getStatEffect("haste"), {
+		SharedData.eventLoop.registerEvent(SharedData.eventLoop.time + (ability.castTime ? JSONEvaluator.evaluateValue(this, ability.castTime, {}) : (ability.GCD || 1) * this.baseGCD) / this.getStatEffect("haste"), {
 			effects: [
 				{
 					type: "checkAPL",
@@ -131,9 +169,9 @@ export class Actor {
 		});
 	}
 
-	triggerEffects(effects, abilityTarget, parameters = {}, name = "unknown") {
+	triggerEffects(effects, parameters = {}, name = "unknown") {
 		if (SharedData.compiling && typeof effects.compiled === "function") {
-			effects.compiled(SharedData, this, parameters, abilityTarget, effects, name);
+			effects.compiled(SharedData, this, parameters, effects, name);
 			return;
 		}
 		effects.forEach((effect) => {
@@ -144,24 +182,20 @@ export class Actor {
 				case "damage":
 					let targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign(parameters, { abilityTarget: abilityTarget || JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters) }));
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, parameters);
 					} else {
-						if (abilityTarget !== undefined && abilityTarget !== null) {
-							targetId = abilityTarget;
-						} else {
-							targetId = JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters);
-						}
+						targetId = parameters.abilityTarget;
 					}
 					let currentTarget = SharedData.actors[targetId];
-					this.dealDamage(JSONEvaluator.evaluateValue(this, effect.value, Object.assign(parameters, { targetId })), currentTarget, effect.types, name, effect.missable === true, effect.dodgeable === true, effect.parryable === true, effect.blockable === true);
+					this.dealDamage(JSONEvaluator.evaluateValue(this, effect.value, parameters), currentTarget, effect.types, name, effect.missable === true, effect.dodgeable === true, effect.parryable === true, effect.blockable === true);
 					break;
 				case "heal":
 					targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign(parameters, { abilityTarget: abilityTarget || JSONEvaluator.evaluateValue(this, this.defaultFriendlyTarget(), parameters) }));
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, parameters);
 					} else {
-						if (abilityTarget !== undefined && abilityTarget !== null) {
-							targetId = abilityTarget;
+						if (SharedData.actors[parameters.abilityTarget].team === this.team) {
+							targetId = parameters.abilityTarget;
 						} else {
 							targetId = JSONEvaluator.evaluateValue(this, this.defaultFriendlyTarget(), parameters);
 						}
@@ -173,16 +207,12 @@ export class Actor {
 				case "applyAura":
 					targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign(parameters, { abilityTarget: abilityTarget || JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters) }));
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, parameters);
 					} else {
-						if (abilityTarget !== undefined && abilityTarget !== null) {
-							targetId = abilityTarget;
-						} else {
-							targetId = JSONEvaluator.evaluateValue(this, this.defaultEnemyTarget(), parameters);
-						}
+						targetId = parameters.abilityTarget;
 					}
 					let target = SharedData.actors[targetId];
-					AuraHandler.applyAura(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, Object.assign(parameters, { targetId: targetId })), JSONEvaluator.evaluateValue(this, effect.stacks, Object.assign(parameters, { targetId: targetId })));
+					AuraHandler.applyAura(target, this, effect.id, JSONEvaluator.evaluateValue(this, effect.duration, parameters), JSONEvaluator.evaluateValue(this, effect.stacks, targetId));
 					break;
 				case "event":
 					SharedData.eventLoop.registerEvent(JSONEvaluator.evaluateValue(this, effect.time, parameters), {
@@ -206,15 +236,15 @@ export class Actor {
 					SharedData.eventLoop.triggerListeners("resourceChange", this.id, { resource: effect.id, oldValue: oldResourceValue, newValue: this.resources[effect.id].value });
 					break;
 				case "useAbility":
-					this.triggerEffects(this.abilities[effect.id].castEffects, abilityTarget, parameters, effect.id);
+					this.triggerEffects(this.abilities[effect.id].castEffects, parameters, effect.id);
 					break;
 				case "removeAura":
 					targetId = -1;
 					if (effect.targetId !== undefined && effect.targetId !== null) {
-						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, Object.assign(parameters, { abilityTarget: abilityTarget || this.id }));
+						targetId = JSONEvaluator.evaluateValue(this, effect.targetId, parameters);
 					} else {
-						if (abilityTarget !== undefined && abilityTarget !== null) {
-							targetId = abilityTarget;
+						if (SharedData.actors[parameters.abilityTarget].team === this.team) {
+							targetId = parameters.abilityTarget;
 						} else {
 							targetId = this.id;
 						}
@@ -228,14 +258,14 @@ export class Actor {
 						this.absorbs.delete(removedAura);
 					}
 					if (SharedData.eventLoop.time === removedAura.expirationTime && this.knownAuras[removedAura.id].expirationAbility !== undefined) {
-						this.triggerEffects([{type: "useAbility", id: this.knownAuras[removedAura.id].expirationAbility}], abilityTarget, parameters);
-					} else if (SharedData.eventLoop.time !== removedAura.expirationTime && this.knownAuras[removedAura.id].removalAbility !== undefined){
-						this.triggerEffects([{type: "useAbility", id: this.knownAuras[removedAura.id].removalAbility}], abilityTarget, parameters);
+						this.triggerEffects([{ type: "useAbility", id: this.knownAuras[removedAura.id].expirationAbility }], parameters);
+					} else if (SharedData.eventLoop.time !== removedAura.expirationTime && this.knownAuras[removedAura.id].removalAbility !== undefined) {
+						this.triggerEffects([{ type: "useAbility", id: this.knownAuras[removedAura.id].removalAbility }], parameters);
 					}
 					break;
 				case "shortcut":
 					try {
-						this.triggerEffects(this.shortcuts[effect.id], abilityTarget, Object.assign({}, effect.parameters, parameters), name);
+						this.triggerEffects(this.shortcuts[effect.id], Object.assign({}, effect.parameters, parameters), name);
 					} catch (e) {
 						Log.error("Infinite recusion with shortcut " + effect.id + ", please check it's definition");
 					}
@@ -259,27 +289,43 @@ export class Actor {
 	}
 
 	processStats() {
-		this.triggerEffects(this.abilities._Initialize.castEffects, null, {}, "Initialization");
+		this.triggerEffects(this.abilities._Initialize.castEffects, {}, "Initialization");
 	}
 
 	getStatEffect(stat) {
 		switch (stat) {
 			case "crit":
-				return this.applyStatDR(this.getStat("crit") / (statCosts.crit[Math.max(this.level, 12)] * 100));
+				const baseCrit = this.getStat("crit");
+				const postMultiplierCrit = this.applyStatDR(baseCrit / (statCosts.crit[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.crit * this.statEffectSpecialMultipliers.crit.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseCrit }), 1);
+				return postMultiplierCrit + this.statEffectAdditions.crit + this.statEffectSpecialAdditions.crit.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseCrit }), 0);
 			case "haste":
-				return 1 + this.applyStatDR(this.getStat("haste") / (statCosts.haste[Math.max(this.level, 12)] * 100));
+				const baseHaste = this.getStat("haste");
+				const postMultiplierHaste = this.applyStatDR(baseHaste / (statCosts.haste[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.haste * this.statEffectSpecialMultipliers.haste.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHaste }), 1);
+				return 1 + postMultiplierHaste + this.statEffectAdditions.haste + this.statEffectSpecialAdditions.haste.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHaste }), 0);
 			case "mastery":
-				return this.applyStatDR(this.getStat("mastery") / (statCosts.mastery[Math.max(this.level, 12)] * 100));
+				const baseMastery = this.getStat("mastery");
+				const postMultiplierMastery = this.applyStatDR(baseMastery / (statCosts.mastery[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.mastery * this.statEffectSpecialMultipliers.mastery.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseMastery }), 1);
+				return postMultiplierMastery + this.statEffectAdditions.mastery + this.statEffectSpecialAdditions.mastery.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseMastery }), 0);
 			case "versatility":
-				return 1 + this.applyStatDR(this.getStat("versatility") / (statCosts.versatility[Math.max(this.level, 12)] * 100));
+				const baseVersatility = this.getStat("versatility");
+				const postMultiplierVersatility = this.applyStatDR(baseVersatility / (statCosts.versatility[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.versatility * this.statEffectSpecialMultipliers.versatility.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseVersatility }), 1);
+				return 1 + postMultiplierVersatility + this.statEffectAdditions.versatility + this.statEffectSpecialAdditions.versatility.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseVersatility }), 0);
 			case "leech":
-				return this.applyStatDR(this.getStat("leech") / (statCosts.leech[Math.max(this.level, 12)] * 100));
+				const baseLeech = this.getStat("leech");
+				const postMultiplierLeech = this.applyStatDR(baseLeech / (statCosts.leech[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.leech * this.statEffectSpecialMultipliers.leech.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseLeech }), 1);
+				return postMultiplierLeech + this.statEffectAdditions.leech + this.statEffectSpecialAdditions.leech.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseLeech }), 0);
 			case "parry":
-				return this.applyStatDR(this.getStat("parry") / (statCosts.parry[Math.max(this.level, 12)] * 100));
+				const baseParry = this.getStat("parry");
+				const postMultiplierParry = this.applyStatDR(baseParry / (statCosts.parry[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.parry * this.statEffectSpecialMultipliers.parry.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseParry }), 1);
+				return postMultiplierParry + this.statEffectAdditions.parry + this.statEffectSpecialAdditions.parry.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseParry }), 0);
 			case "block":
-				return this.applyStatDR(this.getStat("block") / (statCosts.block[Math.max(this.level, 12)] * 100));
+				const baseBlock = this.getStat("block");
+				const postMultiplierBlock = this.applyStatDR(baseBlock / (statCosts.block[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.block * this.statEffectSpecialMultipliers.block.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseBlock }), 1);
+				return postMultiplierBlock + this.statEffectAdditions.block + this.statEffectSpecialAdditions.block.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseBlock }), 0);
 			case "dodge":
-				return this.applyStatDR(this.getStat("dodge") / (statCosts.dodge[Math.max(this.level, 12)] * 100));
+				const baseDodge = this.getStat("dodge");
+				const postMultiplierDodge = this.applyStatDR(baseDodge / (statCosts.dodge[Math.max(this.level, 12)] * 100)) * this.statEffectMultipliers.dodge * this.statEffectSpecialMultipliers.dodge.reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDodge }), 1);
+				return postMultiplierDodge + this.statEffectAdditions.dodge + this.statEffectSpecialAdditions.dodge.reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDodge }), 0);
 		}
 	}
 
@@ -287,8 +333,8 @@ export class Actor {
 		if (stat === "mainWeaponSpeed") {
 			return this.stats.mainWeaponSpeed / this.getStatEffect("haste");
 		}
-		let postMultiplierStat = this.stats[stat] * this.statMultipliers[stat] * this.getStatSpecialMultiplier(stat, this.stats[stat]);
-		return postMultiplierStat + this.statAdditions[stat] + this.getStatSpecialAddition(stat, this.stats[stat]);
+		let postMultiplierStat = this.stats[stat] * this.statRatingMultipliers[stat] * this.getStatRatingSpecialMultiplier(stat, this.stats[stat]);
+		return postMultiplierStat + this.statRatingAdditions[stat] + this.getStatRatingSpecialAddition(stat, postMultiplierStat);
 	}
 
 	applyStatDR(rating) {
@@ -349,7 +395,7 @@ export class Actor {
 
 	takeDamage(damage, missable, dodgeable, parryable, blockable, types, sourceActor, name) {
 		const hit = this.checkForHit(missable, dodgeable, parryable, blockable, sourceActor);
-		if (hit === "hit" || hit === "crit" || hit === "block") {
+		if (hit === "hit" || hit === "crit" || hit === "block" || hit === "critBlock") {
 			damage *= hit === "crit" ? 2 : 1;
 			const rawDamage = damage;
 			damage *= 1 - (this.getStatEffect("versatility") - 1) / 2;
@@ -364,8 +410,9 @@ export class Actor {
 					damage *= 1 - this.getStat("armor") / (this.getStat("armor") + 400 + 85 * sourceActor.level + 4.5 * (sourceActor.level - 59) + 20 * (sourceActor.level - 80) + 22 * (sourceActor.level - 85));
 				}
 			}
-			damage *= hit === "block" ? 0.3 : 1;
-			damage *= this.getDamageTakenModifier(types) * this.getDamageTakenSpecialModifier(damage, types);
+			damage *= hit === "block" ? 0.7 : 1;
+			damage *= hit === "critBlock" ? 0.4 : 1;
+			damage *= this.getDamageTakenMultiplier(types) * this.getDamageTakenSpecialMultiplier(damage, types);
 			damage += this.getDamageTakenAddition(types) + this.getDamageTakenSpecialAddition(damage, types);
 			sourceActor.heal(damage * sourceActor.getStatEffect("leech"), types, sourceActor);
 			const preAbsorbDamage = damage;
@@ -385,7 +432,7 @@ export class Actor {
 			}
 
 			this.resources.prototypeProtectionhealth -= damage;
-			SharedData.eventLoop.triggerListeners("takeDamage", this.id, { damage: preAbsorbDamage, mitigated: rawDamage - damage, absorbed: preAbsorbDamage - damage, newHp: this.resources.prototypeProtectionhealth, sourceActor, types, target: this, name: name });
+			SharedData.eventLoop.triggerListeners("damageTaken", this.id, { damage: preAbsorbDamage, mitigated: rawDamage - damage, absorbed: preAbsorbDamage - damage, newHp: this.resources.prototypeProtectionhealth, sourceActor, types, target: this, name: name, crit: hit === "crit", block: (hit===block)?damage/0.7:(hit==="critBlock"?damage/0.4:0) });
 		} else if (hit === "parry") {
 			SharedData.eventLoop.triggerListeners("parry", this.id, { sourceActor });
 		} else if (hit === "dodge") {
@@ -420,7 +467,7 @@ export class Actor {
 
 	heal(amount, types, sourceActor) {
 		const preAbsorbHealing = amount;
-		let healing = amount * this.getHealingTakenModifier(types) * this.getHealingTakenSpecialModifier(amount, types);
+		let healing = amount * this.getHealingTakenMultiplier(types) * this.getHealingTakenSpecialMultiplier(amount, types);
 		healing += amount * this.getHealingTakenAddition(types) + this.getHealingTakenSpecialAddition(healing, types);
 		this.resources.prototypeProtectionhealth += amount;
 		if (this.resources.prototypeProtectionhealth > this.stats.maxHp) {
@@ -454,119 +501,116 @@ export class Actor {
 		return 0;
 	}
 
-	getDamageDoneModifier(types) {
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
-		return this.damageDoneModifiers[index];
+	getDamageDoneMultiplier(types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.damageDoneMultipliers[index];
 	}
 
 	getDamageDoneAddition(types) {
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
+		let index = SharedData.getTypeCombinationId(types);
 		return this.damageDoneAdditions[index];
 	}
 
-	getDamageDoneSpecialModifier(baseDamage, types){
-		//TODO: implement
-		return 1;
+	getDamageDoneSpecialMultiplier(baseDamage, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.damageDoneSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDamage }), 1);
 	}
 
-	getDamageDoneSpecialAddition(baseDamage, types){
-		//TODO: implement
-		return 0;
+	getDamageDoneSpecialAddition(baseDamage, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.damageDoneSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDamage }), 0);
 	}
 
-	getDamageTakenModifier(types) {
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
-		return this.damageTakenModifiers[index];
-		
+	getDamageTakenMultiplier(types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.damageTakenMultipliers[index];
 	}
 
 	getDamageTakenAddition(types) {
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
+		let index = SharedData.getTypeCombinationId(types);
 		return this.damageTakenAdditions[index];
 	}
 
-	getDamageTakenSpecialModifier(baseDamage, types){
-		//TODO: implement
-		return 1;
+	getDamageTakenSpecialMultiplier(baseDamage, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.damageTakenSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDamage }), 1);
 	}
 
-	getDamageTakenSpecialAddition(baseDamage, types){
-		//TODO: implement
-		return 0;
+	getDamageTakenSpecialAddition(baseDamage, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.damageTakenSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDamage }), 0);
 	}
 
 	getHealingTakenAddition(types) {
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
+		let index = SharedData.getTypeCombinationId(types);
 		return this.healingTakenAdditions[index];
 	}
 
-	getHealingTakenModifier(types) {
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
-		return this.healingTakenModifiers[index];
+	getHealingTakenMultiplier(types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.healingTakenMultipliers[index];
 	}
 
-	getHealingTakenSpecialModifier(baseHeal, types){
-		//TODO: implement
-		return 1;
+	getHealingTakenSpecialMultiplier(baseHeal, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.healingTakenSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHeal }), 1);
 	}
 
-	getHealingTakenSpecialAddition(baseHeal, types){
-		//TODO: implement
-		return 0;
+	getHealingTakenSpecialAddition(baseHeal, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.healingTakenSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHeal }), 0);
 	}
 
-	getHealingDoneModifier(types){
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
-		return this.healingDoneModifiers[index];
+	getHealingDoneMultiplier(types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.healingDoneMultipliers[index];
 	}
 
-	getHealingDoneAddition(types){
-		let index = 0;
-		for (let i = 0; i < types.length; i++){
-			index += SharedData.types.get(types[i]);
-		}
+	getHealingDoneAddition(types) {
+		let index = SharedData.getTypeCombinationId(types);
 		return this.healingDoneAdditions[index];
 	}
 
-	getHealingDoneSpecialModifier(baseHeal, types){
-		//TODO: implement
-		return 1;
+	getHealingDoneSpecialMultiplier(baseHeal, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.healingDoneSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHeal }), 1);
 	}
 
-	getHealingDoneSpecialAddition(baseHeal, types){
-		//TODO: implement
-		return 0;
+	getHealingDoneSpecialAddition(baseHeal, types) {
+		let index = SharedData.getTypeCombinationId(types);
+		return this.healingDoneSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHeal }), 0);
 	}
-	
-	getStatSpecialMultiplier(stat, value) {
-		//TODO: implement
-		return 1;
+
+	getStatRatingSpecialMultiplier(stat, baseValue) {
+		let multiplier = 1;
+		for (let i = 0; i < this.statRatingSpecialMultipliers[stat].length; i++) {
+			multiplier *= JSONEvaluator.evaluateValue(this, this.statRatingSpecialMultipliers[stat][i], { baseStat: baseValue });
+		}
+		return multiplier;
 	}
-	
-	getStatSpecialAddition(stat, value) {
-		//TODO: implement
-		return 0;
+
+	getStatRatingSpecialAddition(stat, baseValue) {
+		let addition = 0;
+		for (let i = 0; i < this.statRatingSpecialAdditions[stat].length; i++) {
+			addition += JSONEvaluator.evaluateValue(this, this.statRatingSpecialAdditions[stat][i], { baseStat: baseValue });
+		}
+		return addition;
+	}
+
+	getStatEffectSpecialMultiplier(stat, baseValue) {
+		let multiplier = 1;
+		for (let i = 0; i < this.statEffectSpecialMultipliers[stat].length; i++) {
+			multiplier *= JSONEvaluator.evaluateValue(this, this.statEffectSpecialMultipliers[stat][i], { baseStat: baseValue });
+		}
+		return multiplier;
+	}
+
+	getStatEffectSpecialAddition(stat, baseValue) {
+		let addition = 0;
+		for (let i = 0; i < this.statEffectSpecialAdditions[stat].length; i++) {
+			addition += JSONEvaluator.evaluateValue(this, this.statEffectSpecialAdditions[stat][i], { baseStat: baseValue });
+		}
+		return addition;
 	}
 
 	compileEffects(effect, callStack = [], altCall = null, createFunction = true) {
@@ -585,17 +629,17 @@ export class Actor {
 			if (effect.conditions !== undefined && effect.conditions.length > 0) {
 				effectString = "if(" + JSONEvaluator.compileValue(effect.conditions, this) + "){";
 			}
-			const variablePrefix = "_".repeat(callStack.length+1); //For any internal variables to not overwrite
+			const variablePrefix = "_".repeat(callStack.length + 1); //For any internal variables to not overwrite
 			switch (effect.type) {
 				case "damage":
-					effect.types.forEach(type => {
+					effect.types.forEach((type) => {
 						SharedData.ensureString(type);
 					});
 					let targetActor = null;
 					if (effect.targetId === undefined) {
 						targetActor = "SharedData.actors[" + JSONEvaluator.compileValue(this.defaultEnemyTarget(), this) + "]";
 					} else {
-						targetActor = "SharedData.actors[" + JSONEvaluator.compileValue(effect.targetId, this) + "]"; //abilityTarget already in scope
+						targetActor = "SharedData.actors[" + JSONEvaluator.compileValue(effect.targetId, this) + "]";
 					}
 					effectString += variablePrefix + "types=[" + effect.types.map((type) => "SharedData.strings[" + SharedData.strings.indexOf(type) + "]").join(",") + "];actor.dealDamage(" + JSONEvaluator.compileValue(effect.value, this) + ", " + targetActor + ", " + variablePrefix + "types, name, " + (effect.missable === true) + ", " + (effect.dodgeable === true) + ", " + (effect.parryable === true) + ", " + (effect.blockable === true) + ");";
 					break;
@@ -609,14 +653,14 @@ export class Actor {
 					effectString += variablePrefix + "types=[" + effect.types.map((type) => "SharedData.strings[" + SharedData.strings.indexOf(type) + "]").join(",") + "];actor.heal(" + JSONEvaluator.compileValue(effect.value, this) + ", " + variablePrefix + "types, " + targetActor + ", name);";
 					break;
 				case "applyAura":
-					SharedData.ensureString(effect.id)
+					SharedData.ensureString(effect.id);
 					let targetString = "";
 					if (effect.targetId === undefined) {
-						targetString = "(abilityTarget || actor)";
+						targetString = "(SharedData.actors[parameters.abilityTarget] || actor)";
 					} else {
 						targetString = "SharedData.actors[" + JSONEvaluator.compileValue(effect.targetId, this) + "]";
 					}
-					effectString += "SharedData.auraHandler.applyAura(" + targetString + ", actor, SharedData.strings[" + SharedData.strings.indexOf(effect.id) + "], " + (effect.duration !== undefined?JSONEvaluator.compileValue(effect.duration, this):undefined) + ", "+((effect.stacks !== undefined)?JSONEvaluator.compileValue(effect.stacks, this):1)+");";
+					effectString += "SharedData.auraHandler.applyAura(" + targetString + ", actor, SharedData.strings[" + SharedData.strings.indexOf(effect.id) + "], " + (effect.duration !== undefined ? JSONEvaluator.compileValue(effect.duration, this) : undefined) + ", " + (effect.stacks !== undefined ? JSONEvaluator.compileValue(effect.stacks, this) : 1) + ");";
 					break;
 				case "event":
 					effectString += "SharedData.eventLoop.registerEvent(" + JSONEvaluator.compileValue(effect.time, this) + ",{source:actor,effects:" + JSON.stringify(effect.effects) + "});"; //Event effects not compiled as it would need to be a function being passed as effects.compiled, which unless I want to store all event effects compiled on the actor (which I might do later) would require creating a new function every time time the event is registered, which would be slower than just interpreting
@@ -643,14 +687,14 @@ export class Actor {
 					if (!SharedData.strings.includes(effect.id)) {
 						SharedData.strings.push(effect.id);
 					}
-					effectString += this.compileEffects(this.abilities[effect.id].castEffects, [].concat(callStack, [effect]), "actor.abilities[SharedData.strings[" + SharedData.strings.indexOf(effect.id) + "]].castEffects.compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", false);
+					effectString += this.compileEffects(this.abilities[effect.id].castEffects, [].concat(callStack, [effect]), "actor.abilities[SharedData.strings[" + SharedData.strings.indexOf(effect.id) + "]].castEffects.compiled(SharedData, actor, parameters, uncompiled, name)", false);
 					break;
 				case "removeAura":
 					if (!SharedData.strings.includes(effect.id)) {
 						SharedData.strings.push(effect.id);
 					}
 					if (effect.targetId === undefined) {
-						targetString = "(abilityTarget || actor)";
+						targetString = "(ShardData.actors[parameters.abilityTarget] || actor)";
 					} else {
 						targetString = "SharedData.actors[" + JSONEvaluator.compileValue(effect.targetId, this) + "]";
 					}
@@ -683,7 +727,7 @@ export class Actor {
 							effectString += "parameters['" + parameter + "']=" + JSON.stringify(effect.parameters[parameter]) + ";";
 						});
 					}
-					effectString += this.compileEffects(subEffect, [].concat(callStack, [effect]), "actor.shortcuts[SharedData.strings[" + SharedData.strings.indexOf(shortcutId) + "]].compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", false);
+					effectString += this.compileEffects(subEffect, [].concat(callStack, [effect]), "actor.shortcuts[SharedData.strings[" + SharedData.strings.indexOf(shortcutId) + "]].compiled(SharedData, actor, parameters, uncompiled, name)", false);
 					break;
 				case "registerEventHandler":
 					if (!SharedData.strings.includes(effect.id)) {
@@ -697,7 +741,7 @@ export class Actor {
 					if (effect.targetId === undefined) {
 						effect.targetId = this.id;
 					}
-					effectString += "SharedData.eventLoop.registerEventHandler(SharedData.strings[" + SharedData.strings.indexOf(effect.id) + "]," + JSONEvaluator.compileValue(effect.targetId, this) + ", actor," + JSONEvaluator.compileValue(effect.eventConditions, this) + "," + JSON.stringify(effect.effects) + ");";
+					effectString += "SharedData.eventLoop.registerEventHandler(SharedData.strings[" + SharedData.strings.indexOf(effect.id) + "]," + JSONEvaluator.compileValue(effect.targetId, this) + ", actor," + JSON.stringify(effect.eventConditions) + "," + JSON.stringify(effect.effects) + ");";
 					break;
 				case "runOnActors":
 					let actorCheck = "";
@@ -725,31 +769,31 @@ export class Actor {
 			}
 		}
 		if (createFunction) {
-			const compiledFunction = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", effectString);
+			const compiledFunction = new Function("SharedData", "actor", "parameters", "uncompiled", "name", effectString);
 			return compiledFunction;
 		}
 		return effectString;
 	}
 
 	compile() {
-		this.abilities._Initialize.compiled = this.compileEffects(this.abilities._Initialize.castEffects, [], "actor.abilities._Initialize.compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", true); //Make sure resources are created first
+		this.abilities._Initialize.compiled = this.compileEffects(this.abilities._Initialize.castEffects, [], "actor.abilities._Initialize.compiled(SharedData, actor, parameters, uncompiled, name)", true); //Make sure resources are created first
 		Object.keys(this.abilities).forEach((ability) => {
-			this.abilities[ability].castEffects.compiled = this.compileEffects(this.abilities[ability].castEffects, [], "actor.abilities[" + ability + "].castEffects.compiled(SharedData, actor, parameters, abilityTarget, uncompiled, name)", true);
+			this.abilities[ability].castEffects.compiled = this.compileEffects(this.abilities[ability].castEffects, [], "actor.abilities[" + ability + "].castEffects.compiled(SharedData, actor, parameters, uncompiled, name)", true);
 			if (this.abilities[ability].conditions !== undefined) {
-				this.abilities[ability].conditions.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].conditions, this) + ");");
+				this.abilities[ability].conditions.compiled = new Function("SharedData", "actor", "parameters", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].conditions, this) + ");");
 			}
-			if (typeof(this.abilities[ability].charges) === "object"){
-				this.abilities[ability].charges.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].charges || 1, this) + ");");
+			if (typeof this.abilities[ability].charges === "object") {
+				this.abilities[ability].charges.compiled = new Function("SharedData", "actor", "parameters", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].charges || 1, this) + ");");
 			}
-			if (typeof(this.abilities[ability].cooldown) === "object"){
-				this.abilities[ability].cooldown.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].cooldown || 0, this) + ");");
+			if (typeof this.abilities[ability].cooldown === "object") {
+				this.abilities[ability].cooldown.compiled = new Function("SharedData", "actor", "parameters", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(this.abilities[ability].cooldown || 0, this) + ");");
 			}
 		});
 		//Shortcuts processed as they are used by abilities
 		//Auras expiration/removal/ticking will be changed to specify an ability to handle effects, so they don't need compilation either
 		this.apl.forEach((entry) => {
 			if (entry.conditions !== undefined) {
-				entry.conditions.compiled = new Function("SharedData", "actor", "parameters", "abilityTarget", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(entry.conditions, this) + ");");
+				entry.conditions.compiled = new Function("SharedData", "actor", "parameters", "uncompiled", "name", "return(" + JSONEvaluator.compileValue(entry.conditions, this) + ");");
 			}
 		});
 	}
@@ -766,14 +810,14 @@ export class Actor {
 
 	dealDamage(baseDamage, target, types, name, missable, dodgeable, parryable, blockable) {
 		let damage = baseDamage * this.getStatEffect("versatility");
-		damage *= this.getDamageDoneModifier(types) * this.getDamageDoneSpecialModifier(baseDamage, target, types);
+		damage *= this.getDamageDoneMultiplier(types) * this.getDamageDoneSpecialMultiplier(baseDamage, target, types);
 		damage += this.getDamageDoneAddition(types) + this.getDamageDoneSpecialAddition(damage, target, types);
 		target.takeDamage(damage, missable, dodgeable, parryable, blockable, types, this, name);
 	}
 
 	doHealing(baseHeal, target, types, name) {
 		let healing = baseHeal * this.getStatEffect("versatility");
-		healing *= this.getHealingDoneModifier(types) * this.getHealingDoneSpecialModifier(baseHeal, types);
+		healing *= this.getHealingDoneMultiplier(types) * this.getHealingDoneSpecialMultiplier(baseHeal, types);
 		healing += this.getHealingDoneAddition(types) + this.getHealingDoneSpecialAddition(healing, types);
 		target.heal(healing, types, this, name);
 	}

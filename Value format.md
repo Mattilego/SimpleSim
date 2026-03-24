@@ -152,11 +152,11 @@ check: whether to check if the aura exists, the duration, stacks, or value
 Fight Data:
 {
 	"type": "fightData",
-	"id": "time"
+	"id": "time" | "self"
 } = Number
 Retrieves information about the fight
 Properties:
-id: id/name of the fight data to retrieve, currently only time
+id: id/name of the fight data to retrieve, time retrieves current fight time, self retrieves own actor id
 
 Matching Actors:
 {
@@ -173,7 +173,7 @@ Direct comparisons:
 {
 	"type": "resource" | "parameter" | "stat" | "talent" | "ability" | "aura" | "fightData" | "matchingActors",
 	type specific properties,
-	"comparison": "==" | "!=" | ">" | "<" | ">=" | "<=",
+	"comparison": "=" | "==" | "!=" | ">" | "<" | ">=" | "<=",
 	"value": Value (Number)
 } = Boolean (instead of previous return type)
 Optionally adds a comparison directly do a value retrieval

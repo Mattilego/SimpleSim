@@ -207,7 +207,9 @@ export class UserDataRetriever {
 			},
 			config: {
 				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value*60),
-				compile: true
+				compile: true,
+				loggingDetail: "full",
+				logToFile: true
 			}
 		};
 	}

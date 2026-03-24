@@ -8,7 +8,6 @@ export class Aura {
 		this.source = source;
 		this.expirationEvent = { source: source, effects: [{ type: "removeAura", id: this.id, targetId: appliedOn }] };
 		SharedData.eventLoop.registerEvent(this.expirationTime, this.expirationEvent);
-
 	}
 
 	set duration(duration) {

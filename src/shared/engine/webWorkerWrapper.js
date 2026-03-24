@@ -3,7 +3,7 @@ import { Log } from "./Log.js";
 
 addEventListener("message", async (event) => {
 	try {
-		postMessage(processRequest(event.data));
+		postMessage(await processRequest(event.data));
 	} catch (e) {
 		console.error("Error in web worker:", e);
 		console.log(Log.getString());

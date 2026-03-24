@@ -46,7 +46,8 @@ export class EventLoop {
 	registerEvent(time, data) {
 		const event = { time, data, canceled: false };
 		this.binaryHeapInsert(this.futureEvents, event);
-		if(this.futureEvents.length > 10000){//Sign of exponential event registering due to recursion
+		if (this.futureEvents.length > 10000) {
+			//Sign of exponential event registering due to recursion
 			debugger;
 		}
 		return event;
@@ -71,34 +72,34 @@ export class EventLoop {
 			this.handleSpecialEffect(event.data.effects);
 		}
 		const effects = event.data.effects;
-		sourceActor.triggerEffects(effects, null, {}, event.data.name);
+		sourceActor.triggerEffects(effects, {}, event.data.name);
 	}
 
 	triggerListeners(type, target, data) {
-		if (this.listeners[target] === undefined){
+		if (this.listeners[target] === undefined) {
 			return;
 		}
-		if (this.listeners[target][type] === undefined){
+		if (this.listeners[target][type] === undefined) {
 			return;
 		}
 		const handlers = this.listeners[target][type];
 		for (const handler of handlers) {
-			if (JSONEvaluator.evaluateValue(handler.source, handler.eventConditions, data)){
-				handler.source.triggerEffects(handler.effects, null, data, data.name)
+			if (JSONEvaluator.evaluateValue(handler.source, handler.eventConditions, data)) {
+				handler.source.triggerEffects(handler.effects, data, data.name);
 			}
 		}
 	}
 
 	registerEventHandler(type, target, source, eventConditions, effects) {
-		if (target === -1){
+		if (target === -1) {
 			target = source.id;
 		}
-		if (this.listeners[target] === undefined){
+		if (this.listeners[target] === undefined) {
 			this.listeners[target] = {};
 		}
 		if (this.listeners[target][type] === undefined) {
 			this.listeners[target][type] = [];
 		}
-		this.listeners[target][type].push({source, eventConditions, effects});
+		this.listeners[target][type].push({ source, eventConditions, effects });
 	}
 }

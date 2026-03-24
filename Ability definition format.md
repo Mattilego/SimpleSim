@@ -11,6 +11,7 @@ Ability Definition:
 	"cooldown": Value (Number),
 	"conditions": Array[Value (Boolean)],
 	"GCD": Value (Number),
+	"castTime": Value (Number),
 	"charges": Number
 }
 Properties:
