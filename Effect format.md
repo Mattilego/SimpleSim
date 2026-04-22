@@ -107,7 +107,7 @@ Set Resource:
 	"id": String,
 	"value": Value (Number)
 }
-Sets the value of a resource for the actor, when compiled must have a Create Resource effect with the same id be earlier in _Initialize
+Sets the value of a resource for the actor, when compiled must have a Create Resource effect with the same id be earlier in the ability definitions file (with shortcuts substituted in)
 Properties:
 id: the id/name of the resource to set
 value: the value to set the resource to

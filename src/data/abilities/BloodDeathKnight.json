@@ -168,34 +168,5 @@
 				}
 			}
 		]
-	},
-	"Death and Decay": {
-		"cooldown": 0,
-		"conditions": [
-			{
-				"type": "resource",
-				"id": "runes",
-				"check": "value",
-				"comparison": ">=",
-				"value": 1
-			}
-		],
-		"castEffects": [
-			{
-				"type": "applyAura",
-				"id": "Death and Decay",
-				"duration": 10
-			},{
-				"type": "runOnActors",
-				"relation": "enemy",
-				"effects": [
-					{
-						"type": "applyAura",
-						"id": "Death and Decay DoT",
-						"duration": 10
-					}
-				]
-			}
-		]
 	}
 }

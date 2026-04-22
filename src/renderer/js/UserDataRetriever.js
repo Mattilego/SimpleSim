@@ -121,8 +121,8 @@ export class UserDataRetriever {
 			parry: 0,
 			block: 0,
 			dodge: 0,
-			mainWeaponDamage: 216,
-			mainWeaponSpeed: 3.6
+			mainWeaponDamage: 200,
+			mainWeaponSpeed: 3
 		};
 		stats[this.specPrimaryStats[spec]] = parseFloat(document.getElementById("primaryStatInput").value);
 		stats.armor = parseFloat(document.getElementById("armorStatInput").value);
@@ -154,6 +154,9 @@ export class UserDataRetriever {
 		for (let i = 0; i < settings.count; i++) {
 			const actor = {
 				stats: {
+					strength: 0,
+					agility: 0,
+					intellect: 0,
 					stamina: settings.health/8,
 					armor: 0,
 					mainWeaponDamage: settings.dps/settings.attackSpeed,
@@ -208,7 +211,7 @@ export class UserDataRetriever {
 			config: {
 				maxFightLength: parseFloat(document.getElementById("fightDurationInput").value*60),
 				compile: true,
-				loggingDetail: "full",
+				loggingDetail: "total",
 				logToFile: true
 			}
 		};

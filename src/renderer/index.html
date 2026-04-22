@@ -9,16 +9,40 @@
 </head>
 
 <body>
-	<header role="banner">
-		<h1>SimpleSim</h1>
+	<header>
+		<h1>Simple Sim</h1>
+		<a href="advanced.html">
+			<div>
+				<h2>Advanced mode</h2>
+			</div>
+		</a>
 	</header>
+	<nav>
+		<ul>
+			<li>
+				<a href="#specConfiguration">Spec Configuration</a>
+			</li>
+			<li>
+				<a href="#characterStats">Character</a>
+			</li>
+			<li>
+				<a href="#enemySettings">Enemy Settings</a>
+			</li>
+			<li>
+				<a href="#fightSettings">Fight Settings</a>
+			</li>
+			<li>
+				<a href="#resultsSection">Results</a>
+			</li>
+		</ul>
+	</nav>
 	<main role="main">
 		<section id="specConfiguration">
 			<div class="headerContainer">
 				<h2>Spec Configuration</h2>
-				<button id="collapseSpecSettings">Collapse</button>
+				<button id="collapseSpecConfiguration">Collapse</button>
 			</div>
-			<div id="specConfigurationContainer">
+			<div id="specConfigurationContainer" class="collapsibleDiv">
 				<label for="bloodDK">Blood Death Knight</label>
 				<input type="radio" name="spec" id="bloodDK" value="bloodDeathKnight" class="specRadio dkspec"
 					data-tooltip="Blood Death Knight" checked>
@@ -176,9 +200,9 @@
 		<section id="characterStats">
 			<div class="headerContainer">
 				<h2>Character</h2>
-				<button id="collapseCharacterSettings">Collapse</button>
+				<button id="collapseCharacterStats">Collapse</button>
 			</div>
-			<div id="characterStatsContainer">
+			<div id="characterStatsContainer" class="collapsibleDiv">
 				<div id="statInputs" class="inputAreas">
 					<label for="levelInput" id="levelLabel">Level: </label>
 					<input type="number" id="levelInput" value="90">
@@ -615,7 +639,7 @@
 				<h2>Enemy Settings</h2>
 				<button id="collapseEnemySettings">Collapse</button>
 			</div>
-			<div id="enemySettingsContainer">
+			<div id="enemySettingsContainer" class="collapsibleDiv">
 				<div class="inputAreas">
 					<label for="enemyCountInput">Enemy Count: </label>
 					<input type="number" id="enemyCountInput" value="1" min="1" class="positiveIntegerInput">
@@ -636,7 +660,7 @@
 				<button id="collapseFightSettings">Collapse</button>
 			</div>
 
-			<div id="fightSettingsContainer">
+			<div id="fightSettingsContainer" class="collapsibleDiv">
 				<div class="inputAreas">
 					<label for="endFightOnEnemyDeathInput">End fight on enemy death: </label>
 					<input type="checkbox" id="endFightOnEnemyDeathInput">
@@ -652,6 +676,7 @@
 					<input type="checkbox" id="usePotionInput">
 					<label for="potionStatInput">Potion Stat: </label>
 					<select name="potionStat" id="potionStatInput">
+						<option value="primary">Primary</option>
 						<option value="crit">Critical Strike</option>
 						<option value="haste">Haste</option>
 						<option value="mastery">Mastery</option>
@@ -671,8 +696,17 @@
 				<h2>Results</h2>
 				<button id="collapseResults">Collapse</button>
 			</div>
-			<div id="resultsContainer">
+			<div id="resultsContainer" class="collapsibleDiv">
 				<button id="startSimulationButton">Start Simulation</button>
+				<div id="processingInfo">
+					<p>Processes finished: <span id="finishedProcesses">0</span>/<span id="totalProcesses">0</span></p>
+					<p>Time remaining: Noone kowns</p>
+				</div>
+				<div id="finishedResults">
+					<h3>Average DPS: <span id="averageDPS"></span></h3>
+					<h3>Average HPS: <span id="averageHPS"></span></h3>
+					<h3>Average Time Elapsed: <span id="averageTimeElapsed"></span></h3>
+				</div>
 			</div>
 		</section>
 	</main>

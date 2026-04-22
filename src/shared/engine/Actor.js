@@ -365,8 +365,7 @@ export class Actor {
 					type: "parameter",
 					id: "actorId"
 				},
-				id: "health",
-				check: "value"
+				id: "health"
 			}
 		};
 	}
@@ -379,15 +378,18 @@ export class Actor {
 			conditions: [],
 			expression: {
 				type: "-",
-				value1: 100,
+				value1: {
+					type: "stat",
+					id: "maxHp",
+					check: "rating"
+				},
 				value2: {
 					type: "resource",
 					targetId: {
 						type: "parameter",
 						id: "actorId"
 					},
-					id: "hp",
-					check: "percentage"
+					id: "hp"
 				}
 			}
 		};
@@ -432,7 +434,11 @@ export class Actor {
 			}
 
 			this.resources.prototypeProtectionhealth -= damage;
-			SharedData.eventLoop.triggerListeners("damageTaken", this.id, { damage: preAbsorbDamage, mitigated: rawDamage - damage, absorbed: preAbsorbDamage - damage, newHp: this.resources.prototypeProtectionhealth, sourceActor, types, target: this, name: name, crit: hit === "crit", block: (hit===block)?damage/0.7:(hit==="critBlock"?damage/0.4:0) });
+			let overkill = 0;
+			if (this.getResource("health") <= 0){
+				overkill = -this.getResource("health");
+			}
+			SharedData.eventLoop.triggerListeners("damageTaken", this.id, { damage: preAbsorbDamage, baseDamage: rawDamage, mitigated: rawDamage - damage, absorbed: preAbsorbDamage - damage, newHp: this.resources.prototypeProtectionhealth, sourceActor, types, target: this, name: name, crit: hit === "crit", block: (hit==="block")?damage/0.7:(hit==="critBlock"?damage/0.4:0), overkill: overkill });
 		} else if (hit === "parry") {
 			SharedData.eventLoop.triggerListeners("parry", this.id, { sourceActor });
 		} else if (hit === "dodge") {
