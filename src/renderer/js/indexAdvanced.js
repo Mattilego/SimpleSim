@@ -446,7 +446,7 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 		previousStatement: "Effect"
 	},{
 		type: "effectDealDamage",
-		message0: "Deal %1 %2 %3 damage to %4",//Deal [value] [damage type] [blockable/parryable...] damage to [targetId]
+		message0: "Deal %1 %2 %3 damage to %4",
 		args0: [
 			{
 				type: "input_value",
@@ -459,13 +459,13 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 				type: "field_dropdown",
 				name: "mitigatableTypes",
 				options: [
-					["None", [false, false, false, false]],
-					["Parryable", [false, false, true, false]],
-					["Blockable", [false, false, false, true]],
-					["Missable", [true, false, false, false]],
-					["Dodgeble", [false, true, false, false]],
-					["Standard spell", [true, true, false, false]]
-					["All", [true, true, true, true]]
+					["Always hitting", "none"],
+					["Parryable", "parry"],
+					["Blockable", "block"],
+					["Missable", "miss"],
+					["Dodgeble", "dodge"],
+					["Standard spell", "spell"],
+					["All", "all"]
 				]
 			},{
 				type: "input_value",
@@ -493,7 +493,92 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 		output: "Value",
 		colour: 180
 	},{
-		type: "valueDamageTypes"
+		type: "valueDamageTypes",
+		message0: "%1 type",
+		args0: [
+			{
+				type: "field_dropdown",
+				name: "damageType",
+				options: [
+					["Physical", "physical"],
+					["Holy", "holy"],
+					["Fire", "fire"],
+					["Frost", "frost"],
+					["Nature", "nature"],
+					["Arcane", "arcane"],
+					["Shadow", "shadow"]
+				]
+			}
+		],
+		output: "Value",
+		colour: 180
+	},{
+		type: "valueShortcut",
+		message0: "Shortcut %1",
+		args0: [
+			{
+				type: "field_input",
+				name: "shortcutName",
+				text: "Shortcut name"
+			}
+		],
+		output: "Value"
+	},{
+		type: "effectShortcut",
+		message0: "Shortcut %1",
+		args0: [
+			{
+				type: "field_input",
+				name: "shortcutName",
+				text: "Shortcut name"
+			}
+		],
+		colour: 300,
+		nextStatement: "Effect",
+		previousStatement: "Effect"
+	},{
+		type: "valueAura",
+		message0: "%1 of aura %2 on %3",
+		args0: [
+			{
+				type: "field_dropdown",
+				name: "property",
+				options: [
+					["Duration", "duration"],
+					["Stacks", "stacks"],
+					["Value", "value"],
+					["Exists", "exists"]
+				]
+			},{
+				type: "field_input",
+				name: "aura",
+				text: "Aura"
+			},{
+				type: "input_value",
+				name: "targetId",
+				check: "Value"
+			}
+		],
+		output: "Value"
+	},{
+		type: "valueFindActor",
+		message0: "Id of %1 actor where %2",
+		args0: [
+			{
+				type: "field_dropdown",
+				name: "relation",
+				options: [
+					["Any", "any"],
+					["Enemy", "enemy"],
+					["Friendly", "ally"]
+				]
+			},{
+				type: "input_value",
+				name: "expression",
+				check: "Value"
+			}
+		],
+		output: "Value"
 	}
 ]);
 Blockly.common.defineBlocks(blockDefinitions);
@@ -631,11 +716,39 @@ function toolboxCreator(specialBlocks) {
 				]
 			},{
 				kind: "category",
-				name: "Defaults",
+				name: "Actors",
 				contents: [
 					{
 						kind: "block",
 						type: "valueTargetDefaults"
+					},{
+						kind: "block",
+						type: "valueFindActor",
+						inputs: {
+							expression: {
+								shadow: {
+									type: "valueComparison",
+									inputs: {
+										value1: {
+											shadow: {
+												type: "valueParameter",
+												fields: {
+													parameter: "actorId"
+												}
+											}
+										},
+										value2: {
+											shadow: {
+												type: "valueTargetDefaults"
+											}
+										}
+									},
+									fields: {
+										comparison: "!="
+									}
+								}
+							}
+						}
 					}
 				]
 			},{
@@ -644,11 +757,51 @@ function toolboxCreator(specialBlocks) {
 				contents: [
 					{
 						kind: "block",
-						type: "effectDealDamage"
+						type: "effectDealDamage",
+						inputs: {
+							value: number,
+							damageType: {
+								shadow: {
+									type: "valueDamageTypes"
+								}
+							},
+							targetId: {
+								shadow: {
+									type: "valueTargetDefaults"
+								}
+							}
+						}
 					}
 				]
-			},
-			{
+			},{
+				kind: "category",
+				name: "Shortcuts",
+				contents: [
+					{
+						kind: "block",
+						type: "valueShortcut"
+					},{
+						kind: "block",
+						type: "effectShortcut"
+					}
+				]
+			},{
+				kind: "category",
+				name: "Auras",
+				contents: [
+					{
+						kind: "block",
+						type: "valueAura",
+						inputs: {
+							targetId: {
+								shadow: {
+									type: "valueTargetDefaults"
+								}
+							}
+						}
+					}
+				]
+			},{
 				kind: "category",
 				name: "Special",
 				contents: specialBlocks
@@ -679,7 +832,10 @@ shortcutContainerBlock.initSvg();
 shortcutContainerBlock.render();
 shortcutContainerBlock.moveBy(100, 80);
 shortcutWorkspace.addChangeListener(() => {
-	console.log(document.getElementById("shortcutTextInput").value = Generator.generateCode(shortcutWorkspace));
+	const code = Generator.generateCode(shortcutWorkspace)
+	if (code !== ""){
+		document.getElementById("shortcutTextInput").value = code;
+	}
 });
 document.getElementById("shortcutTextInput").addEventListener("change", () => {
 	try {

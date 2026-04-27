@@ -13,6 +13,9 @@ export class SharedData {
 	}
 
 	static getTypeCombinationId(types) {
+		if (typeof(types) === "number"){
+			return types;
+		}
 		if (types === undefined || types[0] === "all" || types === "all") {
 			return 2 ** 8 - 1;
 		}
