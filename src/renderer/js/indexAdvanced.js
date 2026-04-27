@@ -831,6 +831,7 @@ shortcutContainerBlock.setEditable(false);
 shortcutContainerBlock.initSvg();
 shortcutContainerBlock.render();
 shortcutContainerBlock.moveBy(100, 80);
+document.getElementById("shortcutTextInput").spellcheck = false;
 shortcutWorkspace.addChangeListener(() => {
 	const code = Generator.generateCode(shortcutWorkspace)
 	if (code !== ""){
