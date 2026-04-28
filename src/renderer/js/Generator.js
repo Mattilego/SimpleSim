@@ -42,7 +42,7 @@ export class Generator {
 			return [`{"type":"parameter","id":"${block.getFieldValue("parameter")}"}`, Order.IDFC];
 		};
 		JSONGenerator.forBlock["valueResource"] = function (block, generator) {
-			return [`{"type":"resource","id":"${block.getFieldValue("resource")}"}`, Order.IDFC];
+			return [`{"type":"resource","id":"${block.getFieldValue("resource")}","targetId":${generator.valueToCode(block, "targetId", Order.IDFC)}}`, Order.IDFC];
 		};
 		JSONGenerator.forBlock["valueConditionalBinaryOp"] = function (block, generator) {
 			return [`{"type":"${block.getFieldValue("operator")}","value1":${generator.valueToCode(block, "value1", Order.IDFC)},"value2":${generator.valueToCode(block, "value2", Order.IDFC)},"conditions":[${generator.valueToCode(block, "condition", Order.IDFC)}]}`,Order.IDFC];
@@ -82,7 +82,7 @@ export class Generator {
 		JSONGenerator.forBlock["valueConditionalUnaryLogicOp"] = function (block, generator) {
 			return [`{"type":"${block.getFieldValue("operator")}","value":${generator.valueToCode(block, "value", Order.IDFC)},"conditions":[${generator.valueToCode(block, "condition", Order.IDFC)}]}`,Order.IDFC];
 		};
-		JSONGenerator.forBlock["valueDamageTypes"] = function (block, generator) {
+		JSONGenerator.forBlock["valueTypes"] = function (block, generator) {
 			switch (block.getFieldValue("damageType")) {
 				case "physical":
 					return ["1", Order.IDFC];
@@ -109,8 +109,8 @@ export class Generator {
 		JSONGenerator.forBlock["valueFindActor"] = function (block, generator) {
 			return [`{"type": "findActor", "conditions": [${generator.valueToCode(block, "expression", Order.IDFC)}],"relation": "${block.getFieldValue("relation")}"}`, Order.IDFC];
 		};
-		JSONGenerator.forBlock["value"] = function (block, generator) {
-			
+		JSONGenerator.forBlock["valueStat"] = function (block, generator) {
+			return [`{"type": "stat","targetId": ${generator.valueToCode(block, "targetId", Order.IDFC)},"id":"${block.getFieldValue("stat")}","check":"${block.getFieldValue("property")}"}`, Order.IDFC]
 		};
 		JSONGenerator.forBlock["value"] = function (block, generator) {
 			
@@ -128,13 +128,13 @@ export class Generator {
 
 		};
 		JSONGenerator.forBlock["effectDealDamage"] = function (block, generator) {
-			return `{"type":"dealDamage","value":${generator.valueToCode(block, "value", Order.IDFC)},"damageType":"${generator.valueToCode(block, "damageType", Order.IDFC)}","targetId":${generator.valueToCode(block, "targetId", Order.IDFC)}}`;
+			return `{"type":"dealDamage","value":${generator.valueToCode(block, "value", Order.IDFC)},"damageType":${generator.valueToCode(block, "damageType", Order.IDFC)},"targetId":${generator.valueToCode(block, "targetId", Order.IDFC)}}`;
 		};
 		JSONGenerator.forBlock["effectShortcut"] = function (block, generator) {
 			return `{"type":"shortcut","id":"${block.getFieldValue("shortcutName")}"}`;
 		};
-		JSONGenerator.forBlock["effect"] = function (block, generator) {
-			
+		JSONGenerator.forBlock["effectHeal"] = function (block, generator) {
+			return `{"type":"heal","value":${generator.valueToCode(block, "value", Order.IDFC)},"healType":${generator.valueToCode(block, "healType", Order.IDFC)},"targetId":${generator.valueToCode(block, "targetId", Order.IDFC)}}`;
 		};
 		JSONGenerator.forBlock["effect"] = function (block, generator) {
 			

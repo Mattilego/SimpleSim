@@ -187,7 +187,7 @@ export class Actor {
 						targetId = parameters.abilityTarget;
 					}
 					let currentTarget = SharedData.actors[targetId];
-					this.dealDamage(JSONEvaluator.evaluateValue(this, effect.value, parameters), currentTarget, effect.types, name, effect.missable === true, effect.dodgeable === true, effect.parryable === true, effect.blockable === true);
+					this.dealDamage(JSONEvaluator.evaluateValue(this, effect.value, parameters), currentTarget, effect.type, name, effect.missable === true, effect.dodgeable === true, effect.parryable === true, effect.blockable === true);
 					break;
 				case "heal":
 					targetId = -1;
@@ -202,7 +202,7 @@ export class Actor {
 					}
 					currentTarget = SharedData.actors[targetId];
 					let healing = JSONEvaluator.evaluateValue(this, effect.value, Object.assign(parameters, { targetId: targetId }));
-					this.doHealing(healing, currentTarget, effect.healingTypes, name);
+					this.doHealing(healing, currentTarget, effect.healingType, name);
 					break;
 				case "applyAura":
 					targetId = -1;
@@ -395,13 +395,13 @@ export class Actor {
 		};
 	}
 
-	takeDamage(damage, missable, dodgeable, parryable, blockable, types, sourceActor, name) {
+	takeDamage(damage, missable, dodgeable, parryable, blockable, type, sourceActor, name) {
 		const hit = this.checkForHit(missable, dodgeable, parryable, blockable, sourceActor);
 		if (hit === "hit" || hit === "crit" || hit === "block" || hit === "critBlock") {
 			damage *= hit === "crit" ? 2 : 1;
 			const rawDamage = damage;
 			damage *= 1 - (this.getStatEffect("versatility") - 1) / 2;
-			if (types.includes("physical") || types.includes("all")) {
+			if (type & SharedData.types.get("Physical")) {
 				if (sourceActor.level < 60) {
 					damage *= 1 - this.getStat("armor") / (this.getStat("armor") + 400 + 85 * sourceActor.level);
 				} else if (sourceActor.level < 80) {
@@ -414,14 +414,14 @@ export class Actor {
 			}
 			damage *= hit === "block" ? 0.7 : 1;
 			damage *= hit === "critBlock" ? 0.4 : 1;
-			damage *= this.getDamageTakenMultiplier(types) * this.getDamageTakenSpecialMultiplier(damage, types);
-			damage += this.getDamageTakenAddition(types) + this.getDamageTakenSpecialAddition(damage, types);
-			sourceActor.heal(damage * sourceActor.getStatEffect("leech"), types, sourceActor);
+			damage *= this.getDamageTakenMultiplier(type) * this.getDamageTakenSpecialMultiplier(damage, type);
+			damage += this.getDamageTakenAddition(type) + this.getDamageTakenSpecialAddition(damage, type);
+			sourceActor.heal(damage * sourceActor.getStatEffect("leech"), type, sourceActor);
 			const preAbsorbDamage = damage;
 			let auraId = 0; //Absorbs
 			while (auraId < this.absorbs.length && damage > 0) {
 				//Needs to be redone to match new absorb format
-				if (this.absorbs[auraId].absorbTypes.includes("all") || types.includes("all") || this.absorbs[auraId].absorbTypes.some((type) => types.includes(type))) {
+				if (this.absorbs[auraId].absorbType.includes("all") || type.includes("all") || (this.absorbs[auraId].absorbType & type)) {
 					if (this.absorbs[auraId].value > damage) {
 						this.absorbs[auraId].value -= damage;
 						damage = 0;
@@ -438,7 +438,7 @@ export class Actor {
 			if (this.getResource("health") <= 0){
 				overkill = -this.getResource("health");
 			}
-			SharedData.eventLoop.triggerListeners("damageTaken", this.id, { damage: preAbsorbDamage, baseDamage: rawDamage, mitigated: rawDamage - damage, absorbed: preAbsorbDamage - damage, newHp: this.resources.prototypeProtectionhealth, sourceActor, types, target: this, name: name, crit: hit === "crit", block: (hit==="block")?damage/0.7:(hit==="critBlock"?damage/0.4:0), overkill: overkill });
+			SharedData.eventLoop.triggerListeners("damageTaken", this.id, { damage: preAbsorbDamage, baseDamage: rawDamage, mitigated: rawDamage - damage, absorbed: preAbsorbDamage - damage, newHp: this.resources.prototypeProtectionhealth, sourceActor, type, target: this, name: name, crit: hit === "crit", block: (hit==="block")?damage/0.7:(hit==="critBlock"?damage/0.4:0), overkill: overkill });
 		} else if (hit === "parry") {
 			SharedData.eventLoop.triggerListeners("parry", this.id, { sourceActor });
 		} else if (hit === "dodge") {
@@ -471,15 +471,15 @@ export class Actor {
 		return "hit";
 	}
 
-	heal(amount, types, sourceActor) {
+	heal(amount, type, sourceActor) {
 		const preAbsorbHealing = amount;
-		let healing = amount * this.getHealingTakenMultiplier(types) * this.getHealingTakenSpecialMultiplier(amount, types);
-		healing += amount * this.getHealingTakenAddition(types) + this.getHealingTakenSpecialAddition(healing, types);
+		let healing = amount * this.getHealingTakenMultiplier(type) * this.getHealingTakenSpecialMultiplier(amount, type);
+		healing += amount * this.getHealingTakenAddition(type) + this.getHealingTakenSpecialAddition(healing, type);
 		this.resources.prototypeProtectionhealth += amount;
 		if (this.resources.prototypeProtectionhealth > this.stats.maxHp) {
 			this.resources.prototypeProtectionhealth = this.stats.maxHp;
 		}
-		SharedData.eventLoop.triggerListeners("heal", this.id, { amount, newHp: this.resources.prototypeProtectionhealth, sourceActor, types, preAbsorbHealing });
+		SharedData.eventLoop.triggerListeners("heal", this.id, { amount, newHp: this.resources.prototypeProtectionhealth, sourceActor, type, preAbsorbHealing });
 	}
 
 	get id() {
@@ -507,84 +507,68 @@ export class Actor {
 		return 0;
 	}
 
-	getDamageDoneMultiplier(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageDoneMultipliers[index];
+	getDamageDoneMultiplier(type) {
+		return this.damageDoneMultipliers[type];
 	}
 
-	getDamageDoneAddition(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageDoneAdditions[index];
+	getDamageDoneAddition(type) {
+		return this.damageDoneAdditions[type];
 	}
 
-	getDamageDoneSpecialMultiplier(baseDamage, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageDoneSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDamage }), 1);
+	getDamageDoneSpecialMultiplier(baseDamage, type) {
+		return this.damageDoneSpecialMultipliers[type].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDamage }), 1);
 	}
 
-	getDamageDoneSpecialAddition(baseDamage, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageDoneSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDamage }), 0);
+	getDamageDoneSpecialAddition(baseDamage, type) {
+		return this.damageDoneSpecialAdditions[type].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDamage }), 0);
 	}
 
-	getDamageTakenMultiplier(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageTakenMultipliers[index];
+	getDamageTakenMultiplier(type) {
+		return this.damageTakenMultipliers[type];
 	}
 
-	getDamageTakenAddition(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageTakenAdditions[index];
+	getDamageTakenAddition(type) {
+		return this.damageTakenAdditions[type];
 	}
 
-	getDamageTakenSpecialMultiplier(baseDamage, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageTakenSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDamage }), 1);
+	getDamageTakenSpecialMultiplier(baseDamage, type) {
+		return this.damageTakenSpecialMultipliers[type].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseDamage }), 1);
 	}
 
-	getDamageTakenSpecialAddition(baseDamage, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.damageTakenSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDamage }), 0);
+	getDamageTakenSpecialAddition(baseDamage, type) {
+		return this.damageTakenSpecialAdditions[type].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseDamage }), 0);
 	}
 
-	getHealingTakenAddition(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingTakenAdditions[index];
+	getHealingTakenAddition(type) {
+		return this.healingTakenAdditions[type];
 	}
 
-	getHealingTakenMultiplier(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingTakenMultipliers[index];
+	getHealingTakenMultiplier(type) {
+		return this.healingTakenMultipliers[type];
 	}
 
-	getHealingTakenSpecialMultiplier(baseHeal, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingTakenSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHeal }), 1);
+	getHealingTakenSpecialMultiplier(baseHeal, type) {
+		return this.healingTakenSpecialMultipliers[type].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHeal }), 1);
 	}
 
-	getHealingTakenSpecialAddition(baseHeal, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingTakenSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHeal }), 0);
+	getHealingTakenSpecialAddition(baseHeal, type) {
+		return this.healingTakenSpecialAdditions[type].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHeal }), 0);
 	}
 
-	getHealingDoneMultiplier(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingDoneMultipliers[index];
+	getHealingDoneMultiplier(type) {
+		return this.healingDoneMultipliers[type];
 	}
 
-	getHealingDoneAddition(types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingDoneAdditions[index];
+	getHealingDoneAddition(type) {
+		return this.healingDoneAdditions[type];
 	}
 
-	getHealingDoneSpecialMultiplier(baseHeal, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingDoneSpecialMultipliers[index].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHeal }), 1);
+	getHealingDoneSpecialMultiplier(baseHeal, type) {
+		return this.healingDoneSpecialMultipliers[type].reduce((acc, f) => acc * JSONEvaluator.evaluateValue(this, f, { baseHeal }), 1);
 	}
 
-	getHealingDoneSpecialAddition(baseHeal, types) {
-		let index = SharedData.getTypeCombinationId(types);
-		return this.healingDoneSpecialAdditions[index].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHeal }), 0);
+	getHealingDoneSpecialAddition(baseHeal, type) {
+		return this.healingDoneSpecialAdditions[type].reduce((acc, f) => acc + JSONEvaluator.evaluateValue(this, f, { baseHeal }), 0);
 	}
 
 	getStatRatingSpecialMultiplier(stat, baseValue) {
@@ -638,16 +622,13 @@ export class Actor {
 			const variablePrefix = "_".repeat(callStack.length + 1); //For any internal variables to not overwrite
 			switch (effect.type) {
 				case "damage":
-					effect.types.forEach((type) => {
-						SharedData.ensureString(type);
-					});
 					let targetActor = null;
 					if (effect.targetId === undefined) {
 						targetActor = "SharedData.actors[" + JSONEvaluator.compileValue(this.defaultEnemyTarget(), this) + "]";
 					} else {
 						targetActor = "SharedData.actors[" + JSONEvaluator.compileValue(effect.targetId, this) + "]";
 					}
-					effectString += variablePrefix + "types=[" + effect.types.map((type) => "SharedData.strings[" + SharedData.strings.indexOf(type) + "]").join(",") + "];actor.dealDamage(" + JSONEvaluator.compileValue(effect.value, this) + ", " + targetActor + ", " + variablePrefix + "types, name, " + (effect.missable === true) + ", " + (effect.dodgeable === true) + ", " + (effect.parryable === true) + ", " + (effect.blockable === true) + ");";
+					effectString += "actor.dealDamage(" + JSONEvaluator.compileValue(effect.value, this) + ", " + targetActor + ", " + JSONEvaluator.compileValue(effect.type, this) +", name, " + (effect.missable === true) + ", " + (effect.dodgeable === true) + ", " + (effect.parryable === true) + ", " + (effect.blockable === true) + ");";
 					break;
 				case "heal":
 					targetActor = null;
@@ -656,7 +637,7 @@ export class Actor {
 					} else {
 						targetActor = "SharedData.actors[" + JSONEvaluator.compileValue(effect.targetId, this) + "]";
 					}
-					effectString += variablePrefix + "types=[" + effect.types.map((type) => "SharedData.strings[" + SharedData.strings.indexOf(type) + "]").join(",") + "];actor.heal(" + JSONEvaluator.compileValue(effect.value, this) + ", " + variablePrefix + "types, " + targetActor + ", name);";
+					effectString += "actor.heal(" + JSONEvaluator.compileValue(effect.value, this) + ", " + JSONEvaluator.compileValue(effect.type, this) + ", " + targetActor + ", name);";
 					break;
 				case "applyAura":
 					SharedData.ensureString(effect.id);
@@ -814,17 +795,17 @@ export class Actor {
 		return this.resources["prototypeProtection" + resource];
 	}
 
-	dealDamage(baseDamage, target, types, name, missable, dodgeable, parryable, blockable) {
+	dealDamage(baseDamage, target, type, name, missable, dodgeable, parryable, blockable) {
 		let damage = baseDamage * this.getStatEffect("versatility");
-		damage *= this.getDamageDoneMultiplier(types) * this.getDamageDoneSpecialMultiplier(baseDamage, target, types);
-		damage += this.getDamageDoneAddition(types) + this.getDamageDoneSpecialAddition(damage, target, types);
-		target.takeDamage(damage, missable, dodgeable, parryable, blockable, types, this, name);
+		damage *= this.getDamageDoneMultiplier(type) * this.getDamageDoneSpecialMultiplier(baseDamage, target, type);
+		damage += this.getDamageDoneAddition(type) + this.getDamageDoneSpecialAddition(damage, target, type);
+		target.takeDamage(damage, missable, dodgeable, parryable, blockable, type, this, name);
 	}
 
-	doHealing(baseHeal, target, types, name) {
+	doHealing(baseHeal, target, type, name) {
 		let healing = baseHeal * this.getStatEffect("versatility");
-		healing *= this.getHealingDoneMultiplier(types) * this.getHealingDoneSpecialMultiplier(baseHeal, types);
-		healing += this.getHealingDoneAddition(types) + this.getHealingDoneSpecialAddition(healing, types);
-		target.heal(healing, types, this, name);
+		healing *= this.getHealingDoneMultiplier(type) * this.getHealingDoneSpecialMultiplier(baseHeal, type);
+		healing += this.getHealingDoneAddition(type) + this.getHealingDoneSpecialAddition(healing, type);
+		target.heal(healing, type, this, name);
 	}
 }

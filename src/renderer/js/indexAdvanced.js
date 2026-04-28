@@ -399,12 +399,16 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 		output: "Value"
 	},{
 		type: "valueResource",
-		message0: "Value of resource %1",
+		message0: "Value of resource %1 of %2",
 		args0: [
 			{
 				type: "field_input",
 				name: "resource",
 				text: "Resource"
+			},{
+				type: "input_value",
+				name: "targetId",
+				check: "Value"
 			}
 		],
 		inputsInline: true,
@@ -473,7 +477,26 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 				check: "Value"
 			}
 		],
-		colour: 300,
+		nextStatement: "Effect",
+		previousStatement: "Effect"
+	},{
+		type: "effectHeal",
+		message0: "Heal %1 for %2 %3",
+		args0: [
+			{
+				type: "input_value",
+				name: "targetId",
+				check: "Value"
+			},{
+				type: "input_value",
+				name: "value",
+				check: "Value"
+			},{
+				type: "input_value",
+				name: "healType",
+				check: "Value"
+			}
+		],
 		nextStatement: "Effect",
 		previousStatement: "Effect"
 	},{
@@ -493,7 +516,7 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 		output: "Value",
 		colour: 180
 	},{
-		type: "valueDamageTypes",
+		type: "valueTypes",
 		message0: "%1 type",
 		args0: [
 			{
@@ -575,6 +598,28 @@ const blockDefinitions = Blockly.common.createBlockDefinitionsFromJsonArray([
 			},{
 				type: "input_value",
 				name: "expression",
+				check: "Value"
+			}
+		],
+		output: "Value"
+	},{
+		type: "valueStat",
+		message0: "%1 of stat %2 of %3",
+		args0: [
+			{
+				type: "field_dropdown",
+				name: "property",
+				options: [
+					["Rating", "rating"],
+					["Effect", "effect"]
+				]
+			},{
+				type: "field_input",
+				name: "stat",
+				text: "stat"
+			},{
+				type: "input_value",
+				name: "targetId",
 				check: "Value"
 			}
 		],
@@ -699,7 +744,14 @@ function toolboxCreator(specialBlocks) {
 				contents: [
 					{
 						kind: "block",
-						type: "valueResource"
+						type: "valueResource",
+						inputs: {
+							targetId: {
+								shadow: {
+									type: "valueTargetDefaults"
+								}
+							}
+						}
 					},{
 						kind: "block",
 						type: "effectCreateResource",
@@ -762,12 +814,28 @@ function toolboxCreator(specialBlocks) {
 							value: number,
 							damageType: {
 								shadow: {
-									type: "valueDamageTypes"
+									type: "valueTypes"
 								}
 							},
 							targetId: {
 								shadow: {
 									type: "valueTargetDefaults"
+								}
+							}
+						}
+					},{
+						kind: "block",
+						type: "effectHeal",
+						inputs: {
+							targetId: {
+								shadow: {
+									type: "valueTargetDefaults"
+								}
+							},
+							value: number,
+							healType: {
+								shadow: {
+									type: "valueTypes"
 								}
 							}
 						}
@@ -792,6 +860,22 @@ function toolboxCreator(specialBlocks) {
 					{
 						kind: "block",
 						type: "valueAura",
+						inputs: {
+							targetId: {
+								shadow: {
+									type: "valueTargetDefaults"
+								}
+							}
+						}
+					}
+				]
+			},{
+				kind: "category",
+				name: "Misc values",
+				contents: [
+					{
+						kind: "block",
+						type: "valueStat",
 						inputs: {
 							targetId: {
 								shadow: {
